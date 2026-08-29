@@ -1,0 +1,214 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ========================================= -->
+  <!-- VIRIDISCA LMS - КНОПКИ -->
+  <!-- ========================================= -->
+
+  <!-- БАЗОВЫЙ СТИЛЬ КНОПКИ -->
+  <Style Selector="Button">
+    <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+    <Setter Property="FontSize" Value="{StaticResource FontSizeBase}" />
+    <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}" />
+    <Setter Property="BorderThickness" Value="{StaticResource BorderThin}" />
+    <Setter Property="CornerRadius" Value="{StaticResource RadiusLg}" />
+    <Setter Property="Padding" Value="{StaticResource ButtonPaddingMd}" />
+    <Setter Property="Height" Value="{StaticResource ButtonHeightMd}" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Button:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+  </Style>
+
+  <!-- ОСНОВНАЯ КНОПКА (PRIMARY) -->
+  <Style Selector="Button.btn-primary">
+    <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+  </Style>
+
+  <Style Selector="Button.btn-primary:pointerover">
+    <Setter Property="Background" Value="#1D4ED8" />
+    <Setter Property="BorderBrush" Value="#1D4ED8" />
+  </Style>
+
+  <Style Selector="Button.btn-primary:pressed">
+    <Setter Property="Background" Value="#1E40AF" />
+    <Setter Property="BorderBrush" Value="#1E40AF" />
+  </Style>
+
+  <Style Selector="Button.btn-primary:disabled">
+    <Setter Property="Background" Value="{StaticResource DisabledBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource DisabledBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+    <Setter Property="Opacity" Value="0.6" />
+  </Style>
+
+  <!-- ВТОРИЧНАЯ КНОПКА (SECONDARY) -->
+  <Style Selector="Button.btn-secondary">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+  </Style>
+
+  <Style Selector="Button.btn-secondary:pointerover">
+    <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+
+  <Style Selector="Button.btn-secondary:pressed">
+    <Setter Property="Background" Value="#1E40AF" />
+    <Setter Property="BorderBrush" Value="#1E40AF" />
+  </Style>
+
+  <!-- КНОПКА УСПЕХА (SUCCESS) -->
+  <Style Selector="Button.btn-success">
+    <Setter Property="Background" Value="{StaticResource SuccessBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="BorderBrush" Value="{StaticResource SuccessBrush}" />
+  </Style>
+
+  <Style Selector="Button.btn-success:pointerover">
+    <Setter Property="Background" Value="#059669" />
+    <Setter Property="BorderBrush" Value="#059669" />
+  </Style>
+
+  <!-- КНОПКА ОПАСНОСТИ (DANGER) -->
+  <Style Selector="Button.btn-danger">
+    <Setter Property="Background" Value="{StaticResource DangerBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}" />
+  </Style>
+
+  <Style Selector="Button.btn-danger:pointerover">
+    <Setter Property="Background" Value="#DC2626" />
+    <Setter Property="BorderBrush" Value="#DC2626" />
+  </Style>
+
+  <!-- КНОПКА ПРЕДУПРЕЖДЕНИЯ (WARNING) -->
+  <Style Selector="Button.btn-warning">
+    <Setter Property="Background" Value="{StaticResource WarningBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="BorderBrush" Value="{StaticResource WarningBrush}" />
+  </Style>
+
+  <Style Selector="Button.btn-warning:pointerover">
+    <Setter Property="Background" Value="#D97706" />
+    <Setter Property="BorderBrush" Value="#D97706" />
+  </Style>
+
+  <!-- ИНФОРМАЦИОННАЯ КНОПКА (INFO) -->
+  <Style Selector="Button.btn-info">
+    <Setter Property="Background" Value="{StaticResource InfoBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="BorderBrush" Value="{StaticResource InfoBrush}" />
+  </Style>
+
+  <Style Selector="Button.btn-info:pointerover">
+    <Setter Property="Background" Value="#2563EB" />
+    <Setter Property="BorderBrush" Value="#2563EB" />
+  </Style>
+
+  <!-- ПРИЗРАЧНАЯ КНОПКА (GHOST) -->
+  <Style Selector="Button.btn-ghost">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="Button.btn-ghost:pointerover">
+    <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+  </Style>
+
+  <!-- РАЗМЕРЫ КНОПОК -->
+  
+  <!-- Маленькая кнопка -->
+  <Style Selector="Button.btn-sm">
+    <Setter Property="FontSize" Value="{StaticResource FontSizeSm}" />
+    <Setter Property="Padding" Value="{StaticResource ButtonPaddingSm}" />
+    <Setter Property="Height" Value="{StaticResource ButtonHeightSm}" />
+    <Setter Property="CornerRadius" Value="{StaticResource RadiusMd}" />
+  </Style>
+
+  <!-- Большая кнопка -->
+  <Style Selector="Button.btn-lg">
+    <Setter Property="FontSize" Value="{StaticResource FontSizeLg}" />
+    <Setter Property="Padding" Value="{StaticResource ButtonPaddingLg}" />
+    <Setter Property="Height" Value="{StaticResource ButtonHeightLg}" />
+    <Setter Property="CornerRadius" Value="{StaticResource RadiusXl}" />
+  </Style>
+
+  <!-- Очень большая кнопка -->
+  <Style Selector="Button.btn-xl">
+    <Setter Property="FontSize" Value="{StaticResource FontSizeXl}" />
+    <Setter Property="Padding" Value="{StaticResource ButtonPaddingXl}" />
+    <Setter Property="Height" Value="{StaticResource ButtonHeightXl}" />
+    <Setter Property="CornerRadius" Value="{StaticResource RadiusXl}" />
+  </Style>
+
+  <!-- СПЕЦИАЛЬНЫЕ ВАРИАНТЫ -->
+
+  <!-- Кнопка-иконка -->
+  <Style Selector="Button.btn-icon">
+    <Setter Property="Width" Value="{StaticResource ButtonHeightMd}" />
+    <Setter Property="Height" Value="{StaticResource ButtonHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+    <Setter Property="CornerRadius" Value="{StaticResource RadiusFull}" />
+  </Style>
+
+  <Style Selector="Button.btn-icon:pointerover">
+    <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+  </Style>
+
+  <!-- Круглая кнопка -->
+  <Style Selector="Button.btn-circle">
+    <Setter Property="Width" Value="{StaticResource ButtonHeightMd}" />
+    <Setter Property="Height" Value="{StaticResource ButtonHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="CornerRadius" Value="{StaticResource RadiusFull}" />
+  </Style>
+
+  <!-- Кнопка во всю ширину -->
+  <Style Selector="Button.btn-block">
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="Width" Value="NaN" />
+  </Style>
+
+  <!-- Кнопка с градиентом -->
+  <Style Selector="Button.btn-gradient">
+    <Setter Property="Background" Value="{StaticResource PrimaryGradientBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <!-- СОСТОЯНИЯ ЗАГРУЗКИ -->
+  <Style Selector="Button.btn-loading">
+    <Setter Property="Opacity" Value="0.7" />
+    <Setter Property="IsEnabled" Value="False" />
+  </Style>
+
+  <!-- ГРУППЫ КНОПОК -->
+  <Style Selector="StackPanel.btn-group > Button">
+    <Setter Property="CornerRadius" Value="0" />
+    <Setter Property="BorderThickness" Value="1,1,0,1" />
+  </Style>
+
+  <Style Selector="StackPanel.btn-group > Button:first-child">
+    <Setter Property="CornerRadius" Value="8,0,0,8" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="StackPanel.btn-group > Button:last-child">
+    <Setter Property="CornerRadius" Value="0,8,8,0" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+</Styles> 

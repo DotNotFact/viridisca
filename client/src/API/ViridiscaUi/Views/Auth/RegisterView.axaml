@@ -1,0 +1,333 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Auth"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             x:Class="ViridiscaUi.Views.Auth.RegisterView"
+             x:DataType="vm:RegisterViewModel">
+
+    <!-- Основной контейнер -->
+    <Grid x:Name="RootGrid" Background="{DynamicResource BackgroundBrush}">
+        
+        <!-- Центральная область с формой -->
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Spacing="32"
+                        Margin="20">
+                
+                <!-- Заголовок приложения -->
+                <StackPanel HorizontalAlignment="Center" 
+                            Spacing="8">
+                    <!-- Логотип -->
+                    <Border Width="64" Height="64"
+                            Background="{DynamicResource AccentBrush}"
+                            CornerRadius="16"
+                            HorizontalAlignment="Center">
+                        <material:MaterialIcon Kind="AccountPlus" 
+                                              Width="32" Height="32"
+                                              Foreground="White" />
+                    </Border>
+                    
+                    <TextBlock Text="Присоединяйтесь к Viridisca LMS" 
+                               Classes="auth-title"
+                               HorizontalAlignment="Center" />
+                               
+                    <TextBlock Text="Создайте аккаунт для доступа к системе управления обучением" 
+                               Classes="auth-subtitle"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+                
+                <!-- Форма регистрации -->
+                <Border Classes="auth-form"
+                        MaxWidth="500">
+                    <StackPanel Spacing="24">
+                        
+                        <!-- Заголовок формы -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Создание аккаунта" 
+                                       Classes="auth-title"
+                                       HorizontalAlignment="Center" />
+                            <TextBlock Text="Заполните все поля для регистрации" 
+                                       Classes="auth-subtitle"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                        
+                        <!-- Сообщение об ошибке -->
+                        <Border Classes="auth-error"
+                                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <material:MaterialIcon Kind="AlertCircle" 
+                                                      Width="16" Height="16"
+                                                      Foreground="{DynamicResource ErrorBrush}"
+                                                      VerticalAlignment="Top"
+                                                      Margin="0,2,0,0" />
+                                <TextBlock Text="{Binding ErrorMessage}" 
+                                           Classes="auth-error-text"
+                                           TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Личная информация -->
+                        <Border Classes="card">
+                            <StackPanel Spacing="16">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <material:MaterialIcon Kind="Account" 
+                                                          Width="20" Height="20"
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    <TextBlock Text="Личная информация" 
+                                               Classes="auth-label" />
+                                </StackPanel>
+                                
+                                <!-- Имя и фамилия в одной строке -->
+                                <Grid ColumnDefinitions="*,12,*">
+                                    <!-- Имя -->
+                                    <StackPanel Grid.Column="0" Spacing="6">
+                                        <TextBlock Text="Имя" 
+                                                   Classes="auth-label" />
+                                        <TextBox Classes="auth-input"
+                                                 Text="{Binding FirstName}"
+                                                 Watermark="Например: Александр">
+                                            <TextBox.InnerLeftContent>
+                                                <material:MaterialIcon Kind="AccountCircle" 
+                                                                      Width="20" Height="20"
+                                                                      Foreground="{DynamicResource TextMutedBrush}"
+                                                                      Margin="4,0,8,0" />
+                                            </TextBox.InnerLeftContent>
+                                        </TextBox>
+                                        <TextBlock Text="Поле обязательно для заполнения" 
+                                                   Classes="form-error"
+                                                   IsVisible="{Binding FirstNameError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    </StackPanel>
+                                    
+                                    <!-- Фамилия -->
+                                    <StackPanel Grid.Column="2" Spacing="6">
+                                        <TextBlock Text="Фамилия" 
+                                                   Classes="auth-label" />
+                                        <TextBox Classes="auth-input"
+                                                 Text="{Binding LastName}"
+                                                 Watermark="Например: Петров">
+                                            <TextBox.InnerLeftContent>
+                                                <material:MaterialIcon Kind="AccountCircle" 
+                                                                      Width="20" Height="20"
+                                                                      Foreground="{DynamicResource TextMutedBrush}"
+                                                                      Margin="4,0,8,0" />
+                                            </TextBox.InnerLeftContent>
+                                        </TextBox>
+                                        <TextBlock Text="Поле обязательно для заполнения" 
+                                                   Classes="form-error"
+                                                   IsVisible="{Binding LastNameError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <!-- Email -->
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Email адрес" 
+                                               Classes="auth-label" />
+                                    <TextBox Classes="auth-input"
+                                             Text="{Binding Email}" 
+                                             Watermark="student@university.edu или user@domain.com">
+                                        <TextBox.InnerLeftContent>
+                                            <material:MaterialIcon Kind="Email" 
+                                                                  Width="20" Height="20"
+                                                                  Foreground="{DynamicResource TextMutedBrush}"
+                                                                  Margin="4,0,8,0" />
+                                        </TextBox.InnerLeftContent>
+                                    </TextBox>
+                                    <TextBlock Text="Введите корректный email адрес" 
+                                               Classes="form-error"
+                                               IsVisible="{Binding EmailError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </StackPanel>
+                                
+                                <!-- Имя пользователя -->
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Имя пользователя" 
+                                               Classes="auth-label" />
+                                    <TextBox Classes="auth-input"
+                                             Text="{Binding Username}" 
+                                             Watermark="student2024, alex_petrov или teacher_math">
+                                        <TextBox.InnerLeftContent>
+                                            <material:MaterialIcon Kind="At" 
+                                                                  Width="20" Height="20"
+                                                                  Foreground="{DynamicResource TextMutedBrush}"
+                                                                  Margin="4,0,8,0" />
+                                        </TextBox.InnerLeftContent>
+                                    </TextBox>
+                                    <TextBlock Text="Имя пользователя должно быть уникальным" 
+                                               Classes="form-error"
+                                               IsVisible="{Binding UsernameError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Учетные данные -->
+                        <Border Classes="card">
+                            <StackPanel Spacing="16">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <material:MaterialIcon Kind="Security" 
+                                                          Width="20" Height="20"
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    <TextBlock Text="Учетные данные" 
+                                               Classes="auth-label" />
+                                </StackPanel>
+                                
+                                <!-- Роль -->
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Роль в системе" 
+                                               Classes="auth-label" />
+                                    <ComboBox ItemsSource="{Binding AvailableRoles}"
+                                              SelectedItem="{Binding SelectedRole}"
+                                              PlaceholderText="Студент, Преподаватель, Администратор..."
+                                              IsEnabled="{Binding !IsLoadingRoles}"
+                                              Padding="16,12"
+                                              MinHeight="48">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <material:MaterialIcon Kind="AccountGroup" 
+                                                                          Width="16" Height="16"
+                                                                          Foreground="{DynamicResource TextSecondaryBrush}" />
+                                                    <TextBlock Text="{Binding Name}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    
+                                    <!-- Индикатор загрузки ролей -->
+                                    <StackPanel IsVisible="{Binding IsLoadingRoles}" 
+                                                Spacing="4">
+                                        <ProgressBar Height="4"
+                                                     CornerRadius="2"
+                                                     Background="{DynamicResource BorderBrush}"
+                                                     Foreground="{DynamicResource AccentBrush}"
+                                                     IsIndeterminate="True" />
+                                        <TextBlock Text="Загружаем доступные роли..."
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    </StackPanel>
+                                </StackPanel>
+                                
+                                <!-- Пароль -->
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Пароль" 
+                                               Classes="auth-label" />
+                                    <TextBox Classes="auth-input"
+                                             Text="{Binding Password}"
+                                             PasswordChar="•"
+                                             Watermark="Минимум 8 символов, буквы и цифры">
+                                        <TextBox.InnerLeftContent>
+                                            <material:MaterialIcon Kind="Lock" 
+                                                                  Width="20" Height="20"
+                                                                  Foreground="{DynamicResource TextMutedBrush}"
+                                                                  Margin="4,0,8,0" />
+                                        </TextBox.InnerLeftContent>
+                                    </TextBox>
+                                    <TextBlock Text="Пароль должен содержать минимум 8 символов" 
+                                               Classes="form-error"
+                                               IsVisible="{Binding PasswordError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </StackPanel>
+                                
+                                <!-- Подтверждение пароля -->
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Подтверждение пароля" 
+                                               Classes="auth-label" />
+                                    <TextBox Classes="auth-input"
+                                             Text="{Binding ConfirmPassword}"
+                                             PasswordChar="•"
+                                             Watermark="Повторите пароль точно">
+                                        <TextBox.InnerLeftContent>
+                                            <material:MaterialIcon Kind="LockCheck" 
+                                                                  Width="20" Height="20"
+                                                                  Foreground="{DynamicResource TextMutedBrush}"
+                                                                  Margin="4,0,8,0" />
+                                        </TextBox.InnerLeftContent>
+                                    </TextBox>
+                                    <TextBlock Text="Пароли должны совпадать" 
+                                               Classes="form-error"
+                                               IsVisible="{Binding ConfirmPasswordError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Согласие -->
+                        <StackPanel Spacing="12">
+                            <CheckBox Content="Я согласен с условиями использования и политикой конфиденциальности"
+                                      IsChecked="{Binding AcceptTerms}"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextSecondaryBrush}" />
+                            
+                            <CheckBox Content="Получать уведомления о важных обновлениях системы"
+                                      IsChecked="{Binding AcceptNotifications}"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+                        
+                        <!-- Кнопка регистрации -->
+                        <Button Classes="auth-primary"
+                                Content="Создать аккаунт"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Command="{Binding RegisterCommand}"
+                                IsEnabled="{Binding !IsRegistering}">
+                            <Button.ContentTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"
+                                               Spacing="8"
+                                               IsVisible="{Binding !#RootGrid.DataContext.IsRegistering}">
+                                        <material:MaterialIcon Kind="AccountPlus" 
+                                                              Width="20" Height="20" />
+                                        <TextBlock Text="{Binding}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Button.ContentTemplate>
+                        </Button>
+                        
+                        <!-- Индикатор загрузки -->
+                        <StackPanel IsVisible="{Binding IsRegistering}" 
+                                    Spacing="8">
+                            <ProgressBar Height="4"
+                                         CornerRadius="2"
+                                         Background="{DynamicResource BorderBrush}"
+                                         Foreground="{DynamicResource AccentBrush}"
+                                         IsIndeterminate="True" />
+                            <TextBlock Text="Создаем ваш аккаунт..."
+                                       HorizontalAlignment="Center"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+                        
+                        <!-- Разделитель -->
+                        <Border Height="1" 
+                                Background="{DynamicResource BorderBrush}" 
+                                Margin="0,20" />
+                        
+                        <!-- Ссылка на вход -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Spacing="4">
+                            <TextBlock Text="Уже есть аккаунт?"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <Button Classes="auth-link"
+                                    Content="Войти в систему"
+                                    Command="{Binding GoToLoginCommand}" />
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </Border>
+                
+                <!-- Футер -->
+                <TextBlock Text="© 2024 Viridisca LMS. Все права защищены." 
+                           FontSize="14"
+                           Foreground="{DynamicResource TextMutedBrush}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl> 
+

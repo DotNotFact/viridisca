@@ -1,0 +1,299 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.System"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
+        x:Class="ViridiscaUi.Views.System.DepartmentEditDialog"
+        x:DataType="vm:DepartmentEditDialogViewModel"
+        Title="{Binding Title}"
+        Width="700" Height="600"
+        MinWidth="600" MinHeight="500"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Styles>
+        <!-- Modern Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 2 8 0 #10000000" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+        
+        <!-- Action Button Styles -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="MinWidth" Value="100" />
+        </Style>
+        
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <!-- Form Input Styles -->
+        <Style Selector="TextBox.form-input">
+            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+        </Style>
+        
+        <Style Selector="TextBox.form-input:focus">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+        
+        <Style Selector="TextBox.form-input:error">
+            <Setter Property="BorderBrush" Value="#E74C3C" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+        
+        <Style Selector="TextBlock.error">
+            <Setter Property="Foreground" Value="#E74C3C" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        
+        <Style Selector="TextBlock.hint">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        
+        <!-- CheckBox Style -->
+        <Style Selector="CheckBox.form-checkbox">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="8,0,0,0" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+        
+        <!-- Header Section -->
+        <Border Grid.Row="0" Classes="card">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <material:MaterialIcon Kind="Domain" 
+                                               Width="28" Height="28" 
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SystemAccentColor}"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" 
+                                   FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="Заполните все обязательные поля для создания или редактирования отдела" 
+                                   FontSize="13" 
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- Required Fields Legend -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <Border Background="{DynamicResource SystemAccentColorLight1}" 
+                            CornerRadius="4" Padding="8,4">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="*" Foreground="#E74C3C" FontWeight="Bold"/>
+                            <TextBlock Text="обязательные поля" FontSize="11" 
+                                       Foreground="{DynamicResource SystemAccentColorDark1}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Form Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="16">
+                
+                <!-- Basic Information Card -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="InformationOutline" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Основная информация" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                            <!-- Name Field -->
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,8,16">
+                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                    <TextBlock Text="Название" Classes="label"/>
+                                    <TextBlock Text="*" Foreground="#E74C3C" FontWeight="Bold"/>
+                                </StackPanel>
+                                <TextBox Text="{Binding Department.Name}" 
+                                         Classes="form-input"/>
+                                <TextBlock Text="Полное официальное название отдела" 
+                                           Classes="hint"/>
+                                <TextBlock Text="{Binding ValidationError}" 
+                                           Classes="error"
+                                           IsVisible="{Binding ValidationError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                            </StackPanel>
+                            
+                            <!-- Code Field -->
+                            <StackPanel Grid.Column="1" Grid.Row="0" Margin="8,0,0,16">
+                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                    <TextBlock Text="Код" Classes="label"/>
+                                    <TextBlock Text="*" Foreground="#E74C3C" FontWeight="Bold"/>
+                                </StackPanel>
+                                <TextBox Text="{Binding Department.Code}" 
+                                         Classes="form-input"/>
+                                <TextBlock Text="Краткий уникальный код (2-10 символов)" 
+                                           Classes="hint"/>
+                            </StackPanel>
+                            
+                            <!-- Description Field (spans both columns) -->
+                            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                                <TextBlock Text="Описание" Classes="label"/>
+                                <TextBox Text="{Binding Department.Description}" 
+                                         Classes="form-input"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         Height="80"
+                                         VerticalContentAlignment="Top"/>
+                                <TextBlock Text="Опишите основные функции и направления деятельности" 
+                                           Classes="hint"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Status Configuration Card -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="ToggleSwitch" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Конфигурация статуса" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                CornerRadius="6" Padding="16">
+                            <StackPanel Spacing="8">
+                                <CheckBox IsChecked="{Binding Department.IsActive}"
+                                          Classes="form-checkbox">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock Text="Отдел активен" FontWeight="SemiBold"/>
+                                        <Border Background="{Binding Department.IsActive, Converter={x:Static local:StatusColorConverter.Instance}}"
+                                                CornerRadius="8" Padding="6,2"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Department.IsActive, Converter={x:Static local:StatusDisplayConverter.Instance}}" 
+                                                       Foreground="White" FontSize="10" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </StackPanel>
+                                </CheckBox>
+                                <TextBlock Text="Активные отделы участвуют в учебном процессе и отображаются в системе"
+                                           Classes="hint"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                
+                <!-- System Information Card (only for existing departments) -->
+                <Border Classes="card" IsVisible="{Binding !IsNewDepartment}">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="DatabaseCog" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Системная информация" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+                            <StackPanel Grid.Column="0" Grid.Row="0">
+                                <TextBlock Text="Дата создания" Classes="label"/>
+                                <TextBlock Text="{Binding Department.CreatedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" 
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Grid.Row="0">
+                                <TextBlock Text="Последнее изменение" Classes="label"/>
+                                <TextBlock Text="{Binding Department.LastModifiedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" 
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2" Grid.Row="0">
+                                <TextBlock Text="Уникальный ID" Classes="label"/>
+                                <TextBlock Text="{Binding Department.Uid, StringFormat='{}{0:N}'}" 
+                                           FontSize="10" FontFamily="Consolas"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer with Action Buttons -->
+        <Border Grid.Row="2" Classes="card" Margin="0,16,0,0">
+            <Grid ColumnDefinitions="*,Auto">
+                
+                <!-- Loading/Status Indicator -->
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding IsLoading}">
+                    <ProgressBar IsIndeterminate="True" Width="20" Height="20"/>
+                    <TextBlock Text="Сохранение изменений..." 
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               Foreground="{DynamicResource SystemAccentColor}"/>
+                </StackPanel>
+                
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="12">
+                    <Button Command="{Binding CancelCommand}"
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Close" Width="16" Height="16"/>
+                            <TextBlock Text="Отмена"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SaveCommand}"
+                            Classes="action primary"
+                            IsEnabled="{Binding !IsLoading}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="ContentSave" Width="16" Height="16"/>
+                            <TextBlock Text="{Binding SaveButtonText}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window> 

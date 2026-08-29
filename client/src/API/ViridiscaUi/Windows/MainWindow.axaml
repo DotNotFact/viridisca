@@ -1,0 +1,202 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels"
+        xmlns:reactiveUi="http://reactiveui.net"
+        mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="750"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:converters="clr-namespace:ViridiscaUi.Converters"
+		xmlns:components="clr-namespace:ViridiscaUi.Views.Components"
+        x:Class="ViridiscaUi.Windows.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ViridiscaUi LMS"
+        WindowStartupLocation="CenterScreen"
+		MinWidth="900" MinHeight="600"
+        Background="{DynamicResource BackgroundBrush}">
+
+	<Window.Resources>
+		<converters:IconKeyToMaterialKindConverter x:Key="IconKeyConverter" />
+		<converters:IconKeyToMaterialKindConverter x:Key="IconKeyToMaterialKindConverter" />
+		<converters:BoolToDoubleConverter x:Key="BoolToDoubleConverter" />
+		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+	</Window.Resources>
+
+	<Window.Styles>
+		<!-- Floating Action Button Style -->
+		<Style Selector="Button.fab">
+			<Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="CornerRadius" Value="28"/>
+			<Setter Property="Width" Value="56"/>
+			<Setter Property="Height" Value="56"/>
+			<Setter Property="FontSize" Value="24"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0:0:0.2"/>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+				</Transitions>
+			</Setter>
+		</Style>
+
+		<Style Selector="Button.fab:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SecondaryLightBrush}"/>
+			<Setter Property="RenderTransform" Value="scale(1.05)"/>
+		</Style>
+
+		<Style Selector="Button.fab:pressed">
+			<Setter Property="RenderTransform" Value="scale(0.95)"/>
+		</Style>
+
+		<!-- RouterView Style -->
+		<Style Selector="reactiveUi|RoutedViewHost">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<ContentPresenter Name="PART_CurrentView" Content="{TemplateBinding Content}" />
+				</ControlTemplate>
+			</Setter>
+		</Style>
+
+		<!-- Scrollbar Styles -->
+		<Style Selector="ScrollViewer /template/ ScrollBar">
+			<Setter Property="Background" Value="Transparent"/>
+		</Style>
+
+		<Style Selector="ScrollViewer /template/ ScrollBar:vertical /template/ Track /template/ Thumb">
+			<Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
+			<Setter Property="CornerRadius" Value="4"/>
+		</Style>
+	</Window.Styles>
+
+	<!-- Main Layout Grid -->
+	<Grid RowDefinitions="*,Auto">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+
+		<!-- Modern Sidebar Component -->
+		<Border Grid.Column="0" Grid.Row="0" IsVisible="{Binding IsLoggedIn}" >
+			<components:SidebarComponent />
+		</Border> 
+		
+
+		<!-- Main Content Area -->
+		<Border Grid.Column="1"
+                Grid.Row="0"
+                Background="{DynamicResource BackgroundBrush}"
+                CornerRadius="0"
+                Margin="0"
+                ClipToBounds="True">
+
+			<!-- Router View Host for Navigation -->
+			<reactiveUi:RoutedViewHost Router="{Binding Router}"
+                                       HorizontalContentAlignment="Stretch"
+                                       VerticalContentAlignment="Stretch">
+
+				<reactiveUi:RoutedViewHost.DefaultContent>
+
+					<!-- Default Home Content with StatisticsCardComponent -->
+					<ScrollViewer>
+						<StackPanel Margin="40" Spacing="30">
+							<!-- Заголовок -->
+							<TextBlock Text="Добро пожаловать в ViridiscaUi LMS!"
+                                       FontSize="32" FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+							<!-- Описание -->
+							<TextBlock Text="Современная система управления обучением"
+                                       FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+							<!-- Статистические карточки с использованием StatisticsCardComponent -->
+							<TextBlock Text="📊 Общая статистика"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Margin="8,0"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+							<UniformGrid Columns="4" Margin="0,8">
+								<components:StatisticsCardComponent
+                                    Title="Всего студентов"
+                                    Value="{Binding TotalStudents}"
+                                    Icon="👥"
+                                    ShowChange="True"
+                                    ChangeText="+12 за месяц"
+                                    ChangeType="Positive"/>
+
+								<components:StatisticsCardComponent
+                                    Title="Активных курсов"
+                                    Value="{Binding TotalCourses}"
+                                    Icon="📚"
+                                    ShowChange="True"
+                                    ChangeText="+3 за неделю"
+                                    ChangeType="Positive"/>
+
+								<components:StatisticsCardComponent
+                                    Title="Преподавателей"
+                                    Value="{Binding TotalTeachers}"
+                                    Icon="👨‍🏫"
+                                    ShowChange="True"
+                                    ChangeText="без изменений"
+                                    ChangeType="Neutral"/>
+
+								<components:StatisticsCardComponent
+                                    Title="Заданий на проверке"
+                                    Value="{Binding TotalAssignments}"
+                                    Icon="📝"
+                                    ShowChange="True"
+                                    ChangeText="-5 за день"
+                                    ChangeType="Negative"/>
+							</UniformGrid>
+
+							<!-- Информация о системе -->
+							<Border Classes="card" Margin="0,20,0,0">
+								<StackPanel Spacing="15">
+									<TextBlock Text="О системе"
+                                               FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+									<TextBlock TextWrapping="Wrap" FontSize="14" LineHeight="22"
+                                               Foreground="{DynamicResource TextSecondaryBrush}">
+										ViridiscaUi LMS - это современная система управления обучением, разработанная с использованием
+										Avalonia UI и ReactiveUI. Система предоставляет полный набор инструментов для управления
+										образовательным процессом, включая управление студентами, преподавателями, курсами,
+										заданиями и оценками.
+									</TextBlock>
+
+									<StackPanel Orientation="Horizontal" Spacing="20" Margin="0,10,0,0">
+										<TextBlock Text="{Binding AppVersion, StringFormat='🚀 Версия: {0}'}"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextMutedBrush}"/>
+										<TextBlock Text="⚡ Статус: Активна"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource SuccessBrush}"/>
+										<TextBlock Text="{Binding OnlineUsersCount, StringFormat='👤 Пользователей онлайн: {0}'}"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextMutedBrush}"/>
+									</StackPanel>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+					</ScrollViewer>
+
+				</reactiveUi:RoutedViewHost.DefaultContent>
+
+			</reactiveUi:RoutedViewHost>
+
+		</Border>
+
+		<!-- Status Bar -->
+		<Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Classes="status-bar">
+			<components:StatusBarView DataContext="{Binding StatusBar}" />
+		</Border> 
+
+	</Grid>
+</Window>

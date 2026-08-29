@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+             x:Class="ViridiscaUi.Views.Education.SubmissionDialog"
+             x:DataType="vm:SubmissionDialogViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding DialogTitle}" 
+                   FontSize="20" 
+                   FontWeight="Bold"
+                   Margin="16"/>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="16,0">
+            <StackPanel Spacing="16">
+                <!-- Assignment -->
+                <StackPanel>
+                    <TextBlock Text="Задание" Margin="0,0,0,4"/>
+                    <controls:SearchableDropdown Items="{Binding AvailableAssignments}"
+                                               SelectedItem="{Binding Assignment}"
+                                               PlaceholderText="Выберите задание..."/>
+                </StackPanel>
+
+                <!-- Student -->
+                <StackPanel>
+                    <TextBlock Text="Студент" Margin="0,0,0,4"/>
+                    <controls:SearchableDropdown Items="{Binding AvailableStudents}"
+                                               SelectedItem="{Binding Student}"
+                                               PlaceholderText="Выберите студента..."/>
+                </StackPanel>
+
+                <!-- Content -->
+                <StackPanel>
+                    <TextBlock Text="Содержимое" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding Content}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             Height="100"/>
+                </StackPanel>
+
+                <!-- File Path -->
+                <StackPanel>
+                    <TextBlock Text="Файл" Margin="0,0,0,4"/>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBox Grid.Column="0" 
+                                Text="{Binding FilePath}"/>
+                        <Button Grid.Column="1" 
+                                Content="📁"
+                                Margin="8,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Status -->
+                <StackPanel>
+                    <TextBlock Text="Статус" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding Status}"
+                             SelectedItem="{Binding Status}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Submitted At -->
+                <StackPanel>
+                    <TextBlock Text="Дата сдачи" Margin="0,0,0,4"/>
+                    <DatePicker SelectedDate="{Binding SubmittedAt, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                </StackPanel>
+
+                <!-- Is Active -->
+                <StackPanel>
+                    <CheckBox Content="Активна" IsChecked="{Binding IsActive}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="16">
+            <Button Command="{Binding CancelCommand}" 
+                    Content="Отмена"/>
+            <Button Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsValid}"
+                    Content="Сохранить"/>
+        </StackPanel>
+    </Grid>
+</UserControl> 
+
+

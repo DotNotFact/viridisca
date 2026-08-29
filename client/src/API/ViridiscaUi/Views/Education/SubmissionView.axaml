@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Views.Education.SubmissionView"
+             x:DataType="vm:SubmissionViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="16" Spacing="8">
+            <TextBlock Text="Работы студентов" FontSize="24" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding CreateCommand}" Content="Создать"/>
+                <Button Command="{Binding EditCommand}" Content="Редактировать"/>
+                <Button Command="{Binding DeleteCommand}" Content="Удалить"/>
+            </StackPanel>
+            <controls:SearchableDropdown Items="{Binding Items}"
+                                       SelectedItem="{Binding SelectedItem}"
+                                       PlaceholderText="Поиск работы..."/>
+        </StackPanel>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="16,0,16,16">
+            <Grid RowDefinitions="Auto,*">
+                <!-- Table Header -->
+                <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,100" Margin="0,0,0,8">
+                    <TextBlock Grid.Column="0" Text="Задание" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="Студент" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="2" Text="Статус" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="3" Text="Дата" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="4" Text="Действия" FontWeight="Bold"/>
+                </Grid>
+
+                <!-- Table Content -->
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,*,*,*,100" Margin="0,0,0,4">
+                                    <TextBlock Grid.Column="0" Text="{Binding AssignmentTitle}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding StudentFullName}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding StatusText}"
+                                             Foreground="{Binding StatusColor}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding SubmittedAt, StringFormat='{}{0:d}'}"/>
+                                    <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="4">
+                                        <Button Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Content="✏️"/>
+                                        <Button Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Content="🗑️"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="16">
+            <TextBlock Grid.Column="0" Text="{Binding Items.Count, StringFormat='Всего работ: {0}'}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding PreviousPageCommand}" Content="←"/>
+                <TextBlock Text="{Binding CurrentPage, StringFormat='Страница {0}'}" VerticalAlignment="Center"/>
+                <Button Command="{Binding NextPageCommand}" Content="→"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000"
+              IsVisible="{Binding IsLoading}">
+            <ProgressBar IsIndeterminate="True" 
+                        Width="100" 
+                        Height="2"
+                        VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</UserControl> 
+
+
+

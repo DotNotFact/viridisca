@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels"
+             xmlns:rxui="http://reactiveui.net"
+             xmlns:infrastructure="clr-namespace:ViridiscaUi.Infrastructure"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Windows.MainView"
+             x:DataType="vm:MainViewModel">
+
+  <!-- Removed Design.DataContext to prevent creating additional MainViewModel instance -->
+  <!-- Design.DataContext should not create new instances of Singleton ViewModels -->
+
+  <!-- Контент без верхней панели навигации -->
+  <rxui:RoutedViewHost x:Name="RouterViewHost"
+                       Router="{Binding Router}" 
+                       PageTransition="{x:Null}">
+    <rxui:RoutedViewHost.DefaultContent>
+      <TextBlock Text="Загрузка..." 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Center"/>
+    </rxui:RoutedViewHost.DefaultContent>
+  </rxui:RoutedViewHost>
+</UserControl>

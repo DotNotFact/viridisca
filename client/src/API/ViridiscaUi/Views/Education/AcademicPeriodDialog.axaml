@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+             x:Class="ViridiscaUi.Views.Education.AcademicPeriodDialog"
+             x:DataType="vm:AcademicPeriodDialogViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding DialogTitle}" 
+                   FontSize="20" 
+                   FontWeight="Bold"
+                   Margin="16"/>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="16,0">
+            <StackPanel Spacing="16">
+                <!-- Name -->
+                <StackPanel>
+                    <TextBlock Text="Название" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding Name}"/>
+                </StackPanel>
+
+                <!-- Description -->
+                <StackPanel>
+                    <TextBlock Text="Описание" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding Description}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             Height="100"/>
+                </StackPanel>
+
+                <!-- Type -->
+                <StackPanel>
+                    <TextBlock Text="Тип периода" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding AvailableTypes}"
+                             SelectedItem="{Binding Type}"/>
+                </StackPanel>
+
+                <!-- Status -->
+                <StackPanel>
+                    <TextBlock Text="Статус" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding AvailableStatuses}"
+                             SelectedItem="{Binding Status}"/>
+                </StackPanel>
+
+                <!-- Start Date -->
+                <StackPanel>
+                    <TextBlock Text="Дата начала" Margin="0,0,0,4"/>
+                    <DatePicker SelectedDate="{Binding StartDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                </StackPanel>
+
+                <!-- End Date -->
+                <StackPanel>
+                    <TextBlock Text="Дата окончания" Margin="0,0,0,4"/>
+                    <DatePicker SelectedDate="{Binding EndDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                </StackPanel>
+
+                <!-- Is Active -->
+                <StackPanel>
+                    <CheckBox Content="Активен" IsChecked="{Binding IsActive}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="16">
+            <Button Command="{Binding CancelCommand}" 
+                    Content="Отмена"/>
+            <Button Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsValid}"
+                    Content="Сохранить"/>
+        </StackPanel>
+    </Grid>
+</UserControl> 

@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Students"
+        x:Class="ViridiscaUi.Windows.StudentEditorWindow"
+        Width="600" Height="500"
+        Title="{Binding FormTitle}">
+    
+    <Design.DataContext>
+        <vm:StudentEditorViewModel />
+    </Design.DataContext>
+    
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Spacing="12">
+                <TextBox Watermark="Имя" Text="{Binding FirstName}" />
+                <TextBox Watermark="Фамилия" Text="{Binding LastName}" />
+                <TextBox Watermark="Отчество" Text="{Binding MiddleName}" />
+                <TextBox Watermark="Email" Text="{Binding Email}" />
+                <TextBox Watermark="Телефон" Text="{Binding PhoneNumber}" />
+                <TextBox Watermark="Номер студента" Text="{Binding StudentCode}" />
+            </StackPanel>
+        </ScrollViewer>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" />
+            <Button Content="Отмена" Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</Window> 

@@ -1,0 +1,248 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.System"
+             xmlns:converters="using:ViridiscaUi.Converters"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="ViridiscaUi.Views.System.DepartmentEditorView">
+
+    <Design.DataContext>
+        <!-- <vm:DepartmentEditorViewModel /> -->
+    </Design.DataContext>
+
+    <UserControl.Resources>
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
+        
+        <!-- Заголовок -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <material:MaterialIcon Kind="Domain" Width="24" Height="24" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding IsEditMode, Converter={x:Static converters:StringConverters.BoolToCustomString}, ConverterParameter='Редактирование кафедры|Создание кафедры'}" 
+                           FontSize="24" FontWeight="Bold" 
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основная форма -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16" MaxWidth="600">
+                
+                <!-- Основная информация -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="16">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Information" Width="16" Height="16"/>
+                            <TextBlock Text="Основная информация" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <!-- Название кафедры -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Название кафедры *" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Name}"/>
+                        </StackPanel>
+                        
+                        <!-- Код кафедры -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Код кафедры *" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Code}"/>
+                        </StackPanel>
+                        
+                        <!-- Описание -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Описание" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Description}" 
+                                     AcceptsReturn="True" TextWrapping="Wrap"
+                                     MinHeight="80"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Контактная информация -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="16">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Email" Width="16" Height="16"/>
+                            <TextBlock Text="Контактная информация" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <!-- Email -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Email" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Email}"/>
+                        </StackPanel>
+                        
+                        <!-- Телефон -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Телефон" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Phone}"/>
+                        </StackPanel>
+                        
+                        <!-- Адрес -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Адрес" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Address}" 
+                                     AcceptsReturn="True" TextWrapping="Wrap"
+                                     MinHeight="60"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Руководство -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="16">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="AccountTie" Width="16" Height="16"/>
+                            <TextBlock Text="Руководство" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <!-- Заведующий кафедрой -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Заведующий кафедрой" FontWeight="SemiBold"/>
+                            <ComboBox ItemsSource="{Binding AvailableHeads}"
+                                      SelectedItem="{Binding SelectedHead}"
+                                      PlaceholderText="Выберите заведующего кафедрой">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding FullName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <!-- Заместитель -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Заместитель заведующего" FontWeight="SemiBold"/>
+                            <ComboBox ItemsSource="{Binding AvailableDeputies}"
+                                      SelectedItem="{Binding SelectedDeputy}"
+                                      PlaceholderText="Выберите заместителя">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding FullName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Статистика (только при редактировании) -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="16"
+                        IsVisible="{Binding IsEditMode}">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="ChartLine" Width="16" Height="16"/>
+                            <TextBlock Text="Статистика кафедры" 
+                                       FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+                            <Border Grid.Row="0" Grid.Column="0" 
+                                    Background="{DynamicResource SystemAccentColorLight3}" 
+                                    CornerRadius="8" Padding="12" Margin="2">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding TeachersCount}" 
+                                               FontSize="20" FontWeight="Bold" 
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Преподавателей" FontSize="10" 
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="1" 
+                                    Background="{DynamicResource SystemControlBackgroundAltMediumBrush}" 
+                                    CornerRadius="8" Padding="12" Margin="2">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding CoursesCount}" 
+                                               FontSize="20" FontWeight="Bold" 
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Курсов" FontSize="10" 
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="2" 
+                                    Background="#4CAF50" 
+                                    CornerRadius="8" Padding="12" Margin="2">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding StudentsCount}" 
+                                               FontSize="20" FontWeight="Bold" 
+                                               Foreground="White" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Студентов" FontSize="10" 
+                                               Foreground="White" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+                                    Background="#2196F3" 
+                                    CornerRadius="8" Padding="12" Margin="2">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding EstablishedYear}" 
+                                               FontSize="16" FontWeight="Bold" 
+                                               Foreground="White" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Год основания" FontSize="10" 
+                                               Foreground="White" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки действий -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                CornerRadius="8" Padding="16" Margin="0,16,0,0">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                
+                <!-- Индикатор обязательных полей -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <material:MaterialIcon Kind="Information" Width="14" Height="14" Opacity="0.7"/>
+                    <TextBlock Text="* - обязательные поля" 
+                               FontSize="12" Opacity="0.7"/>
+                </StackPanel>
+                
+                <!-- Кнопки -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                    <Button Command="{Binding CancelCommand}" Padding="16,8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Cancel" Width="16" Height="16"/>
+                            <TextBlock Text="Отмена"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SaveCommand}" 
+                            Classes="accent" Padding="16,8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="ContentSave" Width="16" Height="16"/>
+                            <TextBlock Text="{Binding IsEditMode, Converter={x:Static converters:StringConverters.BoolToCustomString}, ConverterParameter='Сохранить|Создать'}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+
+    <!-- Стили -->
+    <UserControl.Styles>
+        <Style Selector="Button.accent">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+        <Style Selector="TextBox">
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+    </UserControl.Styles>
+</UserControl> 
+

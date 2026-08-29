@@ -1,0 +1,443 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Education"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="1000"
+        x:Class="ViridiscaUi.Views.Education.TeacherDetailsDialog"
+        x:DataType="vm:TeacherEditorViewModel"
+        Title="Детали преподавателя"
+        Width="950" Height="1000"
+        MinWidth="850" MinHeight="900"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True">
+
+    <Window.Resources>
+        <local:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter" />
+        <local:BoolToCustomStringConverter x:Key="BoolToCustomStringConverter" />
+    </Window.Resources>
+
+    <Window.Styles>
+        <!-- Modern Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 2 8 0 #10000000" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+        
+        <!-- Action Button Style -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        
+        <!-- Primary Action Button -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Secondary Action Button -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <!-- Status Badge Style -->
+        <Style Selector="Border.status-badge">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        
+        <Style Selector="TextBlock.value">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+
+        <Style Selector="Border.info-card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Основное содержимое -->
+        <ScrollViewer Grid.Row="0" 
+                      Padding="24"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                
+                <!-- Заголовок с аватаром -->
+                <Border Classes="card">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <!-- Avatar -->
+                        <Border Grid.Column="0"
+                                Width="64" Height="64" 
+                                CornerRadius="32"
+                                Background="{DynamicResource SystemAccentColor}"
+                                Margin="0,0,20,0">
+                            <TextBlock Text="{Binding Initials}" 
+                                       Foreground="White"
+                                       FontWeight="Bold"
+                                       FontSize="24"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <!-- Name and Position -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding FullName}"
+                                     FontSize="28"
+                                     FontWeight="Bold"
+                                     Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                            <TextBlock Text="{Binding Position}"
+                                     FontSize="16"
+                                     Foreground="{DynamicResource SystemAccentColor}"
+                                     FontWeight="SemiBold"
+                                     Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding EmployeeCode, StringFormat='Код сотрудника: {0}'}"
+                                     FontSize="14"
+                                     Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                     Margin="0,4,0,0"/>
+                        </StackPanel>
+                        
+                        <!-- Status Badge -->
+                        <Border Grid.Column="2"
+                                Classes="status-badge"
+                                Background="{DynamicResource SystemAccentColor}">
+                            <TextBlock Text="{Binding Status, Converter={StaticResource EnumToLocalizedStringConverter}}"
+                                     FontWeight="SemiBold"
+                                     FontSize="12"
+                                     Foreground="White"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Статистика -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
+                            <material:MaterialIcon Kind="ChartLine" 
+                                                 Width="24" Height="24" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Classes="header" Text="Статистика" Margin="0"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*,*,*">
+                            <Border Grid.Column="0" Classes="info-card">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <material:MaterialIcon Kind="BookOpenPageVariant" 
+                                                         Width="32" Height="32" 
+                                                         Foreground="{DynamicResource SystemAccentColor}"
+                                                         HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding CoursesCount}" 
+                                             FontSize="24" FontWeight="Bold" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="{DynamicResource SystemAccentColor}"/>
+                                    <TextBlock Text="Курсы" FontSize="12" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="1" Classes="info-card">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <material:MaterialIcon Kind="AccountGroup" 
+                                                         Width="32" Height="32" 
+                                                         Foreground="#2196F3"
+                                                         HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding GroupsCount}" 
+                                             FontSize="24" FontWeight="Bold" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="#2196F3"/>
+                                    <TextBlock Text="Группы" FontSize="12" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" Classes="info-card">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <material:MaterialIcon Kind="Account" 
+                                                         Width="32" Height="32" 
+                                                         Foreground="#4CAF50"
+                                                         HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding TotalStudents}" 
+                                             FontSize="24" FontWeight="Bold" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="#4CAF50"/>
+                                    <TextBlock Text="Студенты" FontSize="12" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="3" Classes="info-card" Margin="0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <material:MaterialIcon Kind="ClockOutline" 
+                                                         Width="32" Height="32" 
+                                                         Foreground="#FF9800"
+                                                         HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding WeeklyHours}" 
+                                             FontSize="24" FontWeight="Bold" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="#FF9800"/>
+                                    <TextBlock Text="Часов/нед" FontSize="12" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Основная информация -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
+                            <material:MaterialIcon Kind="AccountDetails" 
+                                                 Width="24" Height="24" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Classes="header" Text="Личная информация" Margin="0"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*">
+                            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Email"/>
+                                <TextBlock Classes="value" Text="{Binding Email}"/>
+                                
+                                <TextBlock Classes="label" Text="Телефон"/>
+                                <TextBlock Classes="value" Text="{Binding Phone}"/>
+                                
+                                <TextBlock Classes="label" Text="Дата рождения"/>
+                                <TextBlock Classes="value" Text="{Binding BirthDate, StringFormat='dd.MM.yyyy'}"/>
+                                
+                                <TextBlock Classes="label" Text="Номер кабинета"/>
+                                <TextBlock Classes="value" Text="{Binding OfficeNumber}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Classes="label" Text="Дата найма"/>
+                                <TextBlock Classes="value" Text="{Binding HireDate, StringFormat='dd.MM.yyyy'}"/>
+                                
+                                <TextBlock Classes="label" Text="Почасовая ставка"/>
+                                <TextBlock Classes="value" Text="{Binding HourlyRate, StringFormat='{}{0:C}'}"/>
+                                
+                                <TextBlock Classes="label" Text="Адрес"/>
+                                <TextBlock Classes="value" Text="{Binding Address}"/>
+                                
+                                <TextBlock Classes="label" Text="Дата увольнения" 
+                                         IsVisible="{Binding TerminationDate, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                <TextBlock Classes="value" Text="{Binding TerminationDate, StringFormat='dd.MM.yyyy'}"
+                                         IsVisible="{Binding TerminationDate, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Академическая информация -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
+                            <material:MaterialIcon Kind="School" 
+                                                 Width="24" Height="24" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Classes="header" Text="Академическая информация" Margin="0"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*">
+                            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Специализация"/>
+                                <TextBlock Classes="value" Text="{Binding Specialization}"/>
+                                
+                                <TextBlock Classes="label" Text="Ученая степень"/>
+                                <TextBlock Classes="value" Text="{Binding AcademicDegree}"/>
+                                
+                                <TextBlock Classes="label" Text="Ученое звание"/>
+                                <TextBlock Classes="value" Text="{Binding AcademicTitle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Classes="label" Text="Департамент"/>
+                                <Border Background="{DynamicResource SystemControlBackgroundAccentBrush}" 
+                                        CornerRadius="8" Padding="12,6" HorizontalAlignment="Left" Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding DepartmentName}" 
+                                             Foreground="{DynamicResource SystemAccentColorDark1}"
+                                             FontWeight="SemiBold"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Биография -->
+                <Border Classes="card" IsVisible="{Binding Biography, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
+                            <material:MaterialIcon Kind="AccountDetails" 
+                                                 Width="24" Height="24" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Classes="header" Text="Биография" Margin="0"/>
+                        </StackPanel>
+                        <TextBlock Classes="value" 
+                                 Text="{Binding Biography}"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Курсы -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                                <material:MaterialIcon Kind="BookOpenPageVariant" 
+                                                     Width="24" Height="24" 
+                                                     Foreground="{DynamicResource SystemAccentColor}"/>
+                                <TextBlock Classes="header" Text="Курсы" Margin="0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" 
+                                    Command="{Binding ManageCoursesCommand}"
+                                    Classes="action secondary">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <material:MaterialIcon Kind="Settings" Width="16" Height="16"/>
+                                    <TextBlock Text="Управление"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        
+                        <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                CornerRadius="8" Padding="16" MinHeight="120">
+                            <StackPanel>
+                                <TextBlock Text="Активные курсы:" 
+                                         FontWeight="SemiBold" 
+                                         Margin="0,0,0,8"
+                                         FontSize="14"/>
+                                <!-- TODO: Bind to actual courses list -->
+                                <TextBlock Text="• Математический анализ (MATH101)" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock Text="• Линейная алгебра (MATH102)" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock Text="• Дискретная математика (MATH201)" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Группы -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                                <material:MaterialIcon Kind="AccountGroup" 
+                                                     Width="24" Height="24" 
+                                                     Foreground="{DynamicResource SystemAccentColor}"/>
+                                <TextBlock Classes="header" Text="Курируемые группы" Margin="0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" 
+                                    Command="{Binding ManageGroupsCommand}"
+                                    Classes="action secondary">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <material:MaterialIcon Kind="Settings" Width="16" Height="16"/>
+                                    <TextBlock Text="Управление"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        
+                        <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                CornerRadius="8" Padding="16" MinHeight="100">
+                            <StackPanel>
+                                <TextBlock Text="Активные группы:" 
+                                         FontWeight="SemiBold" 
+                                         Margin="0,0,0,8"
+                                         FontSize="14"/>
+                                <!-- TODO: Bind to actual groups list -->
+                                <TextBlock Text="• ИТ-21 (Информационные технологии)" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock Text="• ПР-21 (Программирование)" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки действий -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+                BorderThickness="0,1,0,0">
+            <Grid Margin="24,16" ColumnDefinitions="*,Auto">
+
+                <!-- Дополнительные действия -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
+                    <Button Command="{Binding ViewStatisticsCommand}"
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="ChartLine" Width="16" Height="16"/>
+                            <TextBlock Text="Статистика"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SendMessageCommand}"
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Email" Width="16" Height="16"/>
+                            <TextBlock Text="Написать сообщение"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Основные действия -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                    <Button Content="Редактировать" 
+                            Command="{Binding EditCommand}"
+                            Classes="action primary"
+                            Padding="20,12">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <material:MaterialIcon Kind="Pencil" Width="16" Height="16"/>
+                                <TextBlock Text="Редактировать"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    
+                    <Button Content="Закрыть" 
+                            Command="{Binding CloseCommand}"
+                            Classes="action secondary"
+                            Padding="20,12"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window> 

@@ -1,0 +1,145 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="120"
+             x:Class="ViridiscaUi.Controls.StatisticCard">
+    
+    <UserControl.Styles>
+        <Style Selector="Border.stat-card">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="BoxShadow" Value="0 2 8 #1A000000"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.2"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Border.stat-card:pointerover">
+            <Setter Property="BoxShadow" Value="0 4 16 #26000000"/>
+            <Setter Property="RenderTransform" Value="translateY(-2px)"/>
+        </Style>
+        
+        <Style Selector="TextBlock.stat-value">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="TextBlock.stat-label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#757575"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        
+        <Style Selector="material|MaterialIcon.stat-icon">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Opacity" Value="0.7"/>
+        </Style>
+        
+        <!-- Цветовые темы -->
+        <Style Selector="Border.stat-card.primary">
+            <Setter Property="Background" Value="#E3F2FD"/>
+            <Setter Property="BorderBrush" Value="#2196F3"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.primary TextBlock.stat-value">
+            <Setter Property="Foreground" Value="#1976D2"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.primary material|MaterialIcon">
+            <Setter Property="Foreground" Value="#2196F3"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.success">
+            <Setter Property="Background" Value="#E8F5E8"/>
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.success TextBlock.stat-value">
+            <Setter Property="Foreground" Value="#388E3C"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.success material|MaterialIcon">
+            <Setter Property="Foreground" Value="#4CAF50"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.warning">
+            <Setter Property="Background" Value="#FFF8E1"/>
+            <Setter Property="BorderBrush" Value="#FF9800"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.warning TextBlock.stat-value">
+            <Setter Property="Foreground" Value="#F57C00"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.warning material|MaterialIcon">
+            <Setter Property="Foreground" Value="#FF9800"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.danger">
+            <Setter Property="Background" Value="#FFEBEE"/>
+            <Setter Property="BorderBrush" Value="#F44336"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.danger TextBlock.stat-value">
+            <Setter Property="Foreground" Value="#D32F2F"/>
+        </Style>
+        
+        <Style Selector="Border.stat-card.danger material|MaterialIcon">
+            <Setter Property="Foreground" Value="#F44336"/>
+        </Style>
+    </UserControl.Styles>
+    
+    <Border x:Name="CardBorder" Classes="stat-card">
+        <Grid RowDefinitions="Auto,*,Auto">
+            <!-- Заголовок и иконка -->
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" 
+                          x:Name="LabelText"
+                          Classes="stat-label"
+                          Text="{Binding $parent[UserControl].Label}"/>
+                <material:MaterialIcon Grid.Column="1"
+                                     x:Name="IconElement"
+                                     Classes="stat-icon"
+                                     Kind="{Binding $parent[UserControl].Icon}"/>
+            </Grid>
+            
+            <!-- Основное значение -->
+            <TextBlock Grid.Row="1"
+                      x:Name="ValueText"
+                      Classes="stat-value"
+                      Text="{Binding $parent[UserControl].Value}"
+                      Margin="0,8,0,4"/>
+            
+            <!-- Дополнительная информация -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8">
+                <TextBlock x:Name="ChangeText"
+                          FontSize="12"
+                          FontWeight="Medium"
+                          Text="{Binding $parent[UserControl].Change}"
+                          IsVisible="{Binding $parent[UserControl].ShowChange}"/>
+                <TextBlock x:Name="DescriptionText"
+                          FontSize="12"
+                          Foreground="#9E9E9E"
+                          Text="{Binding $parent[UserControl].Description}"
+                          IsVisible="{Binding $parent[UserControl].ShowDescription}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl> 

@@ -1,0 +1,188 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Auth"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="600"
+             x:Class="ViridiscaUi.Views.Auth.LoginView">
+    
+    <Design.DataContext>
+        <vm:LoginViewModel />
+    </Design.DataContext>
+
+    <!-- Основной контейнер -->
+    <Grid x:Name="RootGrid" Background="{DynamicResource BackgroundBrush}"
+          RowDefinitions="*,Auto,*">
+        
+        <!-- Центральная область с формой -->
+        <StackPanel Grid.Row="1" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="32">
+            
+            <!-- Заголовок приложения -->
+            <StackPanel HorizontalAlignment="Center" 
+                        Spacing="8">
+                <!-- Логотип -->
+                <Border Width="64" Height="64"
+                        Background="{DynamicResource AccentBrush}"
+                        CornerRadius="16"
+                        HorizontalAlignment="Center">
+                    <material:MaterialIcon Kind="School" 
+                                          Width="32" Height="32"
+                                          Foreground="White" />
+                </Border>
+                
+                <TextBlock Text="Viridisca LMS" 
+                           Classes="auth-title"
+                           HorizontalAlignment="Center" />
+                           
+                <TextBlock Text="Система управления обучением" 
+                           Classes="auth-subtitle"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+            
+            <!-- Форма входа -->
+            <Border Classes="auth-form">
+                <StackPanel Spacing="24">
+                    
+                    <!-- Заголовок формы -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Вход в систему" 
+                                   Classes="auth-title"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Text="Введите ваши учетные данные для входа" 
+                                   Classes="auth-subtitle"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <!-- Сообщение об ошибке -->
+                    <Border Classes="auth-error"
+                            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="AlertCircle" 
+                                                  Width="16" Height="16"
+                                                  Foreground="{DynamicResource ErrorBrush}"
+                                                  VerticalAlignment="Top"
+                                                  Margin="0,2,0,0" />
+                            <TextBlock Text="{Binding ErrorMessage}" 
+                                       Classes="auth-error-text"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Поля ввода -->
+                    <StackPanel Spacing="20">
+                        
+                        <!-- Поле имени пользователя -->
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Имя пользователя или Email" 
+                                       Classes="auth-label" />
+                            <TextBox Classes="auth-input"
+                                     Text="{Binding Username}" 
+                                     Watermark="student123 или user@viridisca.edu">
+                                <TextBox.InnerLeftContent>
+                                    <material:MaterialIcon Kind="Account" 
+                                                          Width="20" Height="20"
+                                                          Foreground="{DynamicResource TextMutedBrush}"
+                                                          Margin="4,0,8,0" />
+                                </TextBox.InnerLeftContent>
+                            </TextBox>
+                        </StackPanel>
+                        
+                        <!-- Поле пароля -->
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Пароль" 
+                                       Classes="auth-label" />
+                            <TextBox Classes="auth-input"
+                                     Text="{Binding Password}" 
+                                     PasswordChar="•"
+                                     Watermark="Введите ваш пароль (минимум 8 символов)">
+                                <TextBox.InnerLeftContent>
+                                    <material:MaterialIcon Kind="Lock" 
+                                                          Width="20" Height="20"
+                                                          Foreground="{DynamicResource TextMutedBrush}"
+                                                          Margin="4,0,8,0" />
+                                </TextBox.InnerLeftContent>
+                            </TextBox>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <!-- Дополнительные опции -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <CheckBox Grid.Column="0" 
+                                  Content="Запомнить меня"
+                                  IsChecked="{Binding RememberMe}"
+                                  FontSize="14"
+                                  Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <Button Grid.Column="1"
+                                Classes="auth-link"
+                                Content="Забыли пароль?"
+                                Command="{Binding ForgotPasswordCommand}" />
+                    </Grid>
+                    
+                    <!-- Кнопка входа -->
+                    <Button Classes="auth-primary"
+                            Content="Войти в систему"
+                            Command="{Binding LoginCommand}" 
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            IsEnabled="{Binding !IsLoggingIn}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal"
+                                           Spacing="8"
+                                           IsVisible="{Binding !#RootGrid.DataContext.IsLoggingIn}">
+                                    <material:MaterialIcon Kind="Login" 
+                                                          Width="20" Height="20" />
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                    
+                    <!-- Индикатор загрузки -->
+                    <StackPanel IsVisible="{Binding IsLoggingIn}" 
+                                Spacing="8">
+                        <ProgressBar Height="4"
+                                     CornerRadius="2"
+                                     Background="{DynamicResource BorderBrush}"
+                                     Foreground="{DynamicResource AccentBrush}"
+                                     IsIndeterminate="True" />
+                        <TextBlock Text="Выполняется вход..."
+                                   HorizontalAlignment="Center"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+                    </StackPanel>
+                    
+                    <!-- Разделитель -->
+                    <Border Height="1" 
+                            Background="{DynamicResource BorderBrush}" 
+                            Margin="0,20" />
+                    
+                    <!-- Ссылка на регистрацию -->
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center" 
+                                Spacing="4">
+                        <TextBlock Text="Нет аккаунта?"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <Button Classes="auth-link"
+                                Content="Зарегистрироваться"
+                                Command="{Binding GoToRegisterCommand}" />
+                    </StackPanel>
+                    
+                </StackPanel>
+            </Border>
+            
+            <!-- Футер -->
+            <TextBlock Text="© 2024 Viridisca LMS. Все права защищены." 
+                       FontSize="14"
+                       Foreground="{DynamicResource TextMutedBrush}"
+                       HorizontalAlignment="Center" />
+        </StackPanel>
+    </Grid>
+</UserControl> 
+

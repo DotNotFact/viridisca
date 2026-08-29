@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+             x:Class="ViridiscaUi.Views.Education.CourseDialogView"
+             x:DataType="vm:CourseDialogViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <TextBlock Text="{Binding DialogTitle}" 
+                   FontSize="20" FontWeight="Bold" 
+                   Margin="0,0,0,16"/>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16">
+                <!-- Основная информация -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Основная информация" FontWeight="Bold"/>
+                    <TextBox Text="{Binding Name}"/>
+                    <TextBox Text="{Binding Code}"/>
+                    <TextBox Text="{Binding Description}"/>
+                    <NumericUpDown Value="{Binding Credits}"/>
+                </StackPanel>
+
+                <!-- Тип и статус -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Тип и статус" FontWeight="Bold"/>
+                    <ComboBox ItemsSource="{Binding Type}" SelectedItem="{Binding Type}"/>
+                    <ComboBox ItemsSource="{Binding Status}" SelectedItem="{Binding Status}"/>
+                    <CheckBox Content="Активен" IsChecked="{Binding IsActive}"/>
+                </StackPanel>
+
+                <!-- Кафедра -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Кафедра" FontWeight="Bold"/>
+                    <ComboBox ItemsSource="{Binding AvailableDepartments}"
+                             SelectedItem="{Binding Department}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Spacing="8" 
+                    Margin="0,16,0,0">
+            <Button Command="{Binding CancelCommand}" Content="Отмена"/>
+            <Button Command="{Binding SaveCommand}" 
+                    Content="Сохранить" 
+                    IsEnabled="{Binding IsValid}"/>
+        </StackPanel>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000" 
+              IsVisible="{Binding IsLoading}">
+            <ProgressBar IsIndeterminate="True" Width="100" Height="2"/>
+        </Grid>
+    </Grid>
+</UserControl> 
+
+

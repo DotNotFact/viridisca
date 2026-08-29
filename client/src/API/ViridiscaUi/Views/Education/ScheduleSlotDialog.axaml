@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+             x:Class="ViridiscaUi.Views.Education.ScheduleSlotDialog"
+             x:DataType="vm:ScheduleSlotDialogViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding DialogTitle}" 
+                   FontSize="20" 
+                   FontWeight="Bold"
+                   Margin="16"/>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="16,0">
+            <StackPanel Spacing="16">
+                <!-- Day of Week -->
+                <StackPanel>
+                    <TextBlock Text="День недели" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding DayOfWeek, Converter={x:Static local:EnumToCollectionConverter.Instance}}"
+                             SelectedItem="{Binding DayOfWeek}"/>
+                </StackPanel>
+
+                <!-- Start Time -->
+                <StackPanel>
+                    <TextBlock Text="Время начала" Margin="0,0,0,4"/>
+                    <TimePicker SelectedTime="{Binding StartTime}"/>
+                </StackPanel>
+
+                <!-- End Time -->
+                <StackPanel>
+                    <TextBlock Text="Время окончания" Margin="0,0,0,4"/>
+                    <TimePicker SelectedTime="{Binding EndTime}"/>
+                </StackPanel>
+
+                <!-- Room -->
+                <StackPanel>
+                    <TextBlock Text="Аудитория" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding Room}"/>
+                </StackPanel>
+
+                <!-- Type -->
+                <StackPanel>
+                    <TextBlock Text="Тип занятия" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding Type, Converter={x:Static local:EnumToCollectionConverter.Instance}}"
+                             SelectedItem="{Binding Type}"/>
+                </StackPanel>
+
+                <!-- Course -->
+                <StackPanel>
+                    <TextBlock Text="Курс" Margin="0,0,0,4"/>
+                    <controls:SearchableDropdown Items="{Binding AvailableCourses}"
+                                               SelectedItem="{Binding Course}"
+                                               PlaceholderText="Выберите курс..."/>
+                </StackPanel>
+
+                <!-- Teacher -->
+                <StackPanel>
+                    <TextBlock Text="Преподаватель" Margin="0,0,0,4"/>
+                    <controls:SearchableDropdown Items="{Binding AvailableTeachers}"
+                                               SelectedItem="{Binding Teacher}"
+                                               PlaceholderText="Выберите преподавателя..."/>
+                </StackPanel>
+
+                <!-- Group -->
+                <StackPanel>
+                    <TextBlock Text="Группа" Margin="0,0,0,4"/>
+                    <controls:SearchableDropdown Items="{Binding AvailableGroups}"
+                                               SelectedItem="{Binding Group}"
+                                               PlaceholderText="Выберите группу..."/>
+                </StackPanel>
+
+                <!-- Is Active -->
+                <StackPanel>
+                    <CheckBox Content="Активен" IsChecked="{Binding IsActive}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="16">
+            <Button Command="{Binding CancelCommand}" 
+                    Content="Отмена"/>
+            <Button Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsValid}"
+                    Content="Сохранить"/>
+        </StackPanel>
+    </Grid>
+</UserControl> 
+

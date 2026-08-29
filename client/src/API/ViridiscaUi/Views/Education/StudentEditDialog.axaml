@@ -1,0 +1,451 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Education"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        xmlns:education="clr-namespace:ViridiscaUi.Domain.Entities.Education.Enums;assembly=ViridiscaUi.Domain"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="1000"
+        x:Class="ViridiscaUi.Views.Education.StudentEditDialog"
+        x:DataType="vm:StudentEditorViewModel"
+        Title="{Binding FormTitle}"
+        Width="900" Height="1000"
+        MinWidth="800" MinHeight="900"
+        MaxWidth="1200" MaxHeight="1200"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Resources>
+        <local:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter" />
+        <local:BoolToCustomStringConverter x:Key="BoolToCustomStringConverter" />
+    </Window.Resources>
+
+    <Window.Styles>
+        <!-- Modern Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 8 24 0 #20000000" />
+            <Setter Property="Padding" Value="28" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+        </Style>
+        
+        <!-- Action Button Style -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="20,14" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="MinHeight" Value="48" />
+            <Setter Property="MinWidth" Value="140" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Button.action:pointerover">
+            <Setter Property="Opacity" Value="0.9" />
+        </Style>
+        
+        <!-- Primary Action Button -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Secondary Action Button -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <!-- Form Input Styles -->
+        <Style Selector="TextBox.form-input">
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+        </Style>
+        
+        <Style Selector="TextBox.form-input:focus">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+        </Style>
+        
+        <Style Selector="ComboBox.form-input">
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+        </Style>
+        
+        <Style Selector="NumericUpDown.form-input">
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+        </Style>
+        
+        <Style Selector="DatePicker.form-input">
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        </Style>
+        
+        <Style Selector="TextBlock.section-title">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}" />
+        </Style>
+        
+        <Style Selector="TextBlock.required">
+            <Setter Property="Foreground" Value="#E74C3C" />
+        </Style>
+        
+        <!-- Responsive Layout - упрощено без ColumnDefinitions -->
+        <Style Selector="Grid.responsive-form">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        
+        <!-- Mobile Layout -->
+        <Style Selector="StackPanel.responsive-buttons">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Spacing" Value="16" />
+        </Style>
+        
+        <!-- Mobile Layout styles - без использования ColumnDefinitions в Setter -->
+        <Style Selector="Window[MaxWidth=767] StackPanel.responsive-buttons">
+            <Setter Property="Orientation" Value="Vertical" />
+            <Setter Property="Spacing" Value="12" />
+        </Style>
+        
+        <!-- Mobile and tablet styles handled via adaptive grid -->
+        <Style Selector="Window">
+            <Setter Property="MinWidth" Value="500" />
+            <Setter Property="MinHeight" Value="400" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="32">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Classes="card">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,0,12">
+                    <material:MaterialIcon Kind="AccountSchool" 
+                                               Width="36" Height="36" 
+                                               Foreground="{DynamicResource SystemAccentColor}"/>
+                    <StackPanel>
+                        <TextBlock Text="{Binding FormTitle}" 
+                                   FontSize="28" FontWeight="Bold"/>
+                        <TextBlock Text="Заполните информацию о студенте для создания или обновления записи" 
+                                   FontSize="15" 
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- Current Student Info (Edit Mode) -->
+                <Border Background="{DynamicResource SystemAccentColorLight3}"
+                        CornerRadius="12" Padding="16,12"
+                        IsVisible="{Binding IsEditMode}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <material:MaterialIcon Kind="Information" 
+                                                   Width="20" Height="20" 
+                                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        <TextBlock Text="{Binding FullName, StringFormat='Редактирование: {0}'}" 
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Form Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="28" Margin="0,0,0,28">
+                
+                <!-- Personal Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="📋 Персональная информация" Classes="section-title"/>
+                        
+                        <Grid Classes="responsive-form" 
+                              RowDefinitions="Auto,Auto,Auto"
+                              ColumnDefinitions="*,16,*,16,*">
+                            <!-- Row 1: Names -->
+                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                <TextBlock Classes="label">
+                                    <Run Text="Имя"/>
+                                    <Run Text="*" Classes="required"/>
+                                </TextBlock>
+                                <TextBox Text="{Binding FirstName}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="2">
+                                <TextBlock Classes="label">
+                                    <Run Text="Фамилия"/>
+                                    <Run Text="*" Classes="required"/>
+                                </TextBlock>
+                                <TextBox Text="{Binding LastName}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="4">
+                                <TextBlock Text="Отчество" Classes="label"/>
+                                <TextBox Text="{Binding MiddleName}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Row 2: Contact Info -->
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Classes="label">
+                                    <Run Text="Email"/>
+                                    <Run Text="*" Classes="required"/>
+                                </TextBlock>
+                                <TextBox Text="{Binding Email}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="Телефон" Classes="label"/>
+                                <TextBox Text="{Binding PhoneNumber}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="4">
+                                <TextBlock Classes="label">
+                                    <Run Text="Дата рождения"/>
+                                    <Run Text="*" Classes="required"/>
+                                </TextBlock>
+                                <DatePicker SelectedDate="{Binding BirthDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                                            Classes="form-input"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Address -->
+                        <StackPanel>
+                            <TextBlock Text="Адрес проживания" Classes="label"/>
+                            <TextBox Text="{Binding Address}" 
+                                     Classes="form-input"
+                                     TextWrapping="Wrap"
+                                     Height="80"
+                                     AcceptsReturn="True"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Academic Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="🎓 Академическая информация" Classes="section-title"/>
+                        
+                        <Grid Classes="responsive-form" 
+                              RowDefinitions="Auto,Auto"
+                              ColumnDefinitions="*,16,*,16,*">
+                            <!-- Row 1: Student Code and Group -->
+                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                <TextBlock Classes="label">
+                                    <Run Text="Код студента"/>
+                                    <Run Text="*" Classes="required"/>
+                                </TextBlock>
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <TextBox Text="{Binding StudentCode}" 
+                                             Classes="form-input"
+                                             Width="250"/>
+                                    <Button Content="Генерировать"
+                                            Classes="action secondary"
+                                            Padding="16,14"
+                                            ToolTip.Tip="Автоматически сгенерировать код студента"/>
+                                </StackPanel>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3">
+                                <TextBlock Text="Группа" Classes="label"/>
+                                <ComboBox ItemsSource="{Binding AvailableGroups}"
+                                          SelectedItem="{Binding SelectedGroup}"
+                                          Classes="form-input"
+                                          PlaceholderText="Выберите группу для студента">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="12" Margin="8">
+                                                <material:MaterialIcon Kind="AccountGroup" 
+                                                                           Width="18" Height="18"
+                                                                           Foreground="{DynamicResource SystemAccentColor}"/>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="{Binding Code}" FontSize="12" Opacity="0.7"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            
+                            <!-- Row 2: Dates and Status -->
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Classes="label">
+                                    <Run Text="Дата зачисления"/>
+                                    <Run Text="*" Classes="required"/>
+                                </TextBlock>
+                                <DatePicker SelectedDate="{Binding EnrollmentDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                                            Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="Статус студента" Classes="label"/>
+                                <ComboBox SelectedItem="{Binding SelectedStatus}"
+                                          Classes="form-input">
+                                    <ComboBox.Items>
+                                        <x:Static Member="education:StudentStatus.Active"/>
+                                        <x:Static Member="education:StudentStatus.Inactive"/>
+                                        <x:Static Member="education:StudentStatus.AcademicLeave"/>
+                                        <x:Static Member="education:StudentStatus.Expelled"/>
+                                        <x:Static Member="education:StudentStatus.Graduated"/>
+                                        <x:Static Member="education:StudentStatus.Transferred"/>
+                                        <x:Static Member="education:StudentStatus.Suspended"/>
+                                    </ComboBox.Items>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="8" Margin="8">
+                                                <Ellipse Width="12" Height="12" 
+                                                         Fill="{Binding Converter={x:Static local:EnumToLocalizedStringConverter.Instance}, ConverterParameter='StatusColor'}"/>
+                                                <TextBlock Text="{Binding Converter={x:Static local:EnumToLocalizedStringConverter.Instance}}" 
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="4">
+                                <TextBlock Text="Курс обучения" Classes="label"/>
+                                <NumericUpDown Value="{Binding AcademicYear}" 
+                                               Minimum="1" Maximum="6"
+                                               Classes="form-input"
+                                               ShowButtonSpinner="True"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Emergency Contact -->
+                <Border Classes="card">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="🚨 Экстренный контакт" Classes="section-title"/>
+                        
+                        <Grid Classes="responsive-form" 
+                              RowDefinitions="Auto,Auto"
+                              ColumnDefinitions="2*,16,*">
+                            <!-- Emergency Contact Info -->
+                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                <TextBlock Text="Имя контактного лица" Classes="label"/>
+                                <TextBox Text="{Binding EmergencyContactName}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="2">
+                                <TextBlock Text="Телефон контактного лица" Classes="label"/>
+                                <TextBox Text="{Binding EmergencyContactPhone}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Medical Information -->
+                        <StackPanel>
+                            <TextBlock Text="Медицинская информация" Classes="label"/>
+                            <TextBox Text="{Binding MedicalInformation}" 
+                                     Classes="form-input"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     Height="100"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer with Action Buttons -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                CornerRadius="16"
+                Padding="32,20">
+            <Grid ColumnDefinitions="*,Auto">
+                
+                <!-- Validation Status -->
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <material:MaterialIcon Kind="CheckCircle" 
+                                               Width="20" Height="20" 
+                                               Foreground="#4CAF50"
+                                               IsVisible="{Binding !IsSaving}"/>
+                    <material:MaterialIcon Kind="AlertCircle" 
+                                               Width="20" Height="20" 
+                                               Foreground="#FF9800"
+                                               IsVisible="{Binding IsSaving}"/>
+                    <TextBlock Text="{Binding IsSaving, Converter={x:Static local:BoolToCustomStringConverter.Instance}, ConverterParameter='Сохранение данных...|Форма готова к сохранению'}" 
+                               FontSize="14"
+                               VerticalAlignment="Center"/>
+                    
+                    <!-- Loading Indicator -->
+                    <ProgressBar IsIndeterminate="True"
+                                 Width="20" Height="20"
+                                 IsVisible="{Binding IsSaving}"
+                                 Margin="8,0,0,0"/>
+                </StackPanel>
+                
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="1" 
+                            Classes="responsive-buttons"
+                            Orientation="Horizontal" 
+                            Spacing="16">
+                    <Button Command="{Binding CancelCommand}"
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <material:MaterialIcon Kind="Close" Width="18" Height="18"/>
+                            <TextBlock Text="Отмена"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SaveCommand}"
+                            Classes="action primary"
+                            IsEnabled="{Binding !IsSaving}">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <material:MaterialIcon Kind="ContentSave" Width="18" Height="18"/>
+                            <TextBlock Text="{Binding IsEditMode, Converter={x:Static local:BoolToCustomStringConverter.Instance}, ConverterParameter='Обновить|Создать'}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window> 

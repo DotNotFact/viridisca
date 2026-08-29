@@ -1,0 +1,210 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+        xmlns:controls="using:ViridiscaUi.Controls"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="700"
+        x:Class="ViridiscaUi.Views.Education.GroupDialog"
+        x:DataType="vm:GroupDialogViewModel"
+        Title="{Binding Title}"
+        Width="600" Height="700"
+        MinWidth="500" MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Styles>
+        <Style Selector="TextBox.form-input">
+            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,20">
+            <material:MaterialIcon Grid.Column="0"
+                                 Kind="AccountGroup"
+                                 Width="28" Height="28"
+                                 Foreground="{DynamicResource SystemAccentColor}"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,12,0"/>
+            
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       FontSize="22" 
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+            
+            <Button Grid.Column="2"
+                    Command="{Binding CancelCommand}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="8"
+                    ToolTip.Tip="Закрыть">
+                <material:MaterialIcon Kind="Close" Width="20" Height="20"/>
+            </Button>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="0">
+                <!-- Basic Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Основная информация" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+                            <!-- Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Название группы *" Classes="label"/>
+                                <TextBox Text="{Binding Name}" 
+                                         Classes="form-input"
+                                         Watermark="Введите название группы"/>
+                            </StackPanel>
+                            
+                            <!-- Code -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Код группы *" Classes="label"/>
+                                <TextBox Text="{Binding Code}" 
+                                         Classes="form-input"
+                                         Watermark="Например: ИТ-21"/>
+                            </StackPanel>
+                            
+                            <!-- Year -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,16,8,0">
+                                <TextBlock Text="Учебный год *" Classes="label"/>
+                                <NumericUpDown Value="{Binding Year}" 
+                                               Minimum="2020" Maximum="2030"
+                                               Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Description -->
+                            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,16,0,0">
+                                <TextBlock Text="Описание" Classes="label"/>
+                                <TextBox Text="{Binding Description}" 
+                                         Classes="form-input"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         Height="80"
+                                         Watermark="Дополнительная информация о группе"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Department -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Департамент" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <StackPanel>
+                            <TextBlock Text="Выберите департамент *" Classes="label"/>
+                            <controls:SearchableDropdown Items="{Binding AvailableDepartments}"
+                                                       SelectedItem="{Binding Department}"
+                                                       PlaceholderText="Выберите департамент"
+                                                       Classes="form-input"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Status -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Статус и настройки" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <Grid ColumnDefinitions="*,*">
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Статус группы" Classes="label"/>
+                                <ComboBox ItemsSource="{Binding Status, Converter={x:Static local:EnumToCollectionConverter.Instance}}"
+                                         SelectedItem="{Binding Status}"
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                <CheckBox Content="Группа активна" 
+                                         IsChecked="{Binding IsActive}"
+                                         FontWeight="Medium"
+                                         Margin="0,20,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="0,16,0,0"
+                Margin="-24,16,-24,-24">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Spacing="12"
+                        Margin="24,0">
+                <Button Command="{Binding CancelCommand}" 
+                        Content="Отмена"
+                        Padding="16,8"
+                        MinWidth="100"/>
+                <Button Command="{Binding SaveCommand}" 
+                        Content="Сохранить" 
+                        IsEnabled="{Binding IsValid}"
+                        Background="{DynamicResource SystemAccentColor}"
+                        Foreground="White"
+                        Padding="16,8"
+                        MinWidth="100"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000" 
+              IsVisible="{Binding IsLoading}"
+              Margin="-24">
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="8"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel Spacing="12" HorizontalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="200" Height="4"/>
+                    <TextBlock Text="Сохранение..." 
+                               HorizontalAlignment="Center"
+                               FontWeight="Medium"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window> 
+
+

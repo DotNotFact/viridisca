@@ -1,0 +1,235 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+        xmlns:controls="using:ViridiscaUi.Controls"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="700"
+        x:Class="ViridiscaUi.Views.Education.AssignmentDialog"
+        x:DataType="vm:AssignmentDialogViewModel"
+        Title="{Binding Title}"
+        Width="550" Height="700"
+        MinWidth="500" MinHeight="650"
+        WindowStartupLocation="CenterOwner"
+        CanResize="true">
+    
+    <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,20">
+            <material:MaterialIcon Kind="Assignment" Width="24" Height="24" Foreground="{DynamicResource SystemAccentColor}"/>
+            <TextBlock Text="{Binding Title}" 
+                       FontSize="20" 
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="0,0,0,20">
+            <StackPanel Spacing="20">
+                <!-- Basic Information Section -->
+                <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="16">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Основная информация" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="16"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <!-- Title -->
+                        <StackPanel>
+                            <TextBlock Text="Название задания *" Margin="0,0,0,4" FontWeight="Medium"/>
+                            <TextBox Text="{Binding AssignmentTitle}" 
+                                     Watermark="Введите название задания"
+                                     Classes="modern"/>
+                        </StackPanel>
+
+                        <!-- Description -->
+                        <StackPanel>
+                            <TextBlock Text="Описание" Margin="0,0,0,4" FontWeight="Medium"/>
+                            <TextBox Text="{Binding Description}" 
+                                     AcceptsReturn="True" 
+                                     TextWrapping="Wrap"
+                                     Height="100"
+                                     Watermark="Подробное описание задания"
+                                     Classes="modern"/>
+                        </StackPanel>
+
+                        <!-- Instructions -->
+                        <StackPanel>
+                            <TextBlock Text="Инструкции" Margin="0,0,0,4" FontWeight="Medium"/>
+                            <TextBox Text="{Binding Instructions}" 
+                                     AcceptsReturn="True" 
+                                     TextWrapping="Wrap"
+                                     Height="80"
+                                     Watermark="Инструкции по выполнению"
+                                     Classes="modern"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Course and Academic Information -->
+                <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="16">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Академическая информация" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="16"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <!-- Course -->
+                        <StackPanel>
+                            <TextBlock Text="Курс *" Margin="0,0,0,4" FontWeight="Medium"/>
+                            <ComboBox ItemsSource="{Binding AvailableCourses}"
+                                      SelectedItem="{Binding Course}"
+                                      PlaceholderText="Выберите курс..."
+                                      DisplayMemberBinding="{Binding Name}"
+                                      Classes="modern"/>
+                        </StackPanel>
+
+                        <!-- Course Instance -->
+                        <StackPanel>
+                            <TextBlock Text="Экземпляр курса *" Margin="0,0,0,4" FontWeight="Medium"/>
+                            <ComboBox ItemsSource="{Binding AvailableCourseInstances}"
+                                      SelectedItem="{Binding CourseInstance}"
+                                      PlaceholderText="Выберите экземпляр курса..."
+                                      DisplayMemberBinding="{Binding Subject.Name}"
+                                      Classes="modern"/>
+                        </StackPanel>
+
+                        <!-- Type, Difficulty and Status Grid -->
+                        <Grid ColumnDefinitions="*,15,*,15,*">
+                            <!-- Type -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Тип *" Margin="0,0,0,4" FontWeight="Medium"/>
+                                <ComboBox SelectedItem="{Binding Type}"
+                                          Classes="modern">
+                                    <ComboBoxItem Content="Домашнее задание"/>
+                                    <ComboBoxItem Content="Тест"/>
+                                    <ComboBoxItem Content="Экзамен"/>
+                                    <ComboBoxItem Content="Проект"/>
+                                    <ComboBoxItem Content="Лабораторная работа"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Difficulty -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Сложность" Margin="0,0,0,4" FontWeight="Medium"/>
+                                <ComboBox SelectedItem="{Binding Difficulty}"
+                                          Classes="modern">
+                                    <ComboBoxItem Content="Легкая"/>
+                                    <ComboBoxItem Content="Средняя"/>
+                                    <ComboBoxItem Content="Сложная"/>
+                                    <ComboBoxItem Content="Экспертная"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Status -->
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Статус" Margin="0,0,0,4" FontWeight="Medium"/>
+                                <ComboBox SelectedItem="{Binding Status}"
+                                          Classes="modern">
+                                    <ComboBoxItem Content="Черновик"/>
+                                    <ComboBoxItem Content="Опубликовано"/>
+                                    <ComboBoxItem Content="Завершено"/>
+                                    <ComboBoxItem Content="Просрочено"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Scoring and Timing -->
+                <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="16">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Оценивание и сроки" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="16"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <Grid ColumnDefinitions="*,20,*">
+                            <!-- Max Score -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Максимальный балл *" Margin="0,0,0,4" FontWeight="Medium"/>
+                                <NumericUpDown Value="{Binding MaxScore}"
+                                              Minimum="1"
+                                              Maximum="1000"
+                                              Increment="1"
+                                              Classes="modern"/>
+                            </StackPanel>
+
+                            <!-- Due Date -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Срок сдачи *" Margin="0,0,0,4" FontWeight="Medium"/>
+                                <DatePicker SelectedDate="{Binding DueDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                                           Classes="modern"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Active Checkbox -->
+                        <CheckBox Content="Задание активно" 
+                                  IsChecked="{Binding IsActive}"
+                                  Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Validation Errors -->
+                <Border IsVisible="{Binding ValidationError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Background="{DynamicResource SystemFillColorCriticalBrush}"
+                        BorderBrush="{DynamicResource SystemFillColorCriticalBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="12">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <material:MaterialIcon Kind="AlertCircle" 
+                                               Width="16" Height="16" 
+                                               Foreground="White"
+                                               VerticalAlignment="Top"
+                                               Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding ValidationError}" 
+                                   Foreground="White"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Loading Indicator -->
+                <StackPanel IsVisible="{Binding IsLoading}" 
+                            Orientation="Horizontal" 
+                            Spacing="10"
+                            HorizontalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="200"/>
+                    <TextBlock Text="{Binding LoadingMessage}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                BorderThickness="0,1,0,0" 
+                Padding="0,16,0,0">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        Spacing="12">
+                <Button Command="{Binding CancelCommand}" 
+                        Content="Отмена"
+                        Classes="secondary"
+                        Width="100"/>
+                <Button Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding !IsLoading}"
+                        Content="Сохранить"
+                        Classes="primary"
+                        Width="100"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window> 
+

@@ -1,0 +1,305 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Education"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="800"
+             x:Class="ViridiscaUi.Views.Education.TeacherEditorView"
+             x:DataType="vm:TeacherEditorViewModel">
+
+    <UserControl.Resources>
+        <local:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter" />
+        <local:BoolToCustomStringConverter x:Key="BoolToCustomStringConverter" />
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
+        
+        <!-- Заголовок -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <material:MaterialIcon Grid.Column="0"
+                                     Kind="AccountTie"
+                                     Width="24" Height="24"
+                                     Foreground="{DynamicResource SystemAccentColor}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,12,0"/>
+                
+                <TextBlock Grid.Column="1"
+                         Text="{Binding FormTitle}"
+                         FontSize="24" FontWeight="Bold" 
+                         VerticalAlignment="Center"/>
+                
+                <!-- Статус для режима редактирования -->
+                <Border Grid.Column="2"
+                        Background="{DynamicResource SystemAccentColor}"
+                        CornerRadius="12"
+                        Padding="12,6"
+                        IsVisible="{Binding IsEditMode}">
+                    <TextBlock Text="{Binding Status, Converter={StaticResource EnumToLocalizedStringConverter}}"
+                             FontWeight="SemiBold"
+                             FontSize="12"
+                             Foreground="White"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Основная форма -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16" MaxWidth="900">
+                
+                <!-- Основная информация -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="AccountDetails" Width="20" Height="20" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Личная информация" 
+                                       FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                            <!-- Первая колонка -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,16,0" Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Фамилия *" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding LastName}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Email *" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding Email}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Дата рождения" FontWeight="SemiBold"/>
+                                    <DatePicker SelectedDate="{Binding BirthDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Вторая колонка -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,16,0" Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Имя *" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding FirstName}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Телефон" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding Phone}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Номер кабинета" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding OfficeNumber}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Третья колонка -->
+                            <StackPanel Grid.Row="0" Grid.Column="2" Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Отчество" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding MiddleName}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Код сотрудника" FontWeight="SemiBold"/>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBox Grid.Column="0" Text="{Binding EmployeeCode}" Margin="0,0,8,0"/>
+                                        <Button Grid.Column="1" 
+                                              Command="{Binding GenerateEmployeeCodeCommand}"
+                                              Padding="8">
+                                            <material:MaterialIcon Kind="Refresh" Width="16" Height="16"/>
+                                        </Button>
+                                    </Grid>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Адрес" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding Address}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Академическая информация -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="School" Width="20" Height="20" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Академическая информация" 
+                                       FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto">
+                            <!-- Первая колонка -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,16,0" Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Специализация *" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding Specialization}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Ученая степень" FontWeight="SemiBold"/>
+                                    <ComboBox SelectedItem="{Binding AcademicDegree}"
+                                            PlaceholderText="Выберите степень">
+                                        <ComboBoxItem Content="Кандидат наук"/>
+                                        <ComboBoxItem Content="Доктор наук"/>
+                                        <ComboBoxItem Content="PhD"/>
+                                        <ComboBoxItem Content="Магистр"/>
+                                        <ComboBoxItem Content="Бакалавр"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Дата найма *" FontWeight="SemiBold"/>
+                                    <DatePicker SelectedDate="{Binding HireDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Вторая колонка -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,16,0" Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Департамент *" FontWeight="SemiBold"/>
+                                    <ComboBox SelectedItem="{Binding SelectedDepartment}" 
+                                            ItemsSource="{Binding Departments}"
+                                            PlaceholderText="Выберите департамент">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <material:MaterialIcon Kind="Domain" Width="16" Height="16"/>
+                                                    <TextBlock Text="{Binding Name}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Ученое звание" FontWeight="SemiBold"/>
+                                    <ComboBox SelectedItem="{Binding AcademicTitle}"
+                                            PlaceholderText="Выберите звание">
+                                        <ComboBoxItem Content="Профессор"/>
+                                        <ComboBoxItem Content="Доцент"/>
+                                        <ComboBoxItem Content="Старший преподаватель"/>
+                                        <ComboBoxItem Content="Преподаватель"/>
+                                        <ComboBoxItem Content="Ассистент"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Почасовая ставка" FontWeight="SemiBold"/>
+                                    <NumericUpDown Value="{Binding HourlyRate}" 
+                                                 Minimum="0" Maximum="10000" 
+                                                 FormatString="C2"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Третья колонка -->
+                            <StackPanel Grid.Row="0" Grid.Column="2" Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Должность *" FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding Position}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Статус" FontWeight="SemiBold"/>
+                                    <ComboBox SelectedItem="{Binding Status}"
+                                            PlaceholderText="Выберите статус">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedStringConverter}}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                                
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Дата увольнения" FontWeight="SemiBold"/>
+                                    <DatePicker SelectedDate="{Binding TerminationDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Биография -->
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                        CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="AccountDetails" Width="20" Height="20" 
+                                                 Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Дополнительная информация" 
+                                       FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Биография" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding Biography}" 
+                                   AcceptsReturn="True" TextWrapping="Wrap"
+                                   MinHeight="100" MaxHeight="150"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки действий -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+                BorderThickness="0,1,0,0"
+                Padding="0,16,0,0">
+            <Grid ColumnDefinitions="*,Auto">
+
+                <!-- Информация о валидации -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="* - обязательные поля"
+                             FontSize="12" 
+                             Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Text="{Binding ValidationMessage}"
+                             FontSize="12" 
+                             Foreground="#E74C3C"
+                             IsVisible="{Binding HasValidationError}"
+                             Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <!-- Основные действия -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                    <Button Command="{Binding SaveCommand}"
+                            IsEnabled="{Binding !IsSaving}"
+                            Padding="20,12"
+                            Background="{DynamicResource SystemAccentColor}"
+                            Foreground="White"
+                            CornerRadius="6">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="ContentSave" Width="16" Height="16"/>
+                            <TextBlock Text="Сохранить"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding CancelCommand}"
+                            Padding="20,12"
+                            Background="Transparent"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                            CornerRadius="6">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Close" Width="16" Height="16"/>
+                            <TextBlock Text="Отмена"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl> 

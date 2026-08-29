@@ -1,0 +1,191 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Auth"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="700"
+             x:Class="ViridiscaUi.Views.Auth.AuthenticationView">
+    
+    <Design.DataContext>
+        <vm:AuthenticationViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto" 
+          Margin="40">
+        
+        <!-- Заголовок приложения -->
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,30,0,30">
+            <TextBlock Text="Viridisca LMS" 
+                       HorizontalAlignment="Center" 
+                       FontSize="32" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource SystemAccentColor}" />
+            <TextBlock Text="Система управления обучением" 
+                       HorizontalAlignment="Center" 
+                       FontSize="16" 
+                       Opacity="0.7"
+                       Margin="0,8,0,0" />
+        </StackPanel>
+        
+        <!-- Основная форма -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                CornerRadius="12" 
+                BoxShadow="0 8 16 0 #20000000" 
+                Padding="32"
+                MaxWidth="400">
+            
+            <StackPanel Spacing="20">
+                
+                <!-- Переключатель режимов -->
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            Spacing="4">
+                    <Button Content="Вход" 
+                            Command="{Binding SwitchToLoginCommand}"
+                            Classes="ModeToggle"
+                            Classes.Selected="{Binding !IsRegistrationMode}" />
+                    <Button Content="Регистрация" 
+                            Command="{Binding SwitchToRegisterCommand}"
+                            Classes="ModeToggle"
+                            Classes.Selected="{Binding IsRegistrationMode}" />
+                </StackPanel>
+                
+                <!-- Общие поля -->
+                <TextBox 
+                         Text="{Binding Username}" 
+                         Watermark="Введите имя пользователя"
+                         Padding="12,10"
+                         CornerRadius="6" />
+                
+                <!-- Поля только для регистрации -->
+                <StackPanel IsVisible="{Binding IsRegistrationMode}" 
+                            Spacing="16">
+                    <TextBox 
+                             Text="{Binding Email}" 
+                             Watermark="Введите email адрес"
+                             Padding="12,10"
+                             CornerRadius="6" />
+                    <Grid ColumnDefinitions="*,8,*">
+                        <TextBox Grid.Column="0" 
+                                 Text="{Binding FirstName}" 
+                                 Watermark="Имя"
+                                 Padding="12,10"
+                                 CornerRadius="6" />
+                        <TextBox Grid.Column="2" 
+                                 Text="{Binding LastName}" 
+                                 Watermark="Фамилия"
+                                 Padding="12,10"
+                                 CornerRadius="6" />
+                    </Grid>
+                    
+                    <!-- Выбор роли -->
+                    <ComboBox ItemsSource="{Binding AvailableRoles}"
+                              SelectedItem="{Binding SelectedRole}"
+                              PlaceholderText="Выберите роль"
+                              IsEnabled="{Binding !IsLoadingRoles}"
+                              Padding="12,10"
+                              CornerRadius="6">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <!-- Индикатор загрузки ролей -->
+                    <ProgressBar IsIndeterminate="True"
+                                 IsVisible="{Binding IsLoadingRoles}"
+                                 Height="4"
+                                 CornerRadius="2" />
+                </StackPanel>
+                
+                <!-- Пароль -->
+                <TextBox 
+                         Text="{Binding Password}" 
+                         Watermark="Введите пароль"
+                         PasswordChar="•" 
+                         Padding="12,10"
+                         CornerRadius="6" />
+                
+                <!-- Подтверждение пароля для регистрации -->
+                <TextBox 
+                         Text="{Binding ConfirmPassword}" 
+                         Watermark="Подтвердите пароль"
+                         PasswordChar="•" 
+                         Padding="12,10"
+                         CornerRadius="6"
+                         IsVisible="{Binding IsRegistrationMode}" />
+                
+                <!-- Сообщение об ошибке -->
+                <Border Background="#FFEBEE" 
+                        CornerRadius="6" 
+                        Padding="12,8"
+                        IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#C62828"
+                               TextWrapping="Wrap" />
+                </Border>
+                
+                <!-- Индикатор загрузки -->
+                <ProgressBar IsIndeterminate="True" 
+                             Height="4"
+                             CornerRadius="2"
+                             IsVisible="{Binding IsProcessing}" />
+                
+                <!-- Кнопка действия -->
+                <Button Content="{Binding ActionButtonText}"
+                        Command="{Binding ActionCommand}" 
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        Padding="0,12" 
+                        CornerRadius="6"
+                        Classes="accent" />
+                
+                <!-- Дополнительные ссылки для входа -->
+                <StackPanel IsVisible="{Binding !IsRegistrationMode}"
+                            HorizontalAlignment="Center">
+                    <Button Content="Забыли пароль?" 
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="4"
+                            FontSize="14"
+                            Foreground="{DynamicResource SystemAccentColor}" />
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+        
+        <!-- Нижний текст -->
+        <StackPanel Grid.Row="2" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,30,0,0">
+            <TextBlock Text="© 2024 Viridisca LMS. Все права защищены." 
+                       HorizontalAlignment="Center" 
+                       FontSize="12"
+                       Opacity="0.6" />
+        </StackPanel>
+    </Grid>
+
+    <!-- Стили для переключателя режимов -->
+    <UserControl.Styles>
+        <Style Selector="Button.ModeToggle">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <Style Selector="Button.ModeToggle.Selected">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+    </UserControl.Styles>
+</UserControl> 
+

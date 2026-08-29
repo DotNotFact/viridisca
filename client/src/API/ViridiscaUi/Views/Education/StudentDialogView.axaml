@@ -1,0 +1,599 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:models="using:ViridiscaUi.Domain.Entities.Education"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Views.Education.StudentDialogView"
+             x:DataType="vm:StudentDialogViewModel">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding Title}" 
+                   FontSize="20" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,16"/>
+
+        <!-- Form -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16">
+                <!-- Student Code -->
+                <StackPanel>
+                    <TextBlock Text="Код студента:"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding StudentCode}"/>
+                        <Button Grid.Column="1"
+                                Command="{Binding CopyStudentJsonCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате JSON">
+                            <PathIcon Data="{StaticResource json_regular}"/>
+                        </Button>
+                        <Button Grid.Column="2"
+                                Command="{Binding CopyStudentXmlCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате XML">
+                            <PathIcon Data="{StaticResource xml_regular}"/>
+                        </Button>
+                        <Button Grid.Column="3"
+                                Command="{Binding CopyStudentCsvCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате CSV">
+                            <PathIcon Data="{StaticResource csv_regular}"/>
+                        </Button>
+                        <Button Grid.Column="4"
+                                Command="{Binding CopyStudentYamlCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате YAML">
+                            <PathIcon Data="{StaticResource yaml_regular}"/>
+                        </Button>
+                        <Button Grid.Column="5"
+                                Command="{Binding CopyStudentMarkdownCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате Markdown">
+                            <PathIcon Data="{StaticResource markdown_regular}"/>
+                        </Button>
+                        <Button Grid.Column="6"
+                                Command="{Binding CopyStudentHtmlCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате HTML">
+                            <PathIcon Data="{StaticResource html_regular}"/>
+                        </Button>
+                        <Button Grid.Column="7"
+                                Command="{Binding CopyStudentSqlCommand}"
+                                IsEnabled="{Binding IsValid}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о студенте в формате SQL">
+                            <PathIcon Data="{StaticResource sql_regular}"/>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Enrollment Date -->
+                <StackPanel>
+                    <TextBlock Text="Дата поступления:"/>
+                    <DatePicker SelectedDate="{Binding EnrollmentDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                </StackPanel>
+
+                <!-- Graduation Date -->
+                <StackPanel>
+                    <TextBlock Text="Дата выпуска:"/>
+                    <DatePicker SelectedDate="{Binding GraduationDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"/>
+                </StackPanel>
+
+                <!-- Status -->
+                <StackPanel>
+                    <TextBlock Text="Статус:"/>
+                    <ComboBox SelectedItem="{Binding Status}">
+                        <ComboBoxItem Content="Активный"/>
+                        <ComboBoxItem Content="Выпускник"/>
+                        <ComboBoxItem Content="Отчислен"/>
+                        <ComboBoxItem Content="Академический отпуск"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- GPA -->
+                <StackPanel>
+                    <TextBlock Text="Средний балл:"/>
+                    <NumericUpDown Value="{Binding GPA}" 
+                                 Minimum="0" 
+                                 Maximum="5" 
+                                 Increment="0.1" 
+                                 FormatString="F1"/>
+                </StackPanel>
+
+                <!-- Academic Year -->
+                <StackPanel>
+                    <TextBlock Text="Учебный год:"/>
+                    <NumericUpDown Value="{Binding AcademicYear}" 
+                                 Minimum="1" 
+                                 Maximum="6"/>
+                </StackPanel>
+
+                <!-- Faculty and Department -->
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*">
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Факультет:" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0"
+                                      ItemsSource="{Binding AvailableFaculties}"
+                                      SelectedItem="{Binding FacultyId}"
+                                      DisplayMemberBinding="{Binding Name}"
+                                      SelectedValueBinding="{Binding Uid}"
+                                      IsEnabled="{Binding !IsBusy}"
+                                      ToolTip.Tip="Выберите факультет">
+                                <ComboBox.Styles>
+                                    <Style Selector="ComboBox:disabled">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Style>
+                                </ComboBox.Styles>
+                            </ComboBox>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding FacultySearchText}"
+                                     Width="150"
+                                     Margin="5,0,0,0"
+                                     ToolTip.Tip="Введите текст для поиска факультета"
+                                     IsEnabled="{Binding !IsLoadingFaculties}" />
+                            <Button Grid.Column="2"
+                                    Command="{Binding ResetFacultySearchCommand}"
+                                    IsEnabled="{Binding !IsBusy}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Очистить поиск факультета">
+                                <PathIcon Data="{StaticResource clear_regular}"/>
+                            </Button>
+                            <Button Grid.Column="3"
+                                    Command="{Binding CreateFacultyCommand}"
+                                    IsEnabled="{Binding !IsBusy}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Создать новый факультет">
+                                <PathIcon Data="{StaticResource add_regular}"/>
+                            </Button>
+                            <Button Grid.Column="4"
+                                    Command="{Binding EditFacultyCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Редактировать выбранный факультет">
+                                <PathIcon Data="{StaticResource edit_regular}"/>
+                            </Button>
+                            <Button Grid.Column="5"
+                                    Command="{Binding DeleteFacultyCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Удалить выбранный факультет">
+                                <PathIcon Data="{StaticResource delete_regular}"/>
+                            </Button>
+                            <Button Grid.Column="6"
+                                    Command="{Binding ViewFacultyDetailsCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Просмотреть детали факультета">
+                                <PathIcon Data="{StaticResource info_regular}"/>
+                            </Button>
+                            <Button Grid.Column="7"
+                                    Command="{Binding CopyFacultyCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать название факультета">
+                                <PathIcon Data="{StaticResource copy_regular}"/>
+                            </Button>
+                            <Button Grid.Column="8"
+                                    Command="{Binding CopyFacultyCodeCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать код факультета">
+                                <PathIcon Data="{StaticResource code_regular}"/>
+                            </Button>
+                            <Button Grid.Column="9"
+                                    Command="{Binding CopyFacultyUidCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать ID факультета">
+                                <PathIcon Data="{StaticResource id_regular}"/>
+                            </Button>
+                            <Button Grid.Column="10"
+                                    Command="{Binding CopyFacultyJsonCommand}"
+                                    IsEnabled="{Binding FacultyId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать информацию о факультете в формате JSON">
+                                <PathIcon Data="{StaticResource json_regular}"/>
+                            </Button>
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="11"
+                                       IsIndeterminate="True"
+                                       Height="2"
+                                       VerticalAlignment="Bottom"
+                                       IsVisible="{Binding IsLoadingFaculties}" />
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Кафедра:" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0"
+                                      ItemsSource="{Binding AvailableDepartments}"
+                                      SelectedItem="{Binding DepartmentId}"
+                                      DisplayMemberBinding="{Binding Name}"
+                                      SelectedValueBinding="{Binding Uid}"
+                                      IsEnabled="{Binding !IsBusy}"
+                                      ToolTip.Tip="Выберите кафедру">
+                                <ComboBox.Styles>
+                                    <Style Selector="ComboBox:disabled">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Style>
+                                </ComboBox.Styles>
+                            </ComboBox>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding DepartmentSearchText}"
+                                     Width="150"
+                                     Margin="5,0,0,0"
+                                     ToolTip.Tip="Введите текст для поиска кафедры"
+                                     IsEnabled="{Binding !IsLoadingDepartments}" />
+                            <Button Grid.Column="2"
+                                    Command="{Binding ResetDepartmentSearchCommand}"
+                                    IsEnabled="{Binding !IsBusy}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Очистить поиск кафедры">
+                                <PathIcon Data="{StaticResource clear_regular}"/>
+                            </Button>
+                            <Button Grid.Column="3"
+                                    Command="{Binding CreateDepartmentCommand}"
+                                    IsEnabled="{Binding !IsBusy}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Создать новую кафедру">
+                                <PathIcon Data="{StaticResource add_regular}"/>
+                            </Button>
+                            <Button Grid.Column="4"
+                                    Command="{Binding EditDepartmentCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Редактировать выбранную кафедру">
+                                <PathIcon Data="{StaticResource edit_regular}"/>
+                            </Button>
+                            <Button Grid.Column="5"
+                                    Command="{Binding DeleteDepartmentCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Удалить выбранную кафедру">
+                                <PathIcon Data="{StaticResource delete_regular}"/>
+                            </Button>
+                            <Button Grid.Column="6"
+                                    Command="{Binding ViewDepartmentDetailsCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Просмотреть детали кафедры">
+                                <PathIcon Data="{StaticResource info_regular}"/>
+                            </Button>
+                            <Button Grid.Column="7"
+                                    Command="{Binding CopyDepartmentCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать название кафедры">
+                                <PathIcon Data="{StaticResource copy_regular}"/>
+                            </Button>
+                            <Button Grid.Column="8"
+                                    Command="{Binding CopyDepartmentCodeCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать код кафедры">
+                                <PathIcon Data="{StaticResource code_regular}"/>
+                            </Button>
+                            <Button Grid.Column="9"
+                                    Command="{Binding CopyDepartmentUidCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать ID кафедры">
+                                <PathIcon Data="{StaticResource id_regular}"/>
+                            </Button>
+                            <Button Grid.Column="10"
+                                    Command="{Binding CopyDepartmentJsonCommand}"
+                                    IsEnabled="{Binding DepartmentId, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                    Margin="5,0,0,0"
+                                    ToolTip.Tip="Копировать информацию о кафедре в формате JSON">
+                                <PathIcon Data="{StaticResource json_regular}"/>
+                            </Button>
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="11"
+                                       IsIndeterminate="True"
+                                       Height="2"
+                                       VerticalAlignment="Bottom"
+                                       IsVisible="{Binding IsLoadingDepartments}" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Group -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,10,0">
+                    <TextBlock Text="Группа:" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0"
+                                  ItemsSource="{Binding AvailableGroups}"
+                                  SelectedItem="{Binding GroupUid}"
+                                  DisplayMemberBinding="{Binding Name}"
+                                  SelectedValueBinding="{Binding Uid}"
+                                  IsEnabled="{Binding !IsBusy}"
+                                  ToolTip.Tip="Выберите группу">
+                            <ComboBox.Styles>
+                                <Style Selector="ComboBox:disabled">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </Style>
+                            </ComboBox.Styles>
+                        </ComboBox>
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding GroupSearchText}"
+                                 Width="150"
+                                 Margin="5,0,0,0"
+                                 ToolTip.Tip="Введите текст для поиска группы"
+                                 IsEnabled="{Binding !IsLoadingGroups}" />
+                        <Button Grid.Column="2"
+                                Command="{Binding ResetGroupSearchCommand}"
+                                IsEnabled="{Binding !IsBusy}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Очистить поиск группы">
+                            <PathIcon Data="{StaticResource clear_regular}"/>
+                        </Button>
+                        <Button Grid.Column="3"
+                                Command="{Binding CreateGroupCommand}"
+                                IsEnabled="{Binding !IsBusy}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Создать новую группу">
+                            <PathIcon Data="{StaticResource add_regular}"/>
+                        </Button>
+                        <Button Grid.Column="4"
+                                Command="{Binding EditGroupCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Редактировать выбранную группу">
+                            <PathIcon Data="{StaticResource edit_regular}"/>
+                        </Button>
+                        <Button Grid.Column="5"
+                                Command="{Binding DeleteGroupCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Удалить выбранную группу">
+                            <PathIcon Data="{StaticResource delete_regular}"/>
+                        </Button>
+                        <Button Grid.Column="6"
+                                Command="{Binding ViewGroupDetailsCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Просмотреть детали группы">
+                            <PathIcon Data="{StaticResource info_regular}"/>
+                        </Button>
+                        <Button Grid.Column="7"
+                                Command="{Binding CopyGroupCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать название группы">
+                            <PathIcon Data="{StaticResource copy_regular}"/>
+                        </Button>
+                        <Button Grid.Column="8"
+                                Command="{Binding CopyGroupCodeCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать код группы">
+                            <PathIcon Data="{StaticResource code_regular}"/>
+                        </Button>
+                        <Button Grid.Column="9"
+                                Command="{Binding CopyGroupUidCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать ID группы">
+                            <PathIcon Data="{StaticResource id_regular}"/>
+                        </Button>
+                        <Button Grid.Column="10"
+                                Command="{Binding CopyGroupJsonCommand}"
+                                IsEnabled="{Binding GroupUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию о группе в формате JSON">
+                            <PathIcon Data="{StaticResource json_regular}"/>
+                        </Button>
+                        <ProgressBar Grid.Column="0" Grid.ColumnSpan="11"
+                                   IsIndeterminate="True"
+                                   Height="2"
+                                   VerticalAlignment="Bottom"
+                                   IsVisible="{Binding IsLoadingGroups}" />
+                    </Grid>
+                </StackPanel>
+
+                <!-- Curriculum -->
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,10,0,0">
+                    <TextBlock Text="Учебный план:" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0"
+                                  ItemsSource="{Binding AvailableCurricula}"
+                                  SelectedItem="{Binding CurriculumUid}"
+                                  DisplayMemberBinding="{Binding Name}"
+                                  SelectedValueBinding="{Binding Uid}"
+                                  IsEnabled="{Binding !IsBusy}"
+                                  ToolTip.Tip="Выберите учебный план">
+                            <ComboBox.Styles>
+                                <Style Selector="ComboBox:disabled">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </Style>
+                            </ComboBox.Styles>
+                        </ComboBox>
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding CurriculumSearchText}"
+                                 Width="150"
+                                 Margin="5,0,0,0"
+                                 ToolTip.Tip="Введите текст для поиска учебного плана"
+                                 IsEnabled="{Binding !IsLoadingCurricula}" />
+                        <Button Grid.Column="2"
+                                Command="{Binding ResetCurriculumSearchCommand}"
+                                IsEnabled="{Binding !IsBusy}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Очистить поиск учебного плана">
+                            <PathIcon Data="{StaticResource clear_regular}"/>
+                        </Button>
+                        <Button Grid.Column="3"
+                                Command="{Binding CreateCurriculumCommand}"
+                                IsEnabled="{Binding !IsBusy}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Создать новый учебный план">
+                            <PathIcon Data="{StaticResource add_regular}"/>
+                        </Button>
+                        <Button Grid.Column="4"
+                                Command="{Binding EditCurriculumCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Редактировать выбранный учебный план">
+                            <PathIcon Data="{StaticResource edit_regular}"/>
+                        </Button>
+                        <Button Grid.Column="5"
+                                Command="{Binding DeleteCurriculumCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Удалить выбранный учебный план">
+                            <PathIcon Data="{StaticResource delete_regular}"/>
+                        </Button>
+                        <Button Grid.Column="6"
+                                Command="{Binding ViewCurriculumDetailsCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Просмотреть детали учебного плана">
+                            <PathIcon Data="{StaticResource info_regular}"/>
+                        </Button>
+                        <Button Grid.Column="7"
+                                Command="{Binding CopyCurriculumCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать название учебного плана">
+                                <PathIcon Data="{StaticResource copy_regular}"/>
+                            </Button>
+                        <Button Grid.Column="8"
+                                Command="{Binding CopyCurriculumCodeCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать код учебного плана">
+                            <PathIcon Data="{StaticResource code_regular}"/>
+                        </Button>
+                        <Button Grid.Column="9"
+                                Command="{Binding CopyCurriculumUidCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать ID учебного плана">
+                            <PathIcon Data="{StaticResource id_regular}"/>
+                        </Button>
+                        <Button Grid.Column="10"
+                                Command="{Binding CopyCurriculumJsonCommand}"
+                                IsEnabled="{Binding CurriculumUid, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                                Margin="5,0,0,0"
+                                ToolTip.Tip="Копировать информацию об учебном плане в формате JSON">
+                            <PathIcon Data="{StaticResource json_regular}"/>
+                        </Button>
+                        <ProgressBar Grid.Column="0" Grid.ColumnSpan="11"
+                                   IsIndeterminate="True"
+                                   Height="2"
+                                   VerticalAlignment="Bottom"
+                                   IsVisible="{Binding IsLoadingCurricula}" />
+                    </Grid>
+                </StackPanel>
+
+                <!-- Validation Error -->
+                <TextBlock Text="{Binding ValidationError}" 
+                         Foreground="Red" 
+                         IsVisible="{Binding ValidationError, Converter={x:Static local:ObjectConverters.IsNotNull}}"
+                         ToolTip.Tip="{Binding ValidationError}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Spacing="8" 
+                    Margin="0,16,0,0">
+            <Button Command="{Binding CancelCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <PathIcon Data="{StaticResource close_regular}"/>
+                    <TextBlock Text="Отмена"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding ConfirmCommand}" 
+                    IsEnabled="{Binding IsValid}">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <PathIcon Data="{StaticResource checkmark_regular}"/>
+                    <TextBlock Text="Сохранить"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000" 
+              IsVisible="{Binding IsProcessing}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
+                <ProgressBar IsIndeterminate="True" Width="100"/>
+                <TextBlock Text="Сохранение..." Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl> 
+

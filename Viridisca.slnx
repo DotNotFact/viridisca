@@ -1,0 +1,56 @@
+<Solution>
+  <Folder Name="/Client/">
+    <Project Path="client/src/API/ViridiscaUi/ViridiscaUi.csproj" />
+    <Project Path="client/src/Modules/ViridiscaUi.Domain/ViridiscaUi.Domain.csproj" />
+    <Project Path="client/src/Modules/ViridiscaUi.Infrastructure/ViridiscaUi.Infrastructure.csproj" />
+    <Project Path="client/src/Platform/ViridiscaUi.Android/ViridiscaUi.Android.csproj" />
+    <Project Path="client/src/Platform/ViridiscaUi.Browser/ViridiscaUi.Browser.csproj" />
+    <Project Path="client/src/Platform/ViridiscaUi.Desktop/ViridiscaUi.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/Server/">
+    <Project Path="server/src/Common/Viridisca.Common.Application/Viridisca.Common.Application.csproj" />
+    <Project Path="server/src/Common/Viridisca.Common.Domain/Viridisca.Common.Domain.csproj" />
+    <Project Path="server/src/Common/Viridisca.Common.Infrastructure/Viridisca.Common.Infrastructure.csproj" />
+    <Project Path="server/src/Common/Viridisca.Common.Presentation/Viridisca.Common.Presentation.csproj" />
+    <Project Path="server/src/Modules/Academic/Viridisca.Modules.Academic.Application/Viridisca.Modules.Academic.Application.csproj" />
+    <Project Path="server/src/Modules/Academic/Viridisca.Modules.Academic.Domain/Viridisca.Modules.Academic.Domain.csproj" />
+    <Project Path="server/src/Modules/Academic/Viridisca.Modules.Academic.Infrastructure/Viridisca.Modules.Academic.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Academic/Viridisca.Modules.Academic.Presentation/Viridisca.Modules.Academic.Presentation.csproj" />
+    <Project Path="server/src/Modules/Analytics/Viridisca.Modules.Analytics.Application/Viridisca.Modules.Analytics.Application.csproj" />
+    <Project Path="server/src/Modules/Analytics/Viridisca.Modules.Analytics.Domain/Viridisca.Modules.Analytics.Domain.csproj" />
+    <Project Path="server/src/Modules/Analytics/Viridisca.Modules.Analytics.Infrastructure/Viridisca.Modules.Analytics.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Analytics/Viridisca.Modules.Analytics.Presentation/Viridisca.Modules.Analytics.Presentation.csproj" />
+    <Project Path="server/src/Modules/Attendance/Viridisca.Modules.Attendance.Application/Viridisca.Modules.Attendance.Application.csproj" />
+    <Project Path="server/src/Modules/Attendance/Viridisca.Modules.Attendance.Domain/Viridisca.Modules.Attendance.Domain.csproj" />
+    <Project Path="server/src/Modules/Attendance/Viridisca.Modules.Attendance.Infrastructure/Viridisca.Modules.Attendance.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Attendance/Viridisca.Modules.Attendance.Presentation/Viridisca.Modules.Attendance.Presentation.csproj" />
+    <Project Path="server/src/Modules/Communication/Viridisca.Modules.Communication.Application/Viridisca.Modules.Communication.Application.csproj" />
+    <Project Path="server/src/Modules/Communication/Viridisca.Modules.Communication.Domain/Viridisca.Modules.Communication.Domain.csproj" />
+    <Project Path="server/src/Modules/Communication/Viridisca.Modules.Communication.Infrastructure/Viridisca.Modules.Communication.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Communication/Viridisca.Modules.Communication.Presentation/Viridisca.Modules.Communication.Presentation.csproj" />
+    <Project Path="server/src/Modules/Curriculum/Viridisca.Modules.Curriculum.Application/Viridisca.Modules.Curriculum.Application.csproj" />
+    <Project Path="server/src/Modules/Curriculum/Viridisca.Modules.Curriculum.Domain/Viridisca.Modules.Curriculum.Domain.csproj" />
+    <Project Path="server/src/Modules/Curriculum/Viridisca.Modules.Curriculum.Infrastructure/Viridisca.Modules.Curriculum.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Curriculum/Viridisca.Modules.Curriculum.Presentation/Viridisca.Modules.Curriculum.Presentation.csproj" />
+    <Project Path="server/src/Modules/Finance/Viridisca.Modules.Finance.Application/Viridisca.Modules.Finance.Application.csproj" />
+    <Project Path="server/src/Modules/Finance/Viridisca.Modules.Finance.Domain/Viridisca.Modules.Finance.Domain.csproj" />
+    <Project Path="server/src/Modules/Finance/Viridisca.Modules.Finance.Infrastructure/Viridisca.Modules.Finance.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Finance/Viridisca.Modules.Finance.Presentation/Viridisca.Modules.Finance.Presentation.csproj" />
+    <Project Path="server/src/Modules/Grading/Viridisca.Modules.Grading.Application/Viridisca.Modules.Grading.Application.csproj" />
+    <Project Path="server/src/Modules/Grading/Viridisca.Modules.Grading.Domain/Viridisca.Modules.Grading.Domain.csproj" />
+    <Project Path="server/src/Modules/Grading/Viridisca.Modules.Grading.Infrastructure/Viridisca.Modules.Grading.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Grading/Viridisca.Modules.Grading.Presentation/Viridisca.Modules.Grading.Presentation.csproj" />
+    <Project Path="server/src/Modules/Identity/Viridisca.Modules.Identity.Application/Viridisca.Modules.Identity.Application.csproj" />
+    <Project Path="server/src/Modules/Identity/Viridisca.Modules.Identity.Domain/Viridisca.Modules.Identity.Domain.csproj" />
+    <Project Path="server/src/Modules/Identity/Viridisca.Modules.Identity.Infrastructure/Viridisca.Modules.Identity.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Identity/Viridisca.Modules.Identity.Presentation/Viridisca.Modules.Identity.Presentation.csproj" />
+    <Project Path="server/src/Modules/Notifications/Viridisca.Modules.Notifications.Application/Viridisca.Modules.Notifications.Application.csproj" />
+    <Project Path="server/src/Modules/Notifications/Viridisca.Modules.Notifications.Domain/Viridisca.Modules.Notifications.Domain.csproj" />
+    <Project Path="server/src/Modules/Notifications/Viridisca.Modules.Notifications.Infrastructure/Viridisca.Modules.Notifications.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Notifications/Viridisca.Modules.Notifications.Presentation/Viridisca.Modules.Notifications.Presentation.csproj" />
+    <Project Path="server/src/Modules/Scheduler/Viridisca.Modules.Scheduler.Application/Viridisca.Modules.Scheduler.Application.csproj" />
+    <Project Path="server/src/Modules/Scheduler/Viridisca.Modules.Scheduler.Domain/Viridisca.Modules.Scheduler.Domain.csproj" />
+    <Project Path="server/src/Modules/Scheduler/Viridisca.Modules.Scheduler.Infrastructure/Viridisca.Modules.Scheduler.Infrastructure.csproj" />
+    <Project Path="server/src/Modules/Scheduler/Viridisca.Modules.Scheduler.Presentation/Viridisca.Modules.Scheduler.Presentation.csproj" />
+  </Folder>
+</Solution>

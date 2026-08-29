@@ -1,0 +1,108 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ========================================= -->
+  <!-- VIRIDISCA LMS - ЦВЕТОВАЯ ПАЛИТРА -->
+  <!-- ========================================= -->
+
+  <!-- ОСНОВНЫЕ ЦВЕТА -->
+  <Color x:Key="PrimaryColor">#2563EB</Color>
+  <Color x:Key="SecondaryColor">#10B981</Color>
+  <Color x:Key="AccentColor">#F59E0B</Color>
+  <Color x:Key="DangerColor">#EF4444</Color>
+  <Color x:Key="WarningColor">#F59E0B</Color>
+  <Color x:Key="InfoColor">#3B82F6</Color>
+  <Color x:Key="SuccessColor">#10B981</Color>
+
+  <!-- НЕЙТРАЛЬНЫЕ ЦВЕТА -->
+  <Color x:Key="Gray50Color">#F9FAFB</Color>
+  <Color x:Key="Gray100Color">#F3F4F6</Color>
+  <Color x:Key="Gray200Color">#E5E7EB</Color>
+  <Color x:Key="Gray300Color">#D1D5DB</Color>
+  <Color x:Key="Gray400Color">#9CA3AF</Color>
+  <Color x:Key="Gray500Color">#6B7280</Color>
+  <Color x:Key="Gray600Color">#4B5563</Color>
+  <Color x:Key="Gray700Color">#374151</Color>
+  <Color x:Key="Gray800Color">#1F2937</Color>
+  <Color x:Key="Gray900Color">#111827</Color>
+
+  <!-- ТЕМНАЯ ТЕМА -->
+  <Color x:Key="DarkBgColor">#0F172A</Color>
+  <Color x:Key="DarkSurfaceColor">#1E293B</Color>
+  <Color x:Key="DarkBorderColor">#334155</Color>
+  <Color x:Key="DarkTextColor">#F1F5F9</Color>
+
+  <!-- КИСТИ ДЛЯ ОСНОВНЫХ ЦВЕТОВ -->
+  <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
+  <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}" />
+  <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+  <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+  <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+  <SolidColorBrush x:Key="InfoBrush" Color="{StaticResource InfoColor}" />
+  <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+
+  <!-- КИСТИ ДЛЯ НЕЙТРАЛЬНЫХ ЦВЕТОВ -->
+  <SolidColorBrush x:Key="Gray50Brush" Color="{StaticResource Gray50Color}" />
+  <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100Color}" />
+  <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200Color}" />
+  <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300Color}" />
+  <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400Color}" />
+  <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500Color}" />
+  <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600Color}" />
+  <SolidColorBrush x:Key="Gray700Brush" Color="{StaticResource Gray700Color}" />
+  <SolidColorBrush x:Key="Gray800Brush" Color="{StaticResource Gray800Color}" />
+  <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900Color}" />
+
+  <!-- КИСТИ ДЛЯ ТЕМНОЙ ТЕМЫ -->
+  <SolidColorBrush x:Key="DarkBgBrush" Color="{StaticResource DarkBgColor}" />
+  <SolidColorBrush x:Key="DarkSurfaceBrush" Color="{StaticResource DarkSurfaceColor}" />
+  <SolidColorBrush x:Key="DarkBorderBrush" Color="{StaticResource DarkBorderColor}" />
+  <SolidColorBrush x:Key="DarkTextBrush" Color="{StaticResource DarkTextColor}" />
+
+  <!-- СЕМАНТИЧЕСКИЕ ЦВЕТА - ТЕМНАЯ ТЕМА -->
+  <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource DarkBgColor}" />
+  <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource DarkSurfaceColor}" />
+  <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource DarkTextColor}" />
+  <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource Gray400Color}" />
+  <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource Gray500Color}" />
+  <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource DarkBorderColor}" />
+  <SolidColorBrush x:Key="DividerBrush" Color="{StaticResource DarkBorderColor}" />
+
+  <!-- СОСТОЯНИЯ ЭЛЕМЕНТОВ - ТЕМНАЯ ТЕМА -->
+  <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource Gray700Color}" />
+  <SolidColorBrush x:Key="ActiveBrush" Color="{StaticResource Gray600Color}" />
+  <SolidColorBrush x:Key="FocusBrush" Color="{StaticResource PrimaryColor}" />
+  <SolidColorBrush x:Key="DisabledBrush" Color="{StaticResource Gray600Color}" />
+
+  <!-- ГРАДИЕНТЫ -->
+  <LinearGradientBrush x:Key="PrimaryGradientBrush" StartPoint="0,0" EndPoint="1,1">
+    <GradientStop Color="#2563EB" Offset="0" />
+    <GradientStop Color="#1D4ED8" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="SuccessGradientBrush" StartPoint="0,0" EndPoint="1,1">
+    <GradientStop Color="#10B981" Offset="0" />
+    <GradientStop Color="#059669" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="DangerGradientBrush" StartPoint="0,0" EndPoint="1,1">
+    <GradientStop Color="#EF4444" Offset="0" />
+    <GradientStop Color="#DC2626" Offset="1" />
+  </LinearGradientBrush>
+
+  <!-- ПРОЗРАЧНОСТИ -->
+  <SolidColorBrush x:Key="OverlayBrush" Color="#80000000" />
+  <SolidColorBrush x:Key="ModalOverlayBrush" Color="#B3000000" />
+  <SolidColorBrush x:Key="TooltipBrush" Color="#E6000000" />
+
+  <!-- СПЕЦИАЛЬНЫЕ ЦВЕТА ДЛЯ PLACEHOLDER/WATERMARK -->
+  <Color x:Key="PlaceholderLightColor">#94A3B8</Color>  <!-- Светлее для темной темы -->
+  <Color x:Key="PlaceholderDarkColor">#64748B</Color>   <!-- Темнее для светлой темы -->
+  <Color x:Key="PlaceholderFocusColor">#CBD5E1</Color>  <!-- Еще светлее при фокусе -->
+  
+  <!-- КИСТИ ДЛЯ PLACEHOLDER -->
+  <SolidColorBrush x:Key="PlaceholderBrush" Color="{StaticResource PlaceholderLightColor}" />
+  <SolidColorBrush x:Key="PlaceholderFocusBrush" Color="{StaticResource PlaceholderFocusColor}" />
+  <SolidColorBrush x:Key="PlaceholderDisabledBrush" Color="{StaticResource Gray600Color}" />
+ 
+</ResourceDictionary> 

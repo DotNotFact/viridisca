@@ -1,0 +1,436 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Education"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="950"
+        x:Class="ViridiscaUi.Views.Education.GroupDetailsDialog"
+        x:DataType="vm:GroupEditorViewModel"
+        Title="Детали группы"
+        Width="900" Height="950"
+        MinWidth="800" MinHeight="850"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True">
+
+    <Window.Resources>
+        <local:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter" />
+        <local:BoolToCustomStringConverter x:Key="BoolToCustomStringConverter" />
+    </Window.Resources>
+
+    <Window.Styles>
+        <!-- Modern Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 2 8 0 #10000000" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+        
+        <!-- Action Button Style -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        
+        <!-- Primary Action Button -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Secondary Action Button -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        
+        <Style Selector="TextBlock.value">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+
+        <Style Selector="TextBox.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="ComboBox.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="DatePicker.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="NumericUpDown.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="Border.info-card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,16,0,8"/>
+            <Setter Property="Foreground" Value="#2196F3"/>
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Margin" Value="0,8,8,4"/>
+            <Setter Property="Foreground" Value="#424242"/>
+        </Style>
+        
+        <Style Selector="TextBlock.value">
+            <Setter Property="Margin" Value="0,4,0,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style Selector="Border.section">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <Style Selector="ListBox.students">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="MaxHeight" Value="200"/>
+        </Style>
+
+        <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Основное содержимое -->
+        <ScrollViewer Grid.Row="0" 
+                      Padding="24"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                
+                <!-- Заголовок -->
+                <Grid Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <material:MaterialIcon Grid.Column="0"
+                                         Kind="AccountGroup"
+                                         Width="32" Height="32"
+                                         Foreground="#2196F3"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,12,0"/>
+                    
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}"
+                                 FontSize="24"
+                                 FontWeight="Bold"
+                                 Foreground="#1976D2"/>
+                        <TextBlock Text="{Binding Code}"
+                                 FontSize="16"
+                                 Foreground="#666"
+                                 Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Основная информация -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <TextBlock Classes="header" Text="Основная информация"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Название и код -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Название группы:"/>
+                                <TextBlock Classes="value" Text="{Binding Name}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1">
+                                <TextBlock Classes="label" Text="Код группы:"/>
+                                <TextBlock Classes="value" Text="{Binding Code}"/>
+                            </StackPanel>
+
+                            <!-- Статус и активность -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Статус:"/>
+                                <TextBlock Classes="value"
+                                         Text="{Binding Status, Converter={StaticResource EnumToLocalizedStringConverter}}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1">
+                                <TextBlock Classes="label" Text="Активность:"/>
+                                <TextBlock Classes="value"
+                                         Text="{Binding IsActive, Converter={StaticResource BoolToCustomStringConverter}, ConverterParameter='Активна|Неактивна'}"/>
+                            </StackPanel>
+
+                            <!-- Даты -->
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Дата начала:"/>
+                                <TextBlock Classes="value" Text="{Binding StartDate, StringFormat='dd.MM.yyyy'}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="1">
+                                <TextBlock Classes="label" Text="Планируемая дата окончания:"/>
+                                <TextBlock Classes="value" Text="{Binding PlannedEndDate, StringFormat='dd.MM.yyyy'}"/>
+                            </StackPanel>
+
+                            <!-- Фактическая дата окончания и курс -->
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Фактическая дата окончания:"/>
+                                <TextBlock Classes="value" Text="{Binding ActualEndDate, StringFormat='dd.MM.yyyy'}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="1">
+                                <TextBlock Classes="label" Text="Курс обучения:"/>
+                                <TextBlock Classes="value" Text="{Binding Course.Name}"/>
+                            </StackPanel>
+
+                            <!-- Куратор -->
+                            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                                <TextBlock Classes="label" Text="Куратор группы:"/>
+                                <TextBlock Classes="value" Text="{Binding Curator.FullName}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Описание -->
+                <Border Classes="card" IsVisible="{Binding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <StackPanel>
+                        <TextBlock Classes="header" Text="Описание"/>
+                        <TextBlock Classes="value" 
+                                 Text="{Binding Description}"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Список студентов -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Classes="header" Text="Студенты группы"/>
+                            <TextBlock Grid.Column="1" 
+                                     FontSize="14" 
+                                     FontWeight="Medium"
+                                     VerticalAlignment="Center"
+                                     Foreground="#666"
+                                     Text="{Binding Students.Count, StringFormat='Всего: {0}'}"/>
+                        </Grid>
+                        
+                        <ListBox ItemsSource="{Binding Students}"
+                               Classes="students"
+                               IsVisible="{Binding Students.Count, Converter={x:Static local:BoolToCustomStringConverter.Instance}, ConverterParameter=invert}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <material:MaterialIcon Grid.Column="0"
+                                                             Kind="Account"
+                                                             Width="16" Height="16"
+                                                             Foreground="#2196F3"
+                                                             VerticalAlignment="Center"
+                                                             Margin="0,0,8,0"/>
+                                        
+                                        <TextBlock Grid.Column="1"
+                                                 Text="{Binding FullName}"
+                                                 VerticalAlignment="Center"/>
+                                        
+                                        <TextBlock Grid.Column="2"
+                                                 Text="{Binding Email}"
+                                                 FontSize="12"
+                                                 Foreground="#666"
+                                                 VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <TextBlock Text="В группе пока нет студентов"
+                                 FontStyle="Italic"
+                                 Foreground="#999"
+                                 HorizontalAlignment="Center"
+                                 Margin="0,16,0,0"
+                                 IsVisible="{Binding Students.Count, Converter={x:Static local:BoolToCustomStringConverter.Instance}, ConverterParameter=invert}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Системная информация -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <TextBlock Classes="header" Text="Системная информация"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,16,0">
+                                <TextBlock Classes="label" Text="Дата создания:"/>
+                                <TextBlock Classes="value" Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1">
+                                <TextBlock Classes="label" Text="Последнее изменение:"/>
+                                <TextBlock Classes="value" Text="{Binding UpdatedAt, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                <TextBlock Classes="label" Text="Идентификатор:"/>
+                                <TextBlock Classes="value" 
+                                         Text="{Binding Uid}"
+                                         FontFamily="Consolas"
+                                         FontSize="12"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки управления -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+                BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="24,16">
+                
+                <Button Content="Редактировать"
+                        Classes="primary"
+                        Command="{Binding EditCommand}"
+                        Margin="0,0,12,0">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Classes="action secondary"
+                                    CornerRadius="4"
+                                    Padding="16,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <material:MaterialIcon Kind="Edit"
+                                                         Width="16" Height="16"
+                                                         Foreground="White"
+                                                         Margin="0,0,8,0"/>
+                                    <TextBlock Text="Редактировать"
+                                             Foreground="White"
+                                             FontWeight="Medium"/>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                
+                <Button Content="Закрыть"
+                        Classes="secondary"
+                        Command="{Binding CloseCommand}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Classes="action secondary"
+                                    BorderBrush="#CCC"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Padding="16,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <material:MaterialIcon Kind="Close"
+                                                         Width="16" Height="16"
+                                                         Foreground="#666"
+                                                         Margin="0,0,8,0"/>
+                                    <TextBlock Text="Закрыть"
+                                             Foreground="#666"
+                                             FontWeight="Medium"/>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</Window> 

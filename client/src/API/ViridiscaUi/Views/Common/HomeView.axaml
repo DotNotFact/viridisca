@@ -1,0 +1,147 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels"
+             xmlns:components="clr-namespace:ViridiscaUi.Views.Components"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="ViridiscaUi.Views.Common.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <ScrollViewer>
+        <StackPanel Margin="24" Spacing="24">
+            <!-- Заголовок -->
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                    CornerRadius="12" Padding="32,24">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding Title}" 
+                               FontSize="32" FontWeight="Bold" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Description}" 
+                               FontSize="16" Opacity="0.8"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding WelcomeMessage}" 
+                               FontSize="14" Opacity="0.6"
+                               HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Статистические карточки -->
+            <TextBlock Text="📊 Общая статистика" FontSize="20" FontWeight="SemiBold" Margin="8,0"/>
+            
+            <UniformGrid Columns="4" Margin="0,8">
+                <components:StatisticsCardComponent 
+                    Title="Всего студентов" 
+                    Value="{Binding TotalStudents}" 
+                    Icon="👥"
+                    ShowChange="True"
+                    ChangeText="+12 за месяц"
+                    ChangeType="Positive"/>
+                
+                <components:StatisticsCardComponent 
+                    Title="Активных курсов" 
+                    Value="{Binding ActiveCourses}" 
+                    Icon="📚"
+                    ShowChange="True"
+                    ChangeText="+3 за неделю"
+                    ChangeType="Positive"/>
+                
+                <components:StatisticsCardComponent 
+                    Title="Преподавателей" 
+                    Value="{Binding TotalTeachers}" 
+                    Icon="👨‍🏫"
+                    ShowChange="True"
+                    ChangeText="без изменений"
+                    ChangeType="Neutral"/>
+                
+                <components:StatisticsCardComponent 
+                    Title="Заданий на проверке" 
+                    Value="{Binding PendingAssignments}" 
+                    Icon="📝"
+                    ShowChange="True"
+                    ChangeText="-5 за день"
+                    ChangeType="Negative"/>
+            </UniformGrid>
+
+            <!-- Быстрые действия -->
+            <TextBlock Text="⚡ Быстрые действия" FontSize="20" FontWeight="SemiBold" Margin="8,16,8,0"/>
+            
+            <UniformGrid Columns="3" Margin="0,8">
+                <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                        CornerRadius="8" Padding="20" Margin="8">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="📚" FontSize="32" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Управление курсами" FontWeight="SemiBold" 
+                                   HorizontalAlignment="Center"/>
+                        <Button Content="Перейти к курсам" 
+                                Command="{Binding NavigateToCoursesCommand}" 
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Border>
+                
+                <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                        CornerRadius="8" Padding="20" Margin="8">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="👥" FontSize="32" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Управление студентами" FontWeight="SemiBold" 
+                                   HorizontalAlignment="Center"/>
+                        <Button Content="Перейти к студентам" 
+                                Command="{Binding NavigateToStudentsCommand}" 
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Border>
+                
+                <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                        CornerRadius="8" Padding="20" Margin="8">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="📝" FontSize="32" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Проверка заданий" FontWeight="SemiBold" 
+                                   HorizontalAlignment="Center"/>
+                        <Button Content="Перейти к заданиям" 
+                                Command="{Binding NavigateToAssignmentsCommand}" 
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Последние активности -->
+            <TextBlock Text="🕒 Последние активности" FontSize="20" FontWeight="SemiBold" Margin="8,16,8,0"/>
+            
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                    CornerRadius="8" Padding="20" Margin="0,8">
+                <StackPanel Spacing="12">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <TextBlock Grid.Column="0" Text="📚" FontSize="16" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="12,0">
+                            <TextBlock Text="Создан новый курс 'Основы программирования'" FontWeight="SemiBold"/>
+                            <TextBlock Text="2 часа назад" FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Content="Просмотр" Padding="8,4"/>
+                    </Grid>
+                    
+                    <Separator/>
+                    
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <TextBlock Grid.Column="0" Text="👥" FontSize="16" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="12,0">
+                            <TextBlock Text="Зарегистрировано 5 новых студентов" FontWeight="SemiBold"/>
+                            <TextBlock Text="4 часа назад" FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Content="Просмотр" Padding="8,4"/>
+                    </Grid>
+                    
+                    <Separator/>
+                    
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <TextBlock Grid.Column="0" Text="📝" FontSize="16" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="12,0">
+                            <TextBlock Text="Проверено 12 заданий по математике" FontWeight="SemiBold"/>
+                            <TextBlock Text="6 часов назад" FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Content="Просмотр" Padding="8,4"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl> 

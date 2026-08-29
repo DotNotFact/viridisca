@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Viridisca.Common.Presentation\Viridisca.Common.Presentation.csproj" />
+    <ProjectReference Include="..\Viridisca.Modules.Identity.Application\Viridisca.Modules.Identity.Application.csproj" />
+    <ProjectReference Include="..\Viridisca.Modules.Identity.Domain\Viridisca.Modules.Identity.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

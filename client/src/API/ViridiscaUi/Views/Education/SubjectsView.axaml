@@ -1,0 +1,477 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Education"
+             mc:Ignorable="d" d:DesignWidth="1800" d:DesignHeight="1200"
+             x:Class="ViridiscaUi.Views.Education.SubjectsView"
+             x:DataType="vm:SubjectsViewModel">
+
+    <Design.DataContext>
+        <vm:SubjectsViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <!-- Modern Button Styles -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="#007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#007ACC" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        
+        <Style Selector="Button.primary:pointerover">
+            <Setter Property="Background" Value="#005A9E" />
+            <Setter Property="BorderBrush" Value="#005A9E" />
+        </Style>
+
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#007ACC" />
+            <Setter Property="BorderBrush" Value="#007ACC" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style Selector="Button.danger">
+            <Setter Property="Background" Value="#DC3545" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#DC3545" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <Style Selector="Button.warning">
+            <Setter Property="Background" Value="#FFC107" />
+            <Setter Property="Foreground" Value="#212529" />
+            <Setter Property="BorderBrush" Value="#FFC107" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <Style Selector="Button.success">
+            <Setter Property="Background" Value="#28A745" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#28A745" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <!-- Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+            <Setter Property="BoxShadow" Value="0 2 8 #1A000000" />
+        </Style>
+
+        <!-- Search TextBox Style -->
+        <Style Selector="TextBox.search">
+            <Setter Property="Watermark" Value="🔍 Поиск предметов по названию, коду или описанию..." />
+            <Setter Property="MinWidth" Value="400" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+        </Style>
+        
+        <!-- ComboBox Style -->
+        <Style Selector="ComboBox.filter">
+            <Setter Property="MinWidth" Value="120" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
+        
+        <!-- Header Card -->
+        <Border Grid.Row="0" Classes="card">
+            <Grid ColumnDefinitions="*,Auto">
+                <!-- Title and Statistics -->
+                <StackPanel Grid.Column="0" Orientation="Vertical" Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <TextBlock Text="📚" FontSize="28" VerticalAlignment="Center"/>
+                    <TextBlock Text="Управление предметами" 
+                               FontSize="24" FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <!-- Statistics Badges -->
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Border Background="#007ACC" CornerRadius="12" Padding="12,6">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="📊" FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding TotalSubjects, StringFormat='{}{0} всего'}" 
+                                           Foreground="White" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#28A745" CornerRadius="12" Padding="12,6">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="✅" FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding ActiveSubjects, StringFormat='{}{0} активных'}" 
+                                           Foreground="White" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FFC107" CornerRadius="12" Padding="12,6">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="🎓" FontSize="14" Foreground="#212529"/>
+                                <TextBlock Text="{Binding TotalCredits, StringFormat='{}{0} кредитов'}" 
+                                           Foreground="#212529" FontWeight="SemiBold"/>
+                            </StackPanel>
+                    </Border>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                    <Button Content="🔄 Обновить" 
+                            Command="{Binding RefreshCommand}"
+                            Classes="secondary"
+                            IsEnabled="{Binding !IsLoading}"/>
+                    <Button Content="📤 Экспорт" 
+                            Command="{Binding ExportCommand}"
+                            Classes="secondary"
+                            IsEnabled="{Binding !IsLoading}"/>
+                    <Button Content="➕ Добавить предмет" 
+                            Command="{Binding CreateSubjectCommand}"
+                            Classes="primary"
+                            IsEnabled="{Binding !IsLoading}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Search and Filters Card -->
+        <Border Grid.Row="1" Classes="card">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                <!-- Search -->
+                <TextBox Grid.Row="0" Grid.Column="0" 
+                         Text="{Binding SearchText}" 
+                         Classes="search"
+                         HorizontalAlignment="Left"/>
+
+                <!-- Quick Actions -->
+                <StackPanel Grid.Row="0" Grid.Column="1" 
+                            Orientation="Horizontal" Spacing="8" 
+                            VerticalAlignment="Center">
+                    <Button Content="🔍 Поиск" 
+                            Command="{Binding SearchCommand}"
+                            Classes="secondary" Padding="8,6"/>
+                    <Button Content="❌ Очистить" 
+                            Command="{Binding ClearFiltersCommand}"
+                            Classes="secondary" Padding="8,6"/>
+                </StackPanel>
+
+                <!-- Filters -->
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" 
+                            Orientation="Horizontal" Spacing="12" 
+                            Margin="0,12,0,0">
+                    <TextBlock Text="Фильтры:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    
+                    <ComboBox ItemsSource="{Binding DepartmentFilters}"
+                              SelectedItem="{Binding SelectedDepartmentFilter}"
+                              Classes="filter"
+                              PlaceholderText="Департамент"/>
+                    
+                    <ComboBox ItemsSource="{Binding TypeFilters}"
+                              SelectedItem="{Binding SelectedTypeFilter}"
+                              Classes="filter"
+                              PlaceholderText="Тип"/>
+                    
+                    <ComboBox ItemsSource="{Binding CategoryFilters}"
+                              SelectedItem="{Binding SelectedCategoryFilter}"
+                              Classes="filter"
+                              PlaceholderText="Категория"/>
+                    
+                    <ComboBox ItemsSource="{Binding StatusFilters}"
+                              SelectedItem="{Binding SelectedStatusFilter}"
+                              Classes="filter"
+                              PlaceholderText="Статус"/>
+                    
+                    <ComboBox ItemsSource="{Binding CreditsFilters}"
+                              SelectedItem="{Binding SelectedCreditsFilter}"
+                              Classes="filter"
+                              PlaceholderText="Кредиты"/>
+                    </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Border Grid.Row="2" Classes="card" Padding="0">
+            <Grid RowDefinitions="Auto,*">
+                
+                <!-- Bulk Operations Toolbar -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource SystemControlBackgroundAltMediumBrush}"
+                        Padding="16,12" 
+                        BorderBrush="#E0E0E0" 
+                        BorderThickness="0,0,0,1"
+                        IsVisible="{Binding HasSelectedSubjects}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <TextBlock Text="{Binding SelectedSubjectsCount, StringFormat='Выбрано: {0}'}" 
+                                   VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        <Separator/>
+                        <Button Content="✏️ Массовое редактирование" 
+                                Command="{Binding BulkEditCommand}"
+                                Classes="secondary" Padding="8,4"/>
+                        <Button Content="🔄 Активировать" 
+                                Command="{Binding BulkActivateCommand}"
+                                Classes="success" Padding="8,4"/>
+                        <Button Content="⏸️ Деактивировать" 
+                                Command="{Binding BulkDeactivateCommand}"
+                                Classes="warning" Padding="8,4"/>
+                        <Button Content="🗑️ Удалить" 
+                                Command="{Binding BulkDeleteCommand}"
+                                Classes="danger" Padding="8,4"/>
+                        <Button Content="📤 Экспорт выбранных" 
+                                Command="{Binding ExportSelectedCommand}"
+                                Classes="secondary" Padding="8,4"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- DataGrid -->
+                <DataGrid Grid.Row="1" 
+                          ItemsSource="{Binding Subjects}" 
+                          SelectedItem="{Binding SelectedSubject}"
+                          IsReadOnly="True" 
+                          GridLinesVisibility="Horizontal"
+                          AutoGenerateColumns="False" 
+                          CanUserReorderColumns="True"
+                          CanUserResizeColumns="True" 
+                          CanUserSortColumns="True"
+                          SelectionMode="Extended"
+                          Margin="16">
+                    
+                    <DataGrid.Columns>
+                        <!-- Selection Checkbox -->
+                        <DataGridTemplateColumn Width="50">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding $parent[DataGrid].DataContext.AllSubjectsSelected}"
+                                              Command="{Binding $parent[DataGrid].DataContext.ToggleAllSelectionCommand}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected}" 
+                                              HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Subject Icon and Name -->
+                        <DataGridTemplateColumn Header="Предмет" Width="2*" MinWidth="220">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <Border Background="{Binding TypeColor}"
+                                                CornerRadius="20" Width="40" Height="40">
+                                            <TextBlock Text="📚" FontSize="20"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontWeight="SemiBold" FontSize="14"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip.Tip="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Code}"
+                                                       FontSize="12" Opacity="0.7"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Type and Category -->
+                        <DataGridTemplateColumn Header="Тип/Категория" Width="*" MinWidth="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Spacing="4">
+                                        <Border Background="{Binding TypeColor}" 
+                                                CornerRadius="8" Padding="8,4"
+                                                HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding TypeDisplayName}" 
+                                                       Foreground="White" FontSize="12" FontWeight="SemiBold"/>
+                                        </Border>
+                                        <Border Background="{Binding CategoryColor}" 
+                                                CornerRadius="8" Padding="8,4"
+                                                HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding CategoryDisplayName}" 
+                                                       Foreground="White" FontSize="12" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Department -->
+                        <DataGridTemplateColumn Header="Департамент" Width="*" MinWidth="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource SystemControlBackgroundAccentBrush}" 
+                                            CornerRadius="8" Padding="8,4"
+                                            HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding DepartmentDisplay}" 
+                                                   Foreground="{DynamicResource SystemAccentColorDark1}"
+                                                   FontWeight="SemiBold" FontSize="12"
+                                                   HorizontalAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Credits and Hours -->
+                        <DataGridTemplateColumn Header="Нагрузка" Width="120" MinWidth="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Spacing="2">
+                                        <TextBlock Text="{Binding CreditsDisplay}" 
+                                                   FontWeight="SemiBold" FontSize="12"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding LessonsPerWeekDisplay}" 
+                                                   FontSize="11" Opacity="0.7"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding TotalHoursDisplay}" 
+                                                   FontSize="11" Opacity="0.7"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Statistics -->
+                        <DataGridTemplateColumn Header="Статистика" Width="140" MinWidth="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Spacing="2">
+                                        <TextBlock Text="{Binding CoursesStats}" 
+                                                   FontSize="11" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding TeachingStats}" 
+                                                   FontSize="11" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding AverageGradeDisplay, StringFormat='Ср. балл: {0}'}" 
+                                                   FontSize="11" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Status -->
+                        <DataGridTemplateColumn Header="Статус" Width="100" MinWidth="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                    <Border Background="{Binding StatusColor}" 
+                                                    CornerRadius="12" Padding="8,4"
+                                                    HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding StatusDisplayName}" 
+                                                   Foreground="White" FontSize="12" FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                        <!-- Actions -->
+                        <DataGridTemplateColumn Header="Действия" Width="280" MinWidth="250">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <Button Content="👁" ToolTip.Tip="Просмотр деталей"
+                                                        Command="{Binding $parent[DataGrid].DataContext.ViewSubjectDetailsCommand}"
+                                                CommandParameter="{Binding}" 
+                                                Classes="secondary" Padding="8,4" FontSize="12"/>
+                                        <Button Content="✏️" ToolTip.Tip="Редактировать"
+                                                        Command="{Binding $parent[DataGrid].DataContext.EditSubjectCommand}"
+                                                CommandParameter="{Binding}" 
+                                                Classes="secondary" Padding="8,4" FontSize="12"
+                                                IsEnabled="{Binding CanEdit}"/>
+                                        <Button Content="📚" ToolTip.Tip="Курсы"
+                                                Command="{Binding $parent[DataGrid].DataContext.ViewSubjectCoursesCommand}"
+                                                CommandParameter="{Binding}" 
+                                                Classes="secondary" Padding="8,4" FontSize="12"/>
+                                        <Button Content="✅" ToolTip.Tip="Активировать"
+                                                Command="{Binding $parent[DataGrid].DataContext.ActivateSubjectCommand}"
+                                                CommandParameter="{Binding}" 
+                                                Classes="success" Padding="8,4" FontSize="12"
+                                                IsVisible="{Binding CanActivate}"/>
+                                        <Button Content="⏸️" ToolTip.Tip="Деактивировать"
+                                                Command="{Binding $parent[DataGrid].DataContext.DeactivateSubjectCommand}"
+                                                CommandParameter="{Binding}" 
+                                                Classes="warning" Padding="8,4" FontSize="12"
+                                                IsVisible="{Binding CanDeactivate}"/>
+                                        <Button Content="🗑️" ToolTip.Tip="Удалить"
+                                                        Command="{Binding $parent[DataGrid].DataContext.DeleteSubjectCommand}"
+                                                CommandParameter="{Binding}" 
+                                                Classes="danger" Padding="8,4" FontSize="12"
+                                                IsEnabled="{Binding CanDelete}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                </Grid>
+            </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource SystemControlBackgroundAltMediumBrush}"
+                Padding="16,12" 
+                CornerRadius="0,0,8,8">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <!-- Status Info -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="{Binding FilteredSubjectsCount, StringFormat='Показано: {0}'}" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalSubjects, StringFormat='Всего: {0}'}" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding SelectedSubjectsCount, StringFormat='Выбрано: {0}'}" 
+                               VerticalAlignment="Center"
+                               IsVisible="{Binding HasSelectedSubjects}"/>
+                        </StackPanel>
+                        
+                <!-- Pagination -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Button Content="⏮️" Command="{Binding FirstPageCommand}" 
+                            IsEnabled="{Binding CanGoToPreviousPage}" Padding="8,4"/>
+                    <Button Content="⏪" Command="{Binding PreviousPageCommand}" 
+                            IsEnabled="{Binding CanGoToPreviousPage}" Padding="8,4"/>
+                    <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" 
+                               MinWidth="30" TextAlignment="Center"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalPages}" VerticalAlignment="Center" 
+                               MinWidth="30" TextAlignment="Center"/>
+                    <Button Content="⏩" Command="{Binding NextPageCommand}" 
+                            IsEnabled="{Binding CanGoToNextPage}" Padding="8,4"/>
+                    <Button Content="⏭️" Command="{Binding LastPageCommand}" 
+                            IsEnabled="{Binding CanGoToNextPage}" Padding="8,4"/>
+                                </StackPanel>
+                                
+                <!-- Page Size -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBlock Text="Размер страницы:" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding PageSizeOptions}"
+                              SelectedItem="{Binding PageSize}"
+                              MinWidth="60"/>
+                                        </StackPanel>
+                                </Grid>
+                        </Border>
+                        
+        <!-- Loading Indicator -->
+        <Border Grid.RowSpan="4" 
+                Background="Black" Opacity="0.3"
+                IsVisible="{Binding IsLoading}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="200" Height="4"/>
+                <TextBlock Text="Загрузка предметов..." 
+                           Foreground="White" FontSize="16" 
+                           HorizontalAlignment="Center" Margin="0,12,0,0"/>
+                </StackPanel>
+            </Border>
+    </Grid>
+</UserControl> 

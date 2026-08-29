@@ -1,0 +1,391 @@
+<UserControl x:Class="ViridiscaUi.Views.Education.CurriculumView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:rxui="http://reactiveui.net"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:DataType="vm:CurriculumViewModel">
+
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    
+    <!-- Header Section -->
+    <Border Grid.Row="0" Classes="page-header" Padding="24,16">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
+          <material:MaterialIcon Kind="BookEducation" Width="32" Height="32" 
+                                 Foreground="{DynamicResource PrimaryBrush}"/>
+          <StackPanel>
+            <TextBlock Text="Управление учебными планами" Classes="page-title"/>
+            <TextBlock Text="Создание и редактирование образовательных программ" 
+                       Classes="page-subtitle"/>
+          </StackPanel>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <Button Classes="btn-secondary" Command="{Binding ImportCurriculumCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Upload" Width="16" Height="16"/>
+              <TextBlock Text="Импорт"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-secondary" Command="{Binding ExportCurriculumCommand}"
+                  CommandParameter="{Binding SelectedCurriculum}"
+                  ToolTip.Tip="Выберите учебный план в списке, затем нажмите для экспорта">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+              <TextBlock Text="Экспорт"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-primary" Command="{Binding CreateCurriculumCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+              <TextBlock Text="Новый план"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Statistics Cards -->
+    <Border Grid.Row="1" Padding="24,0,24,16">
+      <Grid ColumnDefinitions="*,*,*,*">
+        
+        <!-- Total Curricula -->
+        <Border Grid.Column="0" Classes="stat-card" Margin="0,0,8,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Всего планов" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="BookEducation" Width="20" Height="20"
+                                     Foreground="{DynamicResource PrimaryBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.TotalCurricula}" Classes="stat-value"/>
+            <TextBlock Text="в системе" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Active Curricula -->
+        <Border Grid.Column="1" Classes="stat-card" Margin="8,0,8,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Активные" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="CheckCircle" Width="20" Height="20"
+                                     Foreground="{DynamicResource SuccessBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.ActiveCurricula}" Classes="stat-value"/>
+            <TextBlock Text="используются" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Average Credits -->
+        <Border Grid.Column="2" Classes="stat-card" Margin="8,0,8,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Средние кредиты" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="Calculator" Width="20" Height="20"
+                                     Foreground="{DynamicResource InfoBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.AverageCredits, StringFormat='{}{0:F0}'}" Classes="stat-value"/>
+            <TextBlock Text="на программу" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Students Enrolled -->
+        <Border Grid.Column="3" Classes="stat-card" Margin="8,0,0,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Студентов" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="AccountGroup" Width="20" Height="20"
+                                     Foreground="{DynamicResource SuccessBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.StudentsEnrolled}" Classes="stat-value"/>
+            <TextBlock Text="обучается" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Filters and Search -->
+    <Border Grid.Row="2" Padding="24,0">
+      <Grid RowDefinitions="Auto,*">
+        
+        <!-- Filter Panel -->
+        <Border Grid.Row="0" Classes="filter-panel" Margin="0,0,0,16">
+          <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+            
+            <!-- Search -->
+            <TextBox Grid.Column="0" 
+                     Text="{Binding SearchText}"
+                     Classes="search-input"
+                     Margin="0,0,6,0">
+              <TextBox.InnerLeftContent>
+                <material:MaterialIcon Kind="Magnify" Width="16" Height="16" 
+                                       Margin="12,0,8,0"
+                                       Foreground="{DynamicResource TextMutedBrush}"/>
+              </TextBox.InnerLeftContent>
+            </TextBox>
+
+            <!-- Department Filter -->
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding AvailableDepartments}"
+                      SelectedItem="{Binding SelectedDepartmentFilter}"
+                      PlaceholderText="Все департаменты"
+                      MinWidth="180"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Status Filter -->
+            <ComboBox Grid.Column="2"
+                      ItemsSource="{Binding AvailableStatuses}"
+                      SelectedItem="{Binding SelectedStatusFilter}"
+                      PlaceholderText="Все статусы"
+                      MinWidth="120"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0"/>
+
+            <!-- Credits Range Filter -->
+            <ComboBox Grid.Column="3"
+                      ItemsSource="{Binding AvailableCreditRanges}"
+                      SelectedItem="{Binding SelectedCreditRangeFilter}"
+                      PlaceholderText="Все кредиты"
+                      MinWidth="140"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0"/>
+
+            <!-- Academic Year Filter -->
+            <ComboBox Grid.Column="4"
+                      ItemsSource="{Binding AvailableAcademicYears}"
+                      SelectedItem="{Binding SelectedAcademicYearFilter}"
+                      PlaceholderText="Все годы"
+                      MinWidth="120"
+                      Classes="filter-combo"
+                      Margin="6,0,0,0"/>
+          </Grid>
+        </Border>
+
+        <!-- Curricula List -->
+        <Border Grid.Row="1" Classes="data-container">
+          <Grid RowDefinitions="Auto,*,Auto">
+            
+            <!-- List Header -->
+            <Border Grid.Row="0" Classes="list-header">
+              <Grid ColumnDefinitions="Auto,*,120,100,100,100,80">
+                <CheckBox Grid.Column="0" 
+                          IsChecked="{Binding AreAllCurriculaSelected}"
+                          Margin="16,0"/>
+                <TextBlock Grid.Column="1" Text="Учебный план" Classes="header-text"/>
+                <TextBlock Grid.Column="2" Text="Департамент" Classes="header-text"/>
+                <TextBlock Grid.Column="3" Text="Кредиты" Classes="header-text"/>
+                <TextBlock Grid.Column="4" Text="Семестры" Classes="header-text"/>
+                <TextBlock Grid.Column="5" Text="Статус" Classes="header-text"/>
+                <TextBlock Grid.Column="6" Text="Действия" Classes="header-text"/>
+              </Grid>
+            </Border>
+
+            <!-- Curricula Items -->
+            <ScrollViewer Grid.Row="1" Classes="data-scroll">
+              <ItemsControl ItemsSource="{Binding Curricula}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Classes="list-item">
+                      <Grid ColumnDefinitions="Auto,*,120,100,100,100,80">
+                        
+                        <!-- Selection -->
+                        <CheckBox Grid.Column="0" 
+                                  IsChecked="{Binding IsSelected}"
+                                  Margin="16,0"/>
+
+                        <!-- Curriculum Info -->
+                        <StackPanel Grid.Column="1" Spacing="4" Margin="12,8">
+                          <TextBlock Text="{Binding Name}" Classes="item-title"/>
+                          <TextBlock Classes="item-subtitle">
+                            <Run Text="Код:"/>
+                            <Run Text="{Binding Code}"/>
+                            <Run Text="•"/>
+                            <Run Text="Год:"/>
+                            <Run Text="{Binding AcademicYear}"/>
+                          </TextBlock>
+                          <TextBlock Text="{Binding Description}" 
+                                     Classes="item-description"
+                                     TextTrimming="CharacterEllipsis"
+                                     MaxLines="2"/>
+                        </StackPanel>
+
+                        <!-- Department -->
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="2">
+                          <TextBlock Text="{Binding DepartmentName}" Classes="item-text"/>
+                        </StackPanel>
+
+                        <!-- Credits -->
+                        <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="2">
+                          <TextBlock Text="{Binding TotalCredits}" Classes="item-text"/>
+                          <TextBlock Text="кредитов" Classes="item-subtitle"/>
+                        </StackPanel>
+
+                        <!-- Duration -->
+                        <StackPanel Grid.Column="4" VerticalAlignment="Center" Spacing="2">
+                          <TextBlock Text="{Binding DurationSemesters}" Classes="item-text"/>
+                          <TextBlock Text="семестров" Classes="item-subtitle"/>
+                        </StackPanel>
+
+                        <!-- Status -->
+                        <Border Grid.Column="5" VerticalAlignment="Center">
+                          <Border Classes="status-badge">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                              <Ellipse Width="8" Height="8" 
+                                       Fill="{Binding IsActive, Converter={x:Static local:StatusColorConverter.Instance}}"/>
+                              <TextBlock Text="{Binding IsActive, Converter={x:Static local:BoolToActiveStatusConverter.Instance}}"
+                                         Classes="badge-text"/>
+                            </StackPanel>
+                          </Border>
+                        </Border>
+
+                        <!-- Actions -->
+                        <StackPanel Grid.Column="6" Orientation="Horizontal" 
+                                    VerticalAlignment="Center" Spacing="4">
+                          <Button Classes="btn-icon" 
+                                  Command="{Binding $parent[UserControl].DataContext.ViewCurriculumDetailsCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Просмотр">
+                            <material:MaterialIcon Kind="Eye" Width="16" Height="16"/>
+                          </Button>
+                          <Button Classes="btn-icon" 
+                                  Command="{Binding $parent[UserControl].DataContext.EditCurriculumCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Редактировать">
+                            <material:MaterialIcon Kind="Pencil" Width="16" Height="16"/>
+                          </Button>
+                          <Button Classes="btn-icon" 
+                                  Command="{Binding $parent[UserControl].DataContext.CopyCurriculumCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Копировать">
+                            <material:MaterialIcon Kind="ContentCopy" Width="16" Height="16"/>
+                          </Button>
+                          <Button Classes="btn-icon" 
+                                  Command="{Binding $parent[UserControl].DataContext.ToggleActivationCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="{Binding IsActive, Converter={x:Static local:BoolToActivationTooltipConverter.Instance}}">
+                            <material:MaterialIcon Kind="{Binding IsActive, Converter={x:Static local:BoolToActivationIconConverter.Instance}}"
+                                                   Width="16" Height="16"/>
+                          </Button>
+                          <Button Classes="btn-icon btn-danger" 
+                                  Command="{Binding $parent[UserControl].DataContext.DeleteCurriculumCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Удалить">
+                            <material:MaterialIcon Kind="Delete" Width="16" Height="16"/>
+                          </Button>
+                        </StackPanel>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Pagination -->
+            <Border Grid.Row="2" Classes="pagination-container">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                
+                <!-- Items Info -->
+                <TextBlock Grid.Column="0" Classes="pagination-info">
+                  <Run Text="Показано"/>
+                  <Run Text="{Binding Curricula.Count}"/>
+                  <Run Text="из"/>
+                  <Run Text="{Binding TotalCurricula}"/>
+                  <Run Text="учебных планов"/>
+                </TextBlock>
+
+                <!-- Bulk Actions -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" 
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding HasSelectedCurricula}">
+                  <TextBlock Text="Выбрано:" VerticalAlignment="Center" Classes="bulk-label"/>
+                  <TextBlock Text="{Binding SelectedCurriculaCount}" VerticalAlignment="Center" Classes="bulk-count"/>
+                  
+                  <Button Classes="btn-sm btn-secondary" Command="{Binding BulkActivateCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                      <material:MaterialIcon Kind="CheckCircle" Width="14" Height="14"/>
+                      <TextBlock Text="Активировать"/>
+                    </StackPanel>
+                  </Button>
+                  
+                  <Button Classes="btn-sm btn-secondary" Command="{Binding BulkDeactivateCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                      <material:MaterialIcon Kind="Cancel" Width="14" Height="14"/>
+                      <TextBlock Text="Деактивировать"/>
+                    </StackPanel>
+                  </Button>
+                  
+                  <Button Classes="btn-sm btn-danger" Command="{Binding BulkDeleteCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                      <material:MaterialIcon Kind="Delete" Width="14" Height="14"/>
+                      <TextBlock Text="Удалить"/>
+                    </StackPanel>
+                  </Button>
+                </StackPanel>
+
+                <!-- Page Size and Navigation -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                  <TextBlock Text="Показывать по:" VerticalAlignment="Center" 
+                             Classes="pagination-label"/>
+                  <ComboBox ItemsSource="{Binding AvailablePageSizes}"
+                            SelectedItem="{Binding PageSize}"
+                            MinWidth="80"
+                            Classes="pagination-combo"/>
+                  
+                  <!-- Navigation -->
+                  <StackPanel Orientation="Horizontal" Spacing="4" Margin="16,0,0,0">
+                    <Button Classes="btn-icon" 
+                            Command="{Binding PreviousPageCommand}"
+                            IsEnabled="{Binding CanGoPreviousPage}">
+                      <material:MaterialIcon Kind="ChevronLeft" Width="16" Height="16"/>
+                    </Button>
+                    
+                    <Border Classes="page-indicator">
+                      <TextBlock>
+                        <Run Text="{Binding CurrentPage}"/>
+                        <Run Text="из"/>
+                        <Run Text="{Binding TotalPages}"/>
+                      </TextBlock>
+                    </Border>
+                    
+                    <Button Classes="btn-icon" 
+                            Command="{Binding NextPageCommand}"
+                            IsEnabled="{Binding CanGoNextPage}">
+                      <material:MaterialIcon Kind="ChevronRight" Width="16" Height="16"/>
+                    </Button>
+                  </StackPanel>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Loading Overlay -->
+    <Border Grid.Row="0" Grid.RowSpan="4" 
+            Background="Black" Opacity="0.3"
+            IsVisible="{Binding IsLoading}"/>
+    
+    <Border Grid.Row="0" Grid.RowSpan="4"
+            IsVisible="{Binding IsLoading}">
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" 
+                  Spacing="16">
+        <Border Classes="loading-spinner" Width="48" Height="48"/>
+        <TextBlock Text="{Binding LoadingMessage}" 
+                   Classes="loading-text"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl> 

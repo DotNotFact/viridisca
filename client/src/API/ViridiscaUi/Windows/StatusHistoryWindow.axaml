@@ -1,0 +1,318 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ViridiscaUi.ViewModels.Components"
+        xmlns:entities="using:ViridiscaUi.Domain.Entities.System"
+        x:Class="ViridiscaUi.Windows.StatusHistoryWindow"
+        x:DataType="vm:StatusBarViewModel"
+        Title="История сообщений"
+        Width="600"
+        Height="500"
+        MinWidth="400"
+        MinHeight="300"
+        WindowStartupLocation="CenterOwner"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="None"
+        CanResize="True">
+
+    <Window.Styles>
+        <!-- Современные стили для окна истории -->
+        <Style Selector="Border.window-chrome">
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                    <GradientStop Color="{DynamicResource SystemAccentColor}" Offset="0" />
+                    <GradientStop Color="{DynamicResource SystemAccentColorDark1}" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="BoxShadow" Value="0 8 32 0 #00000040" />
+        </Style>
+
+        <Style Selector="Border.header-area">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+        <Style Selector="Border.content-area">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+            <Setter Property="CornerRadius" Value="0,0,12,12" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+
+        <Style Selector="Border.history-item">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Margin" Value="0,0,0,1" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Border.history-item:pointerover">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.window-title">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="Button.window-button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.window-button:pointerover">
+            <Setter Property="Background" Value="#33FFFFFF" />
+        </Style>
+
+        <Style Selector="Button.window-button.close:pointerover">
+            <Setter Property="Background" Value="#FFDD4444" />
+        </Style>
+
+        <Style Selector="TextBlock.message-text">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.message-type">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+
+        <Style Selector="TextBlock.message-timestamp">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Opacity" Value="0.6" />
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+
+        <Style Selector="Button.action-button">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.action-button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseMediumLowBrush}" />
+        </Style>
+
+        <Style Selector="Button.copy-type-button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.copy-type-button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+        </Style>
+
+        <Style Selector="Button.copy-type-button:pressed">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListMediumBrush}" />
+        </Style>
+    </Window.Styles>
+
+    <Border Classes="window-chrome">
+        <Grid RowDefinitions="Auto,*,Auto">
+            
+            <!-- Заголовок окна с возможностью перетаскивания -->
+            <Border x:Name="HeaderArea" 
+                    Grid.Row="0" 
+                    Classes="header-area">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="📋" 
+                                   FontSize="16" 
+                                   Margin="0,0,8,0"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="window-title">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="История сообщений ({0})">
+                                    <Binding Path="TotalMessagesCount" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Classes="window-button"
+                                Command="{Binding CopyAllMessagesCommand}"
+                                ToolTip.Tip="Копировать все сообщения">
+                            <TextBlock Text="📄" FontSize="14" />
+                        </Button>
+                        <Button Classes="window-button"
+                                Command="{Binding ClearHistoryCommand}"
+                                ToolTip.Tip="Очистить историю">
+                            <TextBlock Text="🗑️" FontSize="14" />
+                        </Button>
+                        <Button Classes="window-button,close"
+                                Click="OnCloseButtonClick"
+                                ToolTip.Tip="Закрыть">
+                            <TextBlock Text="✕" FontSize="14" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Содержимое окна -->
+            <Border Grid.Row="1" Classes="content-area">
+                <Grid RowDefinitions="Auto,*">
+                    <!-- Информационная панель -->
+                    <Border Grid.Row="0" 
+                            Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+                            CornerRadius="6"
+                            Padding="12,8"
+                            Margin="0,0,0,12">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                            <TextBlock Grid.Column="0" 
+                                       Text="{Binding TotalMessagesCount, StringFormat='Всего сообщений: {0}'}"
+                                       FontSize="12" 
+                                       VerticalAlignment="Center" />
+                            
+                            <!-- Ошибки с кнопкой копирования -->
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12,0">
+                                <Button Classes="copy-type-button"
+                                        Command="{Binding CopyErrorMessagesCommand}"
+                                        ToolTip.Tip="Копировать все ошибки">
+                                    <TextBlock Text="🚨" FontSize="12" />
+                                </Button>
+                                <TextBlock Text="{Binding ErrorsCount}" 
+                                           FontSize="12" FontWeight="SemiBold" 
+                                           Foreground="#FFE3434F"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0,0,0" />
+                            </StackPanel>
+                            
+                            <!-- Предупреждения с кнопкой копирования -->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="12,0">
+                                <Button Classes="copy-type-button"
+                                        Command="{Binding CopyWarningMessagesCommand}"
+                                        ToolTip.Tip="Копировать все предупреждения">
+                                    <TextBlock Text="⚠️" FontSize="12" />
+                                </Button>
+                                <TextBlock Text="{Binding WarningsCount}" 
+                                           FontSize="12" FontWeight="SemiBold" 
+                                           Foreground="#FFFF9500"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0,0,0" />
+                            </StackPanel>
+                            
+                            <!-- Информационные сообщения с кнопкой копирования -->
+                            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="12,0">
+                                <Button Classes="copy-type-button"
+                                        Command="{Binding CopyInfoMessagesCommand}"
+                                        ToolTip.Tip="Копировать все информационные сообщения">
+                                    <TextBlock Text="ℹ️" FontSize="12" />
+                                </Button>
+                                <TextBlock Text="{Binding InfoCount}" 
+                                           FontSize="12" FontWeight="SemiBold" 
+                                           Foreground="#FF0078D4"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0,0,0" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Список сообщений -->
+                    <ScrollViewer x:Name="MessagesScrollViewer"
+                                  Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Messages}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Classes="history-item"
+                                            DoubleTapped="OnMessageDoubleTapped">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" 
+                                              RowDefinitions="Auto,Auto">
+                                            
+                                            <!-- Иконка типа сообщения -->
+                                            <TextBlock Grid.Column="0" Grid.Row="0"
+                                                       Text="{Binding Icon}"
+                                                       Classes="message-type" />
+                                            
+                                            <!-- Текст сообщения -->
+                                            <TextBlock Grid.Column="1" Grid.Row="0"
+                                                       Text="{Binding Message}"
+                                                       Classes="message-text" />
+                                            
+                                            <!-- Время -->
+                                            <TextBlock Grid.Column="2" Grid.Row="0"
+                                                       Text="{Binding Timestamp, StringFormat='HH:mm:ss'}"
+                                                       Classes="message-timestamp" />
+                                            
+                                            <!-- Источник (если есть) -->
+                                            <TextBlock Grid.Column="1" Grid.Row="1"
+                                                       Text="{Binding Source, StringFormat='[{0}]'}"
+                                                       FontSize="10"
+                                                       Opacity="0.5"
+                                                       Margin="0,2,0,0"
+                                                       IsVisible="{Binding Source, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- Нижняя панель с действиями -->
+            <Border Grid.Row="2" 
+                    Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+                    CornerRadius="0,0,12,12"
+                    Padding="16,12">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="Дважды щелкните по сообщению для копирования"
+                               FontSize="11"
+                               Opacity="0.6"
+                               VerticalAlignment="Center" />
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Classes="action-button"
+                                Click="OnCloseButtonClick"
+                                Content="Закрыть" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window> 

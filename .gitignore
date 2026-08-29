@@ -1,0 +1,32 @@
+# .NET build artifacts (server + client)
+bin/
+obj/
+.vs/
+
+# User-specific
+*.user
+*.suo
+
+# IDE-specific
+.cursor/
+.idea/
+
+# Local secrets
+appsettings.Development.json
+appsettings.*.Development.json
+
+# Avalonia / platform-specific build output
+client/src/Platform/**/bin/
+client/src/Platform/**/obj/
+
+# Logs
+*.log
+clean.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local Postgres data (docker-compose bind mount)
+.containers/
+server/.containers/

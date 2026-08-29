@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:models="using:ViridiscaUi.Domain.Entities.Education"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Views.Education.StudentListView"
+             x:DataType="vm:StudentListViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="8">
+            <Button Command="{Binding CreateCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <PathIcon Data="{StaticResource add_regular}"/>
+                    <TextBlock Text="Создать"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding EditCommand}" IsEnabled="{Binding SelectedItem, Converter={x:Static local:ObjectConverters.IsNotNull}}">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <PathIcon Data="{StaticResource edit_regular}"/>
+                    <TextBlock Text="Редактировать"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding DeleteCommand}" IsEnabled="{Binding SelectedItem, Converter={x:Static local:ObjectConverters.IsNotNull}}">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <PathIcon Data="{StaticResource delete_regular}"/>
+                    <TextBlock Text="Удалить"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding RefreshCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <PathIcon Data="{StaticResource refresh_regular}"/>
+                    <TextBlock Text="Обновить"/>
+                </StackPanel>
+            </Button>
+            <TextBox Text="{Binding SearchText}" Width="200"/>
+        </StackPanel>
+
+        <!-- DataGrid -->
+        <DataGrid Grid.Row="1" 
+                  ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding SelectedItem}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  GridLinesVisibility="All"
+                  HeadersVisibility="All">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код" Binding="{Binding StudentCode}" Width="100"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="*"/>
+                <DataGridTextColumn Header="Группа" Binding="{Binding Group.Name}" Width="150"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="100"/>
+                <DataGridTextColumn Header="Средний балл" Binding="{Binding GPA, StringFormat={}{0:F2}}" Width="100"/>
+                <DataGridTextColumn Header="Дата поступления" Binding="{Binding EnrollmentDate, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+                <DataGridTextColumn Header="Дата выпуска" Binding="{Binding GraduationDate, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Pagination -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Margin="8">
+            <Button Command="{Binding PreviousPageCommand}" IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanConverter.Instance}, ConverterParameter=1}">
+                <PathIcon Data="{StaticResource chevron_left_regular}"/>
+            </Button>
+            <TextBlock Text="{Binding CurrentPage, StringFormat='Страница {0} из {1}', ConverterParameter={Binding TotalPages}}"/>
+            <Button Command="{Binding NextPageCommand}" IsEnabled="{Binding CurrentPage, Converter={x:Static local:LessThanConverter.Instance}, ConverterParameter={Binding TotalPages}}">
+                <PathIcon Data="{StaticResource chevron_right_regular}"/>
+            </Button>
+            <ComboBox SelectedItem="{Binding PageSize}" Width="80">
+                <ComboBoxItem Content="10"/>
+                <ComboBoxItem Content="25"/>
+                <ComboBoxItem Content="50"/>
+                <ComboBoxItem Content="100"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000" 
+              IsVisible="{Binding IsLoading}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
+                <ProgressBar IsIndeterminate="True" Width="100"/>
+                <TextBlock Text="Загрузка..." Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl> 
+

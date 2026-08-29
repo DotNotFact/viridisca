@@ -1,0 +1,114 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Стили для валидации -->
+    
+    <!-- Скрываем стандартные ошибки валидации Avalonia для DatePicker -->
+    <Style Selector="DatePicker DataValidationErrors">
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    
+    <!-- Скрываем стандартные ошибки валидации Avalonia для Calendar -->
+    <Style Selector="Calendar DataValidationErrors">
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    
+    <!-- Скрываем стандартные ошибки валидации для NumericUpDown -->
+    <Style Selector="NumericUpDown DataValidationErrors">
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    
+    <!-- Кастомный стиль для DataValidationErrors с минимальным отображением -->
+    <Style Selector="DataValidationErrors">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel LastChildFill="True">
+                    <!-- Убираем стандартный индикатор ошибки справа -->
+                    <ContentControl DockPanel.Dock="Right"
+                                    ContentTemplate="{TemplateBinding ErrorTemplate}"
+                                    DataContext="{TemplateBinding Owner}"
+                                    Content="{Binding (DataValidationErrors.Errors)}"
+                                    IsVisible="False"/>
+                    <!-- Основной контент без изменений -->
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"/>
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <!-- Стили для кастомных валидационных сообщений -->
+    <Style Selector="TextBlock.validation-error">
+        <Setter Property="Foreground" Value="#E74C3C"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="0,4,0,8"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
+    <Style Selector="TextBlock.validation-warning">
+        <Setter Property="Foreground" Value="#F39C12"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="0,4,0,8"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
+    <Style Selector="TextBlock.validation-info">
+        <Setter Property="Foreground" Value="#3498DB"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="0,4,0,8"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
+    <!-- Стили для контролов с ошибками -->
+    <Style Selector="TextBox:error">
+        <Setter Property="BorderBrush" Value="#E74C3C"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    
+    <Style Selector="ComboBox:error">
+        <Setter Property="BorderBrush" Value="#E74C3C"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    
+    <Style Selector="DatePicker:error">
+        <Setter Property="BorderBrush" Value="#E74C3C"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    
+    <Style Selector="NumericUpDown:error">
+        <Setter Property="BorderBrush" Value="#E74C3C"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    
+    <!-- Контейнер для валидационных сообщений -->
+    <Style Selector="Border.validation-container">
+        <Setter Property="Background" Value="#FFF3CD"/>
+        <Setter Property="BorderBrush" Value="#FFEAA7"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="Margin" Value="0,8,0,16"/>
+    </Style>
+    
+    <Style Selector="Border.validation-container.error">
+        <Setter Property="Background" Value="#F8D7DA"/>
+        <Setter Property="BorderBrush" Value="#F5C6CB"/>
+    </Style>
+    
+    <Style Selector="Border.validation-container.warning">
+        <Setter Property="Background" Value="#FFF3CD"/>
+        <Setter Property="BorderBrush" Value="#FFEAA7"/>
+    </Style>
+    
+    <Style Selector="Border.validation-container.info">
+        <Setter Property="Background" Value="#D1ECF1"/>
+        <Setter Property="BorderBrush" Value="#BEE5EB"/>
+    </Style>
+    
+</Styles> 

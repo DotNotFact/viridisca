@@ -1,0 +1,269 @@
+<UserControl x:Class="ViridiscaUi.Views.Education.ScheduleView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:rxui="http://reactiveui.net"
+             mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+             x:DataType="vm:ScheduleViewModel">
+
+  <Grid RowDefinitions="Auto,Auto,*">
+    
+    <!-- Header Section -->
+    <Border Grid.Row="0" Classes="page-header" Padding="24,16">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
+          <material:MaterialIcon Kind="Calendar" Width="32" Height="32" 
+                                 Foreground="{DynamicResource PrimaryBrush}"/>
+          <StackPanel>
+            <TextBlock Text="Управление расписанием" Classes="page-title"/>
+            <TextBlock Text="Планирование и организация учебного процесса" 
+                       Classes="page-subtitle"/>
+          </StackPanel>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <Button Classes="btn-secondary" Command="{Binding ExportScheduleCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+              <TextBlock Text="Экспорт"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-secondary" Command="{Binding AutoGenerateScheduleCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="AutoFix" Width="16" Height="16"/>
+              <TextBlock Text="Автосоставление"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-primary" Command="{Binding CreateScheduleSlotCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+              <TextBlock Text="Новое занятие"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Controls Section -->
+    <Border Grid.Row="1" Padding="24,0,24,16">
+      <Grid RowDefinitions="Auto,Auto">
+        
+        <!-- View Mode and Navigation -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
+          
+          <!-- View Mode Selector -->
+          <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+            <ToggleButton Classes="view-mode-btn" 
+                          IsChecked="{Binding IsDayView}"
+                          Command="{Binding SetDayViewCommand}">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="ViewDay" Width="16" Height="16"/>
+                <TextBlock Text="День"/>
+              </StackPanel>
+            </ToggleButton>
+            <ToggleButton Classes="view-mode-btn" 
+                          IsChecked="{Binding IsWeekView}"
+                          Command="{Binding SetWeekViewCommand}">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="ViewWeek" Width="16" Height="16"/>
+                <TextBlock Text="Неделя"/>
+              </StackPanel>
+            </ToggleButton>
+            <ToggleButton Classes="view-mode-btn" 
+                          IsChecked="{Binding IsMonthView}"
+                          Command="{Binding SetMonthViewCommand}">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="ViewModule" Width="16" Height="16"/>
+                <TextBlock Text="Месяц"/>
+              </StackPanel>
+            </ToggleButton>
+          </StackPanel>
+
+          <!-- Date Navigation -->
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+            <Button Classes="btn-icon" Command="{Binding PreviousPeriodCommand}">
+              <material:MaterialIcon Kind="ChevronLeft" Width="20" Height="20"/>
+            </Button>
+            
+            <Border Classes="date-display" MinWidth="200">
+              <TextBlock Text="{Binding CurrentPeriodDisplay}" 
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Classes="date-text"/>
+            </Border>
+            
+            <Button Classes="btn-icon" Command="{Binding NextPeriodCommand}">
+              <material:MaterialIcon Kind="ChevronRight" Width="20" Height="20"/>
+            </Button>
+            
+            <Button Classes="btn-secondary" Command="{Binding GoToTodayCommand}">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="CalendarToday" Width="16" Height="16"/>
+                <TextBlock Text="Сегодня"/>
+              </StackPanel>
+            </Button>
+          </StackPanel>
+        </Grid>
+
+        <!-- Filters -->
+        <Border Grid.Row="1" Classes="filter-panel">
+          <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+            
+            <!-- Search -->
+            <TextBox Grid.Column="0" 
+                     Text="{Binding SearchText}"
+                     Classes="search-input"
+                     Margin="0,0,6,0">
+              <TextBox.InnerLeftContent>
+                <material:MaterialIcon Kind="Magnify" Width="16" Height="16" 
+                                       Margin="12,0,8,0"
+                                       Foreground="{DynamicResource TextMutedBrush}"/>
+              </TextBox.InnerLeftContent>
+            </TextBox>
+
+            <!-- Teacher Filter -->
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding AvailableTeachers}"
+                      SelectedItem="{Binding SelectedTeacherFilter}"
+                      PlaceholderText="Все преподаватели"
+                      MinWidth="180"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Person.FullName}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Group Filter -->
+            <ComboBox Grid.Column="2"
+                      ItemsSource="{Binding AvailableGroups}"
+                      SelectedItem="{Binding SelectedGroupFilter}"
+                      PlaceholderText="Все группы"
+                      MinWidth="120"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Academic Period Filter -->
+            <ComboBox Grid.Column="3"
+                      ItemsSource="{Binding AvailableAcademicPeriods}"
+                      SelectedItem="{Binding SelectedAcademicPeriodFilter}"
+                      PlaceholderText="Все периоды"
+                      MinWidth="150"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Room Filter -->
+            <ComboBox Grid.Column="4"
+                      ItemsSource="{Binding AvailableRooms}"
+                      SelectedItem="{Binding SelectedRoomFilter}"
+                      PlaceholderText="Все аудитории"
+                      MinWidth="120"
+                      Classes="filter-combo"
+                      Margin="6,0,0,0"/>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Schedule Content -->
+    <Border Grid.Row="2" Padding="24,0,24,24">
+      <Grid RowDefinitions="Auto,*">
+
+        <!-- Period Header -->
+        <Border Grid.Row="0" Classes="day-header" Margin="0,0,0,16">
+          <TextBlock Text="{Binding CurrentPeriodDisplay}" Classes="day-title"/>
+        </Border>
+
+        <!-- Schedule List -->
+        <ScrollViewer Grid.Row="1" Classes="schedule-scroll">
+          <ItemsControl x:Name="ScheduleSlotsItemsControl" ItemsSource="{Binding ScheduleSlots}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Spacing="8"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border Classes="schedule-slot" Padding="16" CornerRadius="8"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{Binding TypeColor}" BorderThickness="0,0,0,3">
+                  <Grid ColumnDefinitions="120,*,Auto">
+                    <StackPanel Grid.Column="0">
+                      <TextBlock Text="{Binding DayOfWeekText}" Classes="slot-title" FontWeight="SemiBold"/>
+                      <TextBlock Text="{Binding TimeSlot}" Classes="slot-time"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Spacing="2" Margin="16,0">
+                      <TextBlock Text="{Binding CourseName}" Classes="slot-title" FontWeight="SemiBold"/>
+                      <TextBlock Text="{Binding GroupName}" Classes="slot-group"/>
+                      <TextBlock Text="{Binding TeacherFullName}" Classes="slot-teacher"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Spacing="6">
+                      <Border Background="{Binding TypeColor}" CornerRadius="4" Padding="8,2">
+                        <TextBlock Text="{Binding TypeText}" Foreground="White" FontSize="12"/>
+                      </Border>
+                      <TextBlock Text="{Binding Room}" Classes="slot-room" HorizontalAlignment="Right"/>
+                      <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                        <Button Command="{Binding #ScheduleSlotsItemsControl.DataContext.EditSlotCommand}"
+                                CommandParameter="{Binding}"
+                                Classes="action secondary"
+                                ToolTip.Tip="Редактировать">
+                          <material:MaterialIcon Kind="Pencil" Width="14" Height="14"/>
+                        </Button>
+                        <Button Command="{Binding #ScheduleSlotsItemsControl.DataContext.DeleteSlotCommand}"
+                                CommandParameter="{Binding}"
+                                Classes="action danger"
+                                ToolTip.Tip="Удалить">
+                          <material:MaterialIcon Kind="Delete" Width="14" Height="14"/>
+                        </Button>
+                      </StackPanel>
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Empty state -->
+        <TextBlock Grid.Row="1"
+                   Text="Нет занятий за выбранный период"
+                   IsVisible="{Binding !ScheduleSlots.Count}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Classes="empty-state-text"/>
+      </Grid>
+    </Border>
+
+    <!-- Loading Overlay -->
+    <Border Grid.Row="0" Grid.RowSpan="3" 
+            Background="Black" Opacity="0.3"
+            IsVisible="{Binding IsLoading}"/>
+    
+    <Border Grid.Row="0" Grid.RowSpan="3"
+            IsVisible="{Binding IsLoading}">
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" 
+                  Spacing="16">
+        <Border Classes="loading-spinner" Width="48" Height="48"/>
+        <TextBlock Text="{Binding LoadingMessage}" 
+                   Classes="loading-text"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl> 

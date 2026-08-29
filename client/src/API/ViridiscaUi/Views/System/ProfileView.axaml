@@ -1,0 +1,499 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.System"
+             xmlns:materialIcons="using:Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="ViridiscaUi.Views.System.ProfileView"
+             x:DataType="vm:ProfileViewModel">
+
+  <UserControl.Styles>
+    <!-- Темная тема для профиля -->
+    <Style Selector="Border.profile-card">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="24" />
+      <Setter Property="Margin" Value="0,0,0,16" />
+    </Style>
+
+    <Style Selector="TextBlock.section-title">
+      <Setter Property="FontSize" Value="18" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+      <Setter Property="Margin" Value="0,0,0,16" />
+    </Style>
+
+    <Style Selector="TextBlock.field-label">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="Margin" Value="0,0,0,4" />
+    </Style>
+
+    <Style Selector="TextBox.profile-input">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="12,8" />
+      <Setter Property="MinHeight" Value="40" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Margin" Value="0,2" />
+    </Style>
+
+    <Style Selector="TextBox.profile-input:focus">
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+    </Style>
+
+    <Style Selector="Button.profile-button">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="MinHeight" Value="40" />
+    </Style>
+
+    <Style Selector="Button.profile-button:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+    </Style>
+
+    <Style Selector="Button.secondary-button">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="MinHeight" Value="40" />
+    </Style>
+
+    <Style Selector="Button.secondary-button:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource HoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="Border.avatar-container">
+      <Setter Property="Width" Value="100" />
+      <Setter Property="Height" Value="100" />
+      <Setter Property="CornerRadius" Value="50" />
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+    </Style>
+
+    <Style Selector="Border.stat-badge">
+      <Setter Property="Background" Value="{DynamicResource HoverBrush}" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="8,4" />
+      <Setter Property="Margin" Value="0,2" />
+    </Style>
+
+    <Style Selector="Button.btn-primary">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="MinHeight" Value="40" />
+    </Style>
+
+    <Style Selector="Button.btn-primary:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+    </Style>
+
+    <Style Selector="Button.danger-button">
+      <Setter Property="Background" Value="#DC3545" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="MinHeight" Value="40" />
+    </Style>
+
+    <Style Selector="Button.danger-button:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#C82333" />
+    </Style>
+
+    <!-- Анимация загрузки -->
+    <Style Selector="materialIcons|MaterialIcon.spin">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE">
+          <KeyFrame Cue="0%">
+            <Setter Property="RotateTransform.Angle" Value="0" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="RotateTransform.Angle" Value="360" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+  </UserControl.Styles>
+
+  <ScrollViewer>
+    <StackPanel Spacing="0" Margin="24">
+
+      <!-- Заголовок страницы -->
+      <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,0,24">
+        <materialIcons:MaterialIcon Kind="AccountCircle" 
+                                   Width="32" Height="32" 
+                                   Foreground="{DynamicResource AccentBrush}" />
+        <TextBlock Text="Профиль пользователя" 
+                   FontSize="28" FontWeight="Bold" 
+                   Foreground="{DynamicResource TextPrimaryBrush}" 
+                   VerticalAlignment="Center" />
+        
+        <!-- Индикатор загрузки и кнопка обновления -->
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="16,0,0,0">
+          <materialIcons:MaterialIcon Kind="Loading" 
+                                    Width="24" Height="24" 
+                                    Foreground="{DynamicResource AccentBrush}"
+                                    IsVisible="{Binding IsLoading}"
+                                    Classes="spin" />
+          
+          <Button Classes="secondary-button" 
+                  Command="{Binding RefreshCommand}"
+                  IsEnabled="{Binding !IsLoading}"
+                  ToolTip.Tip="Обновить данные профиля">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+              <materialIcons:MaterialIcon Kind="Refresh" Width="16" Height="16" />
+              <TextBlock Text="Обновить" FontSize="12" />
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </StackPanel>
+
+      <!-- Основная сетка контента -->
+      <Grid Name="MainContentGrid" ColumnDefinitions="1*,1*">
+        
+        <!-- Левая колонка - Основная информация -->
+        <StackPanel Grid.Column="0" Spacing="16" Margin="0,0,8,0">
+          
+          <!-- Личная информация -->
+          <Border Classes="profile-card">
+            <StackPanel Spacing="20">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Classes="section-title" Text="Личная информация" />
+                <materialIcons:MaterialIcon Grid.Column="1" 
+                                          Kind="Loading" 
+                                          Width="18" Height="18" 
+                                          Foreground="{DynamicResource PrimaryBrush}"
+                                          IsVisible="{Binding IsSaving}"
+                                          Classes="spin" />
+              </Grid>
+              
+              <!-- Поля личной информации -->
+              <StackPanel Spacing="16">
+                
+                <!-- Первая строка: Имя и Фамилия -->
+                <Grid ColumnDefinitions="1*,1*">
+                  <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                    <TextBlock Classes="field-label" Text="Имя *" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding FirstName}" 
+                             Classes="profile-input" />
+                  </StackPanel>
+                  
+                  <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                    <TextBlock Classes="field-label" Text="Фамилия *" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding LastName}" 
+                             Classes="profile-input" />
+                  </StackPanel>
+                </Grid>
+                
+                <!-- Вторая строка: Отчество и Дата рождения -->
+                <Grid ColumnDefinitions="1*,1*">
+                  <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                    <TextBlock Classes="field-label" Text="Отчество" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding MiddleName}" 
+                             Classes="profile-input" />
+                  </StackPanel>
+                  
+                  <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                    <TextBlock Classes="field-label" Text="Дата рождения" Margin="0,0,0,4" />
+                    <DatePicker SelectedDate="{Binding DateOfBirth}" 
+                                Background="{DynamicResource SurfaceBrush}"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                CornerRadius="8"
+                                MinHeight="40"
+                                HorizontalAlignment="Stretch" />
+                  </StackPanel>
+                </Grid>
+                
+                <!-- Третья строка: Email и Телефон -->
+                <Grid ColumnDefinitions="1*,1*">
+                  <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                    <TextBlock Classes="field-label" Text="Email *" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Email}" 
+                             Classes="profile-input" />
+                  </StackPanel>
+                  
+                  <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                    <TextBlock Classes="field-label" Text="Телефон" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding PhoneNumber}" 
+                             Classes="profile-input" />
+                  </StackPanel>
+                </Grid>
+              </StackPanel>
+              
+              <!-- Кнопки действий -->
+              <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8,0,0">
+                <Button Content="Сохранить изменения" 
+                        Classes="profile-button"
+                        Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding !IsSaving}" />
+                <Button Content="Отменить" 
+                        Classes="secondary-button"
+                        Command="{Binding CancelCommand}"
+                        IsEnabled="{Binding !IsSaving}" />
+              </StackPanel>
+            </StackPanel>
+          </Border>
+          
+          <!-- Смена пароля -->
+          <Border Classes="profile-card">
+            <StackPanel Spacing="16">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Classes="section-title" Text="Безопасность" />
+                <materialIcons:MaterialIcon Grid.Column="1" 
+                                          Kind="Loading" 
+                                          Width="18" Height="18" 
+                                          Foreground="{DynamicResource PrimaryBrush}"
+                                          IsVisible="{Binding IsChangingPassword}"
+                                          Classes="spin" />
+              </Grid>
+              
+              <StackPanel Spacing="12">
+                <!-- Текущий пароль -->
+                <StackPanel>
+                  <TextBlock Classes="field-label" Text="Текущий пароль *" />
+                  <TextBox Classes="profile-input" 
+                           PasswordChar="●" 
+                           Text="{Binding CurrentPassword}" />
+                </StackPanel>
+                
+                <!-- Новые пароли в сетке -->
+                <Grid ColumnDefinitions="1*,1*">
+                  <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                  <TextBlock Classes="field-label" Text="Новый пароль *" />
+                    <TextBox Classes="profile-input" 
+                           PasswordChar="●" 
+                           Text="{Binding NewPassword}" />
+                </StackPanel>
+                
+                  <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                  <TextBlock Classes="field-label" Text="Подтверждение пароля *" />
+                    <TextBox Classes="profile-input" 
+                           PasswordChar="●" 
+                           Text="{Binding ConfirmPassword}" />
+                </StackPanel>
+              </Grid>
+              </StackPanel>
+              
+              <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                <TextBlock Grid.Column="0" 
+                           Text="Пароль должен содержать минимум 6 символов" 
+                           FontSize="12" 
+                           Foreground="{DynamicResource TextMutedBrush}" 
+                           VerticalAlignment="Center" />
+                <Button Grid.Column="1" 
+                        Classes="btn-primary" 
+                        Command="{Binding ChangePasswordCommand}"
+                        IsEnabled="{Binding !IsChangingPassword}">
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <materialIcons:MaterialIcon Kind="Key" Width="16" Height="16" />
+                    <TextBlock Text="Изменить пароль" />
+                  </StackPanel>
+                </Button>
+              </Grid>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+        
+        <!-- Правая колонка - Дополнительная информация -->
+        <StackPanel Grid.Column="1" Spacing="16" Margin="8,0,0,0">
+          
+          <!-- Фото профиля -->
+          <Border Classes="profile-card">
+            <StackPanel Spacing="12" HorizontalAlignment="Center">
+              <TextBlock Classes="section-title" Text="Фото профиля" HorizontalAlignment="Center" />
+              
+              <Border Classes="avatar-container" HorizontalAlignment="Center">
+                <Grid>
+                  <materialIcons:MaterialIcon Kind="Account" 
+                                            Width="50" Height="50" 
+                                            Foreground="{DynamicResource TextMutedBrush}"
+                                            IsVisible="{Binding ProfileImageUrl, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                  
+                  <materialIcons:MaterialIcon Kind="Loading" 
+                                            Width="25" Height="25" 
+                                            Foreground="{DynamicResource PrimaryBrush}"
+                                            IsVisible="{Binding IsUploadingPhoto}"
+                                            Classes="spin" />
+                </Grid>
+              </Border>
+              
+              <StackPanel Spacing="8">
+                <Button Classes="profile-button" 
+                        Command="{Binding UploadPhotoCommand}"
+                        IsEnabled="{Binding !IsUploadingPhoto}">
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <materialIcons:MaterialIcon Kind="Upload" Width="16" Height="16" />
+                    <TextBlock Text="Загрузить фото" />
+                  </StackPanel>
+                </Button>
+                
+                <Button Classes="secondary-button" 
+                        Command="{Binding RemovePhotoCommand}"
+                        IsVisible="{Binding ProfileImageUrl, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <materialIcons:MaterialIcon Kind="Delete" Width="14" Height="14" />
+                    <TextBlock Text="Удалить" />
+                  </StackPanel>
+                </Button>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+          
+          <!-- Роли и права -->
+          <Border Classes="profile-card">
+            <StackPanel Spacing="12">
+              <TextBlock Classes="section-title" Text="Роли и права" />
+              
+              <ScrollViewer MaxHeight="200">
+                <ItemsControl ItemsSource="{Binding UserRoles}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Classes="stat-badge" Margin="0,0,0,6">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                          <materialIcons:MaterialIcon Grid.Column="0" 
+                                                    Kind="AccountKey" 
+                                                    Width="14" Height="14" 
+                                                    Foreground="{DynamicResource PrimaryBrush}" 
+                                                    Margin="0,0,8,0" />
+                          <TextBlock Grid.Column="1" 
+                                     Text="{Binding Role.Name}" 
+                                     FontSize="12" FontWeight="Medium" 
+                                     Foreground="{DynamicResource TextPrimaryBrush}" />
+                          <Border Grid.Column="2" 
+                                  Background="{DynamicResource SuccessBrush}" 
+                                  CornerRadius="8" 
+                                  Padding="4,2"
+                                  IsVisible="{Binding IsActive}">
+                            <TextBlock Text="Активна" 
+                                       FontSize="10" 
+                                       Foreground="White" />
+                          </Border>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+              
+              <TextBlock Text="Нет активных ролей" 
+                         FontSize="14" 
+                         Foreground="{DynamicResource TextMutedBrush}" 
+                         HorizontalAlignment="Center"
+                         IsVisible="{Binding UserRoles.Count, Converter={x:Static ObjectConverters.IsNull}}" />
+            </StackPanel>
+          </Border>
+          
+          <!-- Статистика активности -->
+          <Border Classes="profile-card">
+            <StackPanel Spacing="12">
+              <TextBlock Classes="section-title" Text="Активность" />
+              
+              <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0" Text="Последний вход" 
+                             FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" />
+                  <TextBlock Grid.Column="1" Text="{Binding LastLoginDate, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" 
+                             FontSize="13" FontWeight="Medium" 
+                             Foreground="{DynamicResource TextPrimaryBrush}" />
+                </Grid>
+                
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0" Text="Дата регистрации" 
+                             FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" />
+                  <TextBlock Grid.Column="1" Text="{Binding RegistrationDate, StringFormat='{}{0:dd.MM.yyyy}'}" 
+                             FontSize="13" FontWeight="Medium" 
+                             Foreground="{DynamicResource TextPrimaryBrush}" />
+                </Grid>
+                
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0" Text="Статус аккаунта" 
+                             FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" />
+                  <Border Background="{DynamicResource SuccessBrush}" 
+                          CornerRadius="4" Padding="6,2">
+                    <TextBlock Text="Активен" 
+                               FontSize="11" FontWeight="Medium" 
+                               Foreground="White" />
+                  </Border>
+                </Grid>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Grid>
+
+      <!-- Панель действий с аккаунтом -->
+      <Border Classes="profile-card" Margin="0,16,0,0">
+        <StackPanel Spacing="16">
+          <TextBlock Classes="section-title" Text="Управление аккаунтом" />
+          
+          <Grid ColumnDefinitions="*,*">
+            <!-- Кнопка выхода -->
+            <Button Grid.Column="0" 
+                    Classes="secondary-button"
+                    Command="{Binding LogoutCommand}"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,8,0">
+              <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                <materialIcons:MaterialIcon Kind="Logout" Width="18" Height="18" />
+                <TextBlock Text="Выход из аккаунта" />
+              </StackPanel>
+            </Button>
+            
+            <!-- Кнопка удаления профиля -->
+            <Button Grid.Column="1" 
+                    Classes="danger-button"
+                    Command="{Binding DeleteProfileCommand}"
+                    HorizontalAlignment="Stretch"
+                    Margin="8,0,0,0">
+              <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                <materialIcons:MaterialIcon Kind="DeleteForever" Width="18" Height="18" />
+                <TextBlock Text="Удалить профиль" />
+              </StackPanel>
+            </Button>
+          </Grid>
+          
+          <Border Background="#FFF3CD" 
+                  BorderBrush="#FFEAA3" 
+                  BorderThickness="1" 
+                  CornerRadius="6" 
+                  Padding="12">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <materialIcons:MaterialIcon Kind="Information" 
+                                        Width="16" Height="16" 
+                                        Foreground="#856404" />
+              <TextBlock Text="Удаление профиля приведет к деактивации аккаунта. Данные будут сохранены для аудита." 
+                         FontSize="12" 
+                         Foreground="#856404" 
+                         TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl> 

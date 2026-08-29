@@ -1,0 +1,141 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+  <!-- ========================================= -->
+  <!-- VIRIDISCA LMS - ОТСТУПЫ И РАЗМЕРЫ -->
+  <!-- ========================================= -->
+
+  <!-- БАЗОВАЯ ЕДИНИЦА ОТСТУПОВ (8px) -->
+  <x:Double x:Key="SpaceUnit">8</x:Double>
+
+  <!-- ОТСТУПЫ (SPACING SCALE) -->
+  <x:Double x:Key="Space0">0</x:Double>
+  <x:Double x:Key="Space1">4</x:Double>    <!-- 0.25rem -->
+  <x:Double x:Key="Space2">8</x:Double>    <!-- 0.5rem -->
+  <x:Double x:Key="Space3">12</x:Double>   <!-- 0.75rem -->
+  <x:Double x:Key="Space4">16</x:Double>   <!-- 1rem -->
+  <x:Double x:Key="Space5">20</x:Double>   <!-- 1.25rem -->
+  <x:Double x:Key="Space6">24</x:Double>   <!-- 1.5rem -->
+  <x:Double x:Key="Space7">28</x:Double>   <!-- 1.75rem -->
+  <x:Double x:Key="Space8">32</x:Double>   <!-- 2rem -->
+  <x:Double x:Key="Space9">36</x:Double>   <!-- 2.25rem -->
+  <x:Double x:Key="Space10">40</x:Double>  <!-- 2.5rem -->
+  <x:Double x:Key="Space11">44</x:Double>  <!-- 2.75rem -->
+  <x:Double x:Key="Space12">48</x:Double>  <!-- 3rem -->
+  <x:Double x:Key="Space14">56</x:Double>  <!-- 3.5rem -->
+  <x:Double x:Key="Space16">64</x:Double>  <!-- 4rem -->
+  <x:Double x:Key="Space20">80</x:Double>  <!-- 5rem -->
+  <x:Double x:Key="Space24">96</x:Double>  <!-- 6rem -->
+  <x:Double x:Key="Space28">112</x:Double> <!-- 7rem -->
+  <x:Double x:Key="Space32">128</x:Double> <!-- 8rem -->
+
+  <!-- СЕМАНТИЧЕСКИЕ ОТСТУПЫ -->
+  <x:Double x:Key="SpaceXs">4</x:Double>
+  <x:Double x:Key="SpaceSm">8</x:Double>
+  <x:Double x:Key="SpaceMd">16</x:Double>
+  <x:Double x:Key="SpaceLg">24</x:Double>
+  <x:Double x:Key="SpaceXl">32</x:Double>
+  <x:Double x:Key="Space2Xl">48</x:Double>
+  <x:Double x:Key="Space3Xl">64</x:Double>
+
+  <!-- РАДИУСЫ СКРУГЛЕНИЯ -->
+  <CornerRadius x:Key="RadiusNone">0</CornerRadius>
+  <CornerRadius x:Key="RadiusSm">4</CornerRadius>
+  <CornerRadius x:Key="RadiusMd">6</CornerRadius>
+  <CornerRadius x:Key="RadiusLg">8</CornerRadius>
+  <CornerRadius x:Key="RadiusXl">12</CornerRadius>
+  <CornerRadius x:Key="Radius2Xl">16</CornerRadius>
+  <CornerRadius x:Key="Radius3Xl">24</CornerRadius>
+  <CornerRadius x:Key="RadiusFull">9999</CornerRadius>
+
+  <!-- ТОЛЩИНЫ ГРАНИЦ -->
+  <Thickness x:Key="BorderThin">1</Thickness>
+  <Thickness x:Key="BorderMedium">2</Thickness>
+  <Thickness x:Key="BorderThick">4</Thickness>
+  <Thickness x:Key="BorderNone">0</Thickness>
+
+  <!-- ТЕНИ -->
+  <BoxShadows x:Key="ShadowSm">0 1 2 0 #0D000000</BoxShadows>
+  <BoxShadows x:Key="ShadowMd">0 4 6 -1 #1A000000, 0 2 4 -1 #0F000000</BoxShadows>
+  <BoxShadows x:Key="ShadowLg">0 10 15 -3 #1A000000, 0 4 6 -2 #0D000000</BoxShadows>
+  <BoxShadows x:Key="ShadowXl">0 20 25 -5 #1A000000, 0 10 10 -5 #0A000000</BoxShadows>
+  <BoxShadows x:Key="Shadow2Xl">0 25 50 -12 #40000000</BoxShadows>
+  <BoxShadows x:Key="ShadowInner">inset 0 2 4 0 #0F000000</BoxShadows>
+  <BoxShadows x:Key="ShadowNone">none</BoxShadows>
+
+  <!-- РАЗМЕРЫ КОМПОНЕНТОВ -->
+  <x:Double x:Key="ButtonHeightSm">32</x:Double>
+  <x:Double x:Key="ButtonHeightMd">40</x:Double>
+  <x:Double x:Key="ButtonHeightLg">48</x:Double>
+  <x:Double x:Key="ButtonHeightXl">56</x:Double>
+
+  <x:Double x:Key="InputHeightSm">32</x:Double>
+  <x:Double x:Key="InputHeightMd">40</x:Double>
+  <x:Double x:Key="InputHeightLg">48</x:Double>
+
+  <x:Double x:Key="IconSizeSm">16</x:Double>
+  <x:Double x:Key="IconSizeMd">20</x:Double>
+  <x:Double x:Key="IconSizeLg">24</x:Double>
+  <x:Double x:Key="IconSizeXl">32</x:Double>
+
+  <!-- ОТСТУПЫ ДЛЯ КОМПОНЕНТОВ -->
+  <Thickness x:Key="ButtonPaddingSm">12,8</Thickness>
+  <Thickness x:Key="ButtonPaddingMd">16,10</Thickness>
+  <Thickness x:Key="ButtonPaddingLg">20,12</Thickness>
+  <Thickness x:Key="ButtonPaddingXl">24,14</Thickness>
+
+  <Thickness x:Key="InputPadding">12,10</Thickness>
+  <Thickness x:Key="InputPaddingSm">8,6</Thickness>
+  <Thickness x:Key="InputPaddingLg">16,12</Thickness>
+
+  <Thickness x:Key="CardPadding">24</Thickness>
+  <Thickness x:Key="CardPaddingSm">16</Thickness>
+  <Thickness x:Key="CardPaddingLg">32</Thickness>
+
+  <Thickness x:Key="ModalPadding">24</Thickness>
+  <Thickness x:Key="ModalPaddingSm">16</Thickness>
+  <Thickness x:Key="ModalPaddingLg">32</Thickness>
+
+  <!-- ШИРИНЫ КОНТЕЙНЕРОВ -->
+  <x:Double x:Key="ContainerSm">640</x:Double>
+  <x:Double x:Key="ContainerMd">768</x:Double>
+  <x:Double x:Key="ContainerLg">1024</x:Double>
+  <x:Double x:Key="ContainerXl">1280</x:Double>
+  <x:Double x:Key="Container2Xl">1536</x:Double>
+
+  <!-- ШИРИНЫ МОДАЛЬНЫХ ОКОН -->
+  <x:Double x:Key="ModalWidthSm">384</x:Double>
+  <x:Double x:Key="ModalWidthMd">512</x:Double>
+  <x:Double x:Key="ModalWidthLg">768</x:Double>
+  <x:Double x:Key="ModalWidthXl">1024</x:Double>
+
+  <!-- ВЫСОТЫ КОМПОНЕНТОВ -->
+  <x:Double x:Key="HeaderHeight">64</x:Double>
+  <x:Double x:Key="SidebarWidth">280</x:Double>
+  <x:Double x:Key="SidebarWidthCollapsed">64</x:Double>
+  <x:Double x:Key="FooterHeight">48</x:Double>
+
+  <!-- Z-INDEX СЛОИ -->
+  <x:Int32 x:Key="ZIndexDropdown">1000</x:Int32>
+  <x:Int32 x:Key="ZIndexSticky">1020</x:Int32>
+  <x:Int32 x:Key="ZIndexFixed">1030</x:Int32>
+  <x:Int32 x:Key="ZIndexModalBackdrop">1040</x:Int32>
+  <x:Int32 x:Key="ZIndexModal">1050</x:Int32>
+  <x:Int32 x:Key="ZIndexPopover">1060</x:Int32>
+  <x:Int32 x:Key="ZIndexTooltip">1070</x:Int32>
+
+  <!-- BREAKPOINTS ДЛЯ АДАПТИВНОСТИ -->
+  <x:Double x:Key="BreakpointXs">0</x:Double>
+  <x:Double x:Key="BreakpointSm">640</x:Double>
+  <x:Double x:Key="BreakpointMd">768</x:Double>
+  <x:Double x:Key="BreakpointLg">1024</x:Double>
+  <x:Double x:Key="BreakpointXl">1280</x:Double>
+  <x:Double x:Key="Breakpoint2Xl">1536</x:Double>
+
+  <!-- АНИМАЦИИ -->
+  <sys:TimeSpan x:Key="AnimationFast">0:0:0.15</sys:TimeSpan>
+  <sys:TimeSpan x:Key="AnimationNormal">0:0:0.3</sys:TimeSpan>
+  <sys:TimeSpan x:Key="AnimationSlow">0:0:0.5</sys:TimeSpan>
+
+</ResourceDictionary> 

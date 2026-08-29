@@ -1,0 +1,243 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+        xmlns:controls="using:ViridiscaUi.Controls"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="800"
+        x:Class="ViridiscaUi.Views.Education.StudentDialog"
+        x:DataType="vm:StudentDialogViewModel"
+        Title="{Binding Title}"
+        Width="650" Height="800"
+        MinWidth="600" MinHeight="700"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Styles>
+        <Style Selector="TextBox.form-input">
+            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,20">
+            <material:MaterialIcon Grid.Column="0"
+                                 Kind="AccountPlus"
+                                 Width="28" Height="28"
+                                 Foreground="{DynamicResource SystemAccentColor}"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,12,0"/>
+            
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       FontSize="22" 
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+            
+            <Button Grid.Column="2"
+                    Command="{Binding CancelCommand}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="8"
+                    ToolTip.Tip="Закрыть">
+                <material:MaterialIcon Kind="Close" Width="20" Height="20"/>
+            </Button>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="0">
+                <!-- Personal Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Личные данные" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+                            <!-- First Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Имя *" Classes="label"/>
+                                <TextBox Text="{Binding FirstName}" 
+                                         Classes="form-input"
+                                         Watermark="Введите имя"/>
+                            </StackPanel>
+                            
+                            <!-- Last Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="4,0">
+                                <TextBlock Text="Фамилия *" Classes="label"/>
+                                <TextBox Text="{Binding LastName}" 
+                                         Classes="form-input"
+                                         Watermark="Введите фамилию"/>
+                            </StackPanel>
+                            
+                            <!-- Middle Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0,0,0">
+                                <TextBlock Text="Отчество" Classes="label"/>
+                                <TextBox Text="{Binding MiddleName}" 
+                                         Classes="form-input"
+                                         Watermark="Введите отчество"/>
+                            </StackPanel>
+                            
+                            <!-- Date of Birth -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,16,8,0">
+                                <TextBlock Text="Дата рождения" Classes="label"/>
+                                <DatePicker SelectedDate="{Binding DateOfBirth, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                                           Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Email -->
+                            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="4,16,0,0">
+                                <TextBlock Text="Email *" Classes="label"/>
+                                <TextBox Text="{Binding Email}" 
+                                         Classes="form-input"
+                                         Watermark="student@example.com"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Contact Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Контактная информация" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <Grid ColumnDefinitions="*,*">
+                            <!-- Phone -->
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Телефон" Classes="label"/>
+                                <TextBox Text="{Binding Phone}" 
+                                         Classes="form-input"
+                                         Watermark="+7 (999) 123-45-67"/>
+                            </StackPanel>
+                            
+                            <!-- Address -->
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Адрес" Classes="label"/>
+                                <TextBox Text="{Binding Address}" 
+                                         Classes="form-input"
+                                         Watermark="Введите адрес"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Academic Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Учебная информация" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemAccentColor}"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                            <!-- Student ID -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Код студента *" Classes="label"/>
+                                <TextBox Text="{Binding StudentId}" 
+                                         Classes="form-input"
+                                         Watermark="STU001"/>
+                            </StackPanel>
+                            
+                            <!-- Group -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Группа" Classes="label"/>
+                                <controls:SearchableDropdown Items="{Binding AvailableGroups}"
+                                                           SelectedItem="{Binding Group}"
+                                                           PlaceholderText="Выберите группу"
+                                                           Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Curriculum -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,16,8,0">
+                                <TextBlock Text="Учебный план" Classes="label"/>
+                                <ComboBox ItemsSource="{Binding AvailableCurricula}"
+                                         SelectedItem="{Binding Curriculum}"
+                                         PlaceholderText="Выберите учебный план"
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Status -->
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,16,0,0" VerticalAlignment="Center">
+                                <CheckBox Content="Студент активен" 
+                                         IsChecked="{Binding IsActive}"
+                                         FontWeight="Medium"
+                                         Margin="0,20,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="0,16,0,0"
+                Margin="-24,16,-24,-24">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Spacing="12"
+                        Margin="24,0">
+                <Button Command="{Binding CancelCommand}" 
+                        Content="Отмена"
+                        Padding="16,8"
+                        MinWidth="100"/>
+                <Button Command="{Binding SaveCommand}" 
+                        Content="Сохранить" 
+                        IsEnabled="{Binding IsValid}"
+                        Background="{DynamicResource SystemAccentColor}"
+                        Foreground="White"
+                        Padding="16,8"
+                        MinWidth="100"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000" 
+              IsVisible="{Binding IsLoading}"
+              Margin="-24">
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="8"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel Spacing="12" HorizontalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="200" Height="4"/>
+                    <TextBlock Text="Сохранение..." 
+                               HorizontalAlignment="Center"
+                               FontWeight="Medium"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window> 
+

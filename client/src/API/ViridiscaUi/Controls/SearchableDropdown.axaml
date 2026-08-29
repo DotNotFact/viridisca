@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
+             x:Class="ViridiscaUi.Controls.SearchableDropdown">
+    <Grid RowDefinitions="Auto,*">
+        <!-- Search Box -->
+        <TextBox Grid.Row="0"
+                 Name="SearchBox"
+                 Watermark="Поиск..."
+                 Margin="0,0,0,8"
+                 Classes="form-control" />
+        
+        <!-- Dropdown Content -->
+        <Border Grid.Row="1"
+                Name="DropdownContent"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="{StaticResource BorderThin}"
+                CornerRadius="{StaticResource RadiusLg}"
+                Padding="8">
+            <StackPanel Spacing="8">
+                <!-- Items List -->
+                <ItemsControl Name="ItemsList"
+                            MaxHeight="200"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="dropdown-item"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,8"
+                                    Margin="0,2">
+                                <TextBlock Text="{Binding DisplayText}" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Add Button -->
+                <Button Name="AddButton"
+                        Classes="btn,btn-primary"
+                        HorizontalAlignment="Stretch"
+                        Margin="0,8,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <PathIcon Data="{StaticResource plus_regular}" />
+                        <TextBlock Text="Добавить" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl> 

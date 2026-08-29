@@ -1,0 +1,103 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="250"
+        x:Class="ViridiscaUi.Views.Common.ConfirmDialog"
+        Title="Подтверждение"
+        Width="450" Height="250"
+        MinWidth="400" MinHeight="200"
+        MaxWidth="600" MaxHeight="400"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Styles>
+        <Style Selector="Button.btn-primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="Margin" Value="8,0,0,0" />
+        </Style>
+        
+        <Style Selector="Button.btn-secondary">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="MinWidth" Value="100" />
+        </Style>
+        
+        <Style Selector="Button.btn-danger">
+            <Setter Property="Background" Value="#DC3545" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="Margin" Value="8,0,0,0" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="*,Auto" Margin="24">
+        <!-- Content -->
+        <StackPanel Grid.Row="0" Spacing="20" VerticalAlignment="Center">
+            <!-- Icon and Title -->
+            <Grid ColumnDefinitions="Auto,*">
+                <material:MaterialIcon Grid.Column="0"
+                                     x:Name="DialogIcon"
+                                     Kind="HelpCircle"
+                                     Width="48" Height="48"
+                                     Foreground="{DynamicResource SystemAccentColor}"
+                                     VerticalAlignment="Top"
+                                     Margin="0,0,16,0"/>
+                
+                <StackPanel Grid.Column="1" Spacing="12">
+                    <TextBlock x:Name="DialogTitle"
+                               Text="Подтверждение действия"
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                    
+                    <TextBlock x:Name="DialogMessage"
+                               Text="Вы уверены, что хотите выполнить это действие?"
+                               FontSize="14"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               LineHeight="20"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="0,16,0,0"
+                Margin="-24,16,-24,-24">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Spacing="0"
+                        Margin="24,0">
+                <Button x:Name="CancelButton"
+                        Content="Отмена"
+                        Classes="btn-secondary"
+                        IsCancel="True"
+                        Click="OnCancelClick"/>
+                <Button x:Name="ConfirmButton"
+                        Content="Подтвердить"
+                        Classes="btn-primary"
+                        IsDefault="True"
+                        Click="OnConfirmClick"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window> 

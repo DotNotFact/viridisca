@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViridiscaUi", "ViridiscaUi.csproj", "{A0840197-CC8F-FF06-ED2D-1E88E4B66932}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{6A1A4814-27A4-44B0-A610-0674DA48BD92}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{A2E5FF39-6A8C-4821-8D74-464B49268D07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViridiscaUi.Domain", "..\..\Modules\ViridiscaUi.Domain\ViridiscaUi.Domain.csproj", "{1679CC0E-8FD3-036D-C9A5-390A86F15A60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViridiscaUi.Infrastructure", "..\..\Modules\ViridiscaUi.Infrastructure\ViridiscaUi.Infrastructure.csproj", "{6AB04BC8-EDD8-AC2A-2A1F-DD1AD4E56C4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{B3C5B5EA-D0E5-46AB-9745-10AEB370EEA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViridiscaUi.Desktop", "..\..\Platform\ViridiscaUi.Desktop\ViridiscaUi.Desktop.csproj", "{5C9339A4-6EF1-BDCE-23B1-3708C718DD83}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0840197-CC8F-FF06-ED2D-1E88E4B66932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0840197-CC8F-FF06-ED2D-1E88E4B66932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0840197-CC8F-FF06-ED2D-1E88E4B66932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0840197-CC8F-FF06-ED2D-1E88E4B66932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1679CC0E-8FD3-036D-C9A5-390A86F15A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1679CC0E-8FD3-036D-C9A5-390A86F15A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1679CC0E-8FD3-036D-C9A5-390A86F15A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1679CC0E-8FD3-036D-C9A5-390A86F15A60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB04BC8-EDD8-AC2A-2A1F-DD1AD4E56C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB04BC8-EDD8-AC2A-2A1F-DD1AD4E56C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB04BC8-EDD8-AC2A-2A1F-DD1AD4E56C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB04BC8-EDD8-AC2A-2A1F-DD1AD4E56C4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C9339A4-6EF1-BDCE-23B1-3708C718DD83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C9339A4-6EF1-BDCE-23B1-3708C718DD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C9339A4-6EF1-BDCE-23B1-3708C718DD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C9339A4-6EF1-BDCE-23B1-3708C718DD83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A0840197-CC8F-FF06-ED2D-1E88E4B66932} = {B3C5B5EA-D0E5-46AB-9745-10AEB370EEA0}
+		{6A1A4814-27A4-44B0-A610-0674DA48BD92} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{A2E5FF39-6A8C-4821-8D74-464B49268D07} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{1679CC0E-8FD3-036D-C9A5-390A86F15A60} = {6A1A4814-27A4-44B0-A610-0674DA48BD92}
+		{6AB04BC8-EDD8-AC2A-2A1F-DD1AD4E56C4D} = {6A1A4814-27A4-44B0-A610-0674DA48BD92}
+		{B3C5B5EA-D0E5-46AB-9745-10AEB370EEA0} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{5C9339A4-6EF1-BDCE-23B1-3708C718DD83} = {A2E5FF39-6A8C-4821-8D74-464B49268D07}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70F59404-0240-45A8-9724-4162C61A010E}
+	EndGlobalSection
+EndGlobal

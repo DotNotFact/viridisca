@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300">
+    <Border Classes="modal" Padding="24">
+        <Grid RowDefinitions="Auto,*,Auto">
+            <!-- Header -->
+            <TextBlock Grid.Row="0" 
+                       Classes="modal-title"
+                       Text="{Binding DialogTitle}" />
+
+            <!-- Content -->
+            <StackPanel Grid.Row="1" Spacing="16" Margin="0,16">
+                <StackPanel Classes="form-group">
+                    <TextBlock Classes="form-label" Text="Название" />
+                    <TextBox Classes="form-control" 
+                             Text="{Binding Name}" />
+                </StackPanel>
+
+                <!-- Additional fields will be added by derived views -->
+                <ContentControl Content="{Binding AdditionalContent}" />
+            </StackPanel>
+
+            <!-- Footer -->
+            <StackPanel Grid.Row="2" 
+                        Classes="form-footer"
+                        Orientation="Horizontal" 
+                        Spacing="12">
+                <Button Classes="btn,btn-secondary" 
+                        Command="{Binding CancelCommand}">
+                    Отмена
+                </Button>
+                <Button Classes="btn,btn-primary" 
+                        Command="{Binding SaveCommand}">
+                    Сохранить
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl> 

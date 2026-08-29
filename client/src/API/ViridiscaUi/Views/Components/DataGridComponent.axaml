@@ -1,0 +1,115 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Views.Components.DataGridComponent">
+
+    <UserControl.Styles>
+        <Style Selector="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserReorderColumns" Value="True"/>
+            <Setter Property="CanUserResizeColumns" Value="True"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+        </Style>
+        
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+        
+        <Style Selector="DataGridRow">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="MinHeight" Value="40"/>
+        </Style>
+        
+        <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+            <Setter Property="Fill" Value="{DynamicResource SystemControlBackgroundListLowBrush}"/>
+        </Style>
+        
+        <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+            <Setter Property="Fill" Value="{DynamicResource SystemControlHighlightListAccentLowBrush}"/>
+        </Style>
+        
+        <Style Selector="DataGridCell">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Заголовок и поиск -->
+        <Border Grid.Row="0" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                CornerRadius="4,4,0,0" Padding="16,12" Margin="0,0,0,1">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                           FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                
+                <TextBox Grid.Column="1" Name="SearchBox" 
+                         Width="200" Margin="8,0" VerticalAlignment="Center"/>
+                
+                <Button Grid.Column="2" Content="🔍" Padding="8" VerticalAlignment="Center"
+                        Command="{Binding SearchCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Text, ElementName=SearchBox}"/>
+            </Grid>
+        </Border>
+
+        <!-- Основная таблица -->
+        <DataGrid Grid.Row="1" Name="MainDataGrid"
+                  ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                  SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}">
+            
+            <!-- Колонки будут добавляться программно или через привязку -->
+            
+        </DataGrid>
+
+        <!-- Пагинация -->
+        <Border Grid.Row="2" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+                CornerRadius="0,0,4,4" Padding="16,8" Margin="0,1,0,0">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBlock Text="Показано:" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding ItemsCount, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                               FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBlock Text="из" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalCount, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                               FontWeight="SemiBold" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                    <Button Content="⏮" Padding="8,4" 
+                            Command="{Binding FirstPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            IsEnabled="{Binding CanGoToPreviousPage, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    <Button Content="◀" Padding="8,4"
+                            Command="{Binding PreviousPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            IsEnabled="{Binding CanGoToPreviousPage, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    
+                    <TextBlock Text="{Binding CurrentPage, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                               VerticalAlignment="Center" Margin="8,0"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalPages, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    
+                    <Button Content="▶" Padding="8,4"
+                            Command="{Binding NextPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            IsEnabled="{Binding CanGoToNextPage, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    <Button Content="⏭" Padding="8,4"
+                            Command="{Binding LastPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            IsEnabled="{Binding CanGoToNextPage, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl> 
+

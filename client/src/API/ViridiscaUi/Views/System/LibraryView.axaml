@@ -1,0 +1,645 @@
+<UserControl x:Class="ViridiscaUi.Views.System.LibraryView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.System"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:rxui="http://reactiveui.net"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:DataType="vm:LibraryViewModel">
+
+  <Grid RowDefinitions="Auto,Auto,*">
+    
+    <!-- Header Section -->
+    <Border Grid.Row="0" Classes="page-header" Padding="24,16">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
+          <material:MaterialIcon Kind="Library" Width="32" Height="32" 
+                                 Foreground="{DynamicResource PrimaryBrush}"/>
+          <StackPanel>
+            <TextBlock Text="Библиотечная система" Classes="page-title"/>
+            <TextBlock Text="Управление ресурсами и займами библиотеки" 
+                       Classes="page-subtitle"/>
+          </StackPanel>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <Button Classes="btn-secondary" Command="{Binding ImportLibraryDataCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Upload" Width="16" Height="16"/>
+              <TextBlock Text="Импорт"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-secondary" Command="{Binding ExportLibraryDataCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+              <TextBlock Text="Экспорт"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-primary" Command="{Binding CreateResourceCommand}" 
+                  IsVisible="{Binding IsResourcesView}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+              <TextBlock Text="Новый ресурс"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-primary" Command="{Binding CreateLoanCommand}" 
+                  IsVisible="{Binding IsLoansView}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+              <TextBlock Text="Выдать ресурс"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- View Mode and Statistics -->
+    <Border Grid.Row="1" Padding="24,0,24,16">
+      <Grid RowDefinitions="Auto,Auto">
+        
+        <!-- View Mode Selector -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="4" Margin="0,0,0,16">
+          <ToggleButton Classes="view-mode-btn" 
+                        IsChecked="{Binding IsResourcesView}"
+                        Command="{Binding SetResourcesViewCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <material:MaterialIcon Kind="BookMultiple" Width="16" Height="16"/>
+              <TextBlock Text="Ресурсы"/>
+            </StackPanel>
+          </ToggleButton>
+          <ToggleButton Classes="view-mode-btn" 
+                        IsChecked="{Binding IsLoansView}"
+                        Command="{Binding SetLoansViewCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <material:MaterialIcon Kind="AccountClock" Width="16" Height="16"/>
+              <TextBlock Text="Займы"/>
+            </StackPanel>
+          </ToggleButton>
+        </StackPanel>
+
+        <!-- Statistics Cards -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*">
+          
+          <!-- Resources Statistics -->
+          <Border Grid.Column="0" Classes="stat-card" IsVisible="{Binding IsResourcesView}" Margin="0,0,8,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Всего ресурсов" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="BookMultiple" Width="20" Height="20"
+                                       Foreground="{DynamicResource PrimaryBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.TotalResources}" Classes="stat-value"/>
+              <TextBlock Text="в коллекции" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <Border Grid.Column="1" Classes="stat-card" IsVisible="{Binding IsResourcesView}" Margin="8,0,8,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Доступно" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="CheckCircle" Width="20" Height="20"
+                                       Foreground="{DynamicResource SuccessBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.AvailableResources}" Classes="stat-value"/>
+              <TextBlock Text="для выдачи" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <Border Grid.Column="2" Classes="stat-card" IsVisible="{Binding IsResourcesView}" Margin="8,0,8,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="На руках" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="AccountClock" Width="20" Height="20"
+                                       Foreground="{DynamicResource InfoBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.LoanedResources}" Classes="stat-value"/>
+              <TextBlock Text="выдано" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <Border Grid.Column="3" Classes="stat-card" IsVisible="{Binding IsResourcesView}" Margin="8,0,0,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Просрочено" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="AlertCircle" Width="20" Height="20"
+                                       Foreground="{DynamicResource ErrorBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.OverdueLoans}" Classes="stat-value"/>
+              <TextBlock Text="займов" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <!-- Loans Statistics -->
+          <Border Grid.Column="0" Classes="stat-card" IsVisible="{Binding IsLoansView}" Margin="0,0,8,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Активные займы" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="AccountClock" Width="20" Height="20"
+                                       Foreground="{DynamicResource PrimaryBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.ActiveLoans}" Classes="stat-value"/>
+              <TextBlock Text="сейчас" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <Border Grid.Column="1" Classes="stat-card" IsVisible="{Binding IsLoansView}" Margin="8,0,8,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Просроченные" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="AlertCircle" Width="20" Height="20"
+                                       Foreground="{DynamicResource ErrorBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.OverdueLoans}" Classes="stat-value"/>
+              <TextBlock Text="требуют внимания" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <Border Grid.Column="2" Classes="stat-card" IsVisible="{Binding IsLoansView}" Margin="8,0,8,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Возвращено" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="CheckCircle" Width="20" Height="20"
+                                       Foreground="{DynamicResource SuccessBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.ReturnedLoans}" Classes="stat-value"/>
+              <TextBlock Text="за месяц" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+
+          <Border Grid.Column="3" Classes="stat-card" IsVisible="{Binding IsLoansView}" Margin="8,0,0,0">
+            <StackPanel Spacing="8">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Средний срок" Classes="stat-label"/>
+                <material:MaterialIcon Grid.Column="1" Kind="CalendarClock" Width="20" Height="20"
+                                       Foreground="{DynamicResource InfoBrush}"/>
+              </Grid>
+              <TextBlock Text="{Binding Statistics.AverageLoanDuration, StringFormat='{}{0:F0} дней'}" Classes="stat-value"/>
+              <TextBlock Text="займа" Classes="stat-description"/>
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Grid>
+    </Border>
+
+    <!-- Content Area -->
+    <Border Grid.Row="2" Padding="24,0,24,24">
+      <Panel>
+        <!-- Resources View -->
+        <Grid IsVisible="{Binding IsResourcesView}" RowDefinitions="Auto,*">
+          
+          <!-- Resources Filter Panel -->
+          <Border Grid.Row="0" Classes="filter-panel" Margin="0,0,0,16">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+              
+              <!-- Search -->
+              <TextBox Grid.Column="0" 
+                       Text="{Binding SearchText}"
+                       Classes="search-input"
+                       Margin="0,0,6,0">
+                <TextBox.InnerLeftContent>
+                  <material:MaterialIcon Kind="Magnify" Width="16" Height="16" 
+                                         Margin="12,0,8,0"
+                                         Foreground="{DynamicResource TextMutedBrush}"/>
+                </TextBox.InnerLeftContent>
+              </TextBox>
+
+              <!-- Type Filter -->
+              <ComboBox Grid.Column="1" 
+                        ItemsSource="{Binding AvailableResourceTypes}"
+                        SelectedItem="{Binding SelectedResourceTypeFilter}"
+                        PlaceholderText="Все типы"
+                        MinWidth="120"
+                        Classes="filter-combo"
+                        Margin="6,0,6,0"/>
+
+              <!-- Author Filter -->
+              <ComboBox Grid.Column="2"
+                        ItemsSource="{Binding AvailableAuthors}"
+                        SelectedItem="{Binding SelectedAuthorFilter}"
+                        PlaceholderText="Все авторы"
+                        MinWidth="150"
+                        Classes="filter-combo"
+                        Margin="6,0,6,0"/>
+
+              <!-- Publisher Filter -->
+              <ComboBox Grid.Column="3"
+                        ItemsSource="{Binding AvailablePublishers}"
+                        SelectedItem="{Binding SelectedPublisherFilter}"
+                        PlaceholderText="Все издатели"
+                        MinWidth="150"
+                        Classes="filter-combo"
+                        Margin="6,0,6,0"/>
+
+              <!-- Availability Filter -->
+              <ComboBox Grid.Column="4"
+                        ItemsSource="{Binding AvailableAvailabilityStatuses}"
+                        SelectedItem="{Binding SelectedAvailabilityFilter}"
+                        PlaceholderText="Все статусы"
+                        MinWidth="120"
+                        Classes="filter-combo"
+                        Margin="6,0,0,0"/>
+            </Grid>
+          </Border>
+
+          <!-- Resources List -->
+          <Border Grid.Row="1" Classes="data-container">
+            <Grid RowDefinitions="Auto,*,Auto">
+              
+              <!-- Resources Header -->
+              <Border Grid.Row="0" Classes="list-header">
+                <Grid ColumnDefinitions="Auto,*,120,100,100,100,80">
+                  <CheckBox Grid.Column="0" 
+                            IsChecked="{Binding AreAllResourcesSelected}"
+                            Margin="16,0"/>
+                  <TextBlock Grid.Column="1" Text="Ресурс" Classes="header-text"/>
+                  <TextBlock Grid.Column="2" Text="Тип" Classes="header-text"/>
+                  <TextBlock Grid.Column="3" Text="Год" Classes="header-text"/>
+                  <TextBlock Grid.Column="4" Text="Копии" Classes="header-text"/>
+                  <TextBlock Grid.Column="5" Text="Доступность" Classes="header-text"/>
+                  <TextBlock Grid.Column="6" Text="Действия" Classes="header-text"/>
+                </Grid>
+              </Border>
+
+              <!-- Resources Items -->
+              <ScrollViewer Grid.Row="1" Classes="data-scroll">
+                <ItemsControl x:Name="ResourcesItemsControl" ItemsSource="{Binding Resources}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Classes="list-item">
+                        <Grid ColumnDefinitions="Auto,*,120,100,100,100,80">
+                          
+                          <!-- Selection -->
+                          <CheckBox Grid.Column="0" 
+                                    IsChecked="{Binding IsSelected}"
+                                    Margin="16,0"/>
+
+                          <!-- Resource Info -->
+                          <StackPanel Grid.Column="1" Spacing="4" Margin="12,8">
+                            <TextBlock Text="{Binding Title}" Classes="item-title"/>
+                            <TextBlock Classes="item-subtitle">
+                              <Run Text="Автор:"/>
+                              <Run Text="{Binding Author}"/>
+                              <Run Text="•"/>
+                              <Run Text="Издатель:"/>
+                              <Run Text="{Binding Publisher}"/>
+                            </TextBlock>
+                            <TextBlock Text="{Binding ISBN}" Classes="item-description"
+                                       IsVisible="{Binding ISBN, Converter={x:Static local:StringConverters.IsNotNullOrEmpty}}"/>
+                          </StackPanel>
+
+                          <!-- Type -->
+                          <Border Grid.Column="2" Classes="type-badge" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Type}" Classes="badge-text"/>
+                          </Border>
+
+                          <!-- Year -->
+                          <TextBlock Grid.Column="3" Text="{Binding PublicationYear}" 
+                                     Classes="item-text" VerticalAlignment="Center"/>
+
+                          <!-- Copies -->
+                          <StackPanel Grid.Column="4" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="{Binding TotalCopies}" Classes="item-text"/>
+                            <TextBlock Text="{Binding AvailableCopies, StringFormat='{}Доступно: {0}'}" 
+                                       Classes="item-subtitle"/>
+                          </StackPanel>
+
+                          <!-- Availability -->
+                          <Border Grid.Column="5" VerticalAlignment="Center">
+                            <Border Classes="status-badge">
+                              <StackPanel Orientation="Horizontal" Spacing="4">
+                                <Ellipse Width="8" Height="8" 
+                                         Fill="{Binding IsAvailable, Converter={x:Static local:StatusColorConverter.Instance}}"/>
+                                <TextBlock Text="{Binding IsAvailable, Converter={x:Static local:BoolToAvailabilityConverter.Instance}}"
+                                           Classes="badge-text"/>
+                              </StackPanel>
+                            </Border>
+                          </Border>
+
+                          <!-- Actions -->
+                          <StackPanel Grid.Column="6" Orientation="Horizontal" 
+                                      VerticalAlignment="Center" Spacing="4">
+                            <Button Classes="btn-icon"
+                                    Command="{Binding #ResourcesItemsControl.DataContext.ViewResourceCommand}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip.Tip="Просмотр">
+                              <material:MaterialIcon Kind="Eye" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="btn-icon"
+                                    Command="{Binding #ResourcesItemsControl.DataContext.EditResourceCommand}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip.Tip="Редактировать">
+                              <material:MaterialIcon Kind="Pencil" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="btn-icon btn-success"
+                                    Command="{Binding #ResourcesItemsControl.DataContext.LoanResourceCommand}"
+                                    CommandParameter="{Binding}"
+                                    IsEnabled="{Binding IsAvailable}"
+                                    ToolTip.Tip="Выдать">
+                              <material:MaterialIcon Kind="AccountPlus" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="btn-icon btn-danger"
+                                    Command="{Binding #ResourcesItemsControl.DataContext.DeleteResourceCommand}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip.Tip="Удалить">
+                              <material:MaterialIcon Kind="Delete" Width="16" Height="16"/>
+                            </Button>
+                          </StackPanel>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+
+              <!-- Resources Pagination -->
+              <Border Grid.Row="2" Classes="pagination-container">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <TextBlock Grid.Column="0" Classes="pagination-info">
+                    <Run Text="Показано"/>
+                    <Run Text="{Binding Resources.Count}"/>
+                    <Run Text="из"/>
+                    <Run Text="{Binding TotalResourcesCount}"/>
+                    <Run Text="ресурсов"/>
+                  </TextBlock>
+
+                  <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Показывать по:" VerticalAlignment="Center" 
+                               Classes="pagination-label"/>
+                    <ComboBox ItemsSource="{Binding AvailablePageSizes}"
+                              SelectedItem="{Binding PageSize}"
+                              MinWidth="80"
+                              Classes="pagination-combo"/>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="4" Margin="16,0,0,0">
+                      <Button Classes="btn-icon" 
+                              Command="{Binding PreviousPageCommand}"
+                              IsEnabled="{Binding CanGoPreviousPage}">
+                        <material:MaterialIcon Kind="ChevronLeft" Width="16" Height="16"/>
+                      </Button>
+                      
+                      <Border Classes="page-indicator">
+                        <TextBlock>
+                          <Run Text="{Binding CurrentPage}"/>
+                          <Run Text="из"/>
+                          <Run Text="{Binding TotalPages}"/>
+                        </TextBlock>
+                      </Border>
+                      
+                      <Button Classes="btn-icon" 
+                              Command="{Binding NextPageCommand}"
+                              IsEnabled="{Binding CanGoNextPage}">
+                        <material:MaterialIcon Kind="ChevronRight" Width="16" Height="16"/>
+                      </Button>
+                    </StackPanel>
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <!-- Loans View -->
+        <Grid IsVisible="{Binding IsLoansView}" RowDefinitions="Auto,*">
+          
+          <!-- Loans Filter Panel -->
+          <Border Grid.Row="0" Classes="filter-panel" Margin="0,0,0,16">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+              
+              <!-- Search -->
+              <TextBox Grid.Column="0" 
+                       Text="{Binding SearchText}"
+                       Classes="search-input"
+                       Margin="0,0,6,0">
+                <TextBox.InnerLeftContent>
+                  <material:MaterialIcon Kind="Magnify" Width="16" Height="16" 
+                                         Margin="12,0,8,0"
+                                         Foreground="{DynamicResource TextMutedBrush}"/>
+                </TextBox.InnerLeftContent>
+              </TextBox>
+
+              <!-- User Filter -->
+              <ComboBox Grid.Column="1" 
+                        ItemsSource="{Binding AvailableUsers}"
+                        SelectedItem="{Binding SelectedUserFilter}"
+                        PlaceholderText="Все пользователи"
+                        MinWidth="180"
+                        Classes="filter-combo"
+                        Margin="6,0,6,0">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding FullName}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+
+              <!-- Status Filter -->
+              <ComboBox Grid.Column="2"
+                        ItemsSource="{Binding AvailableLoanStatuses}"
+                        SelectedItem="{Binding SelectedLoanStatusFilter}"
+                        PlaceholderText="Все статусы"
+                        MinWidth="120"
+                        Classes="filter-combo"
+                        Margin="6,0,6,0"/>
+
+              <!-- Date Range Filter -->
+              <Button Grid.Column="3" Classes="btn-outline" Command="{Binding ShowDateFilterCommand}" Margin="6,0,6,0">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <material:MaterialIcon Kind="CalendarRange" Width="16" Height="16"/>
+                  <TextBlock Text="Период"/>
+                </StackPanel>
+              </Button>
+
+              <!-- Overdue Filter -->
+              <ToggleButton Grid.Column="4" Classes="filter-toggle" 
+                            IsChecked="{Binding ShowOverdueOnly}"
+                            Margin="6,0,0,0">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <material:MaterialIcon Kind="AlertCircle" Width="16" Height="16"/>
+                  <TextBlock Text="Просроченные"/>
+                </StackPanel>
+              </ToggleButton>
+            </Grid>
+          </Border>
+
+          <!-- Loans List -->
+          <Border Grid.Row="1" Classes="data-container">
+            <Grid RowDefinitions="Auto,*,Auto">
+              
+              <!-- Loans Header -->
+              <Border Grid.Row="0" Classes="list-header">
+                <Grid ColumnDefinitions="Auto,*,150,120,120,100,80">
+                  <CheckBox Grid.Column="0" 
+                            IsChecked="{Binding AreAllLoansSelected}"
+                            Margin="16,0"/>
+                  <TextBlock Grid.Column="1" Text="Займ" Classes="header-text"/>
+                  <TextBlock Grid.Column="2" Text="Пользователь" Classes="header-text"/>
+                  <TextBlock Grid.Column="3" Text="Дата выдачи" Classes="header-text"/>
+                  <TextBlock Grid.Column="4" Text="Срок возврата" Classes="header-text"/>
+                  <TextBlock Grid.Column="5" Text="Статус" Classes="header-text"/>
+                  <TextBlock Grid.Column="6" Text="Действия" Classes="header-text"/>
+                </Grid>
+              </Border>
+
+              <!-- Loans Items -->
+              <ScrollViewer Grid.Row="1" Classes="data-scroll">
+                <ItemsControl x:Name="LoansItemsControl" ItemsSource="{Binding Loans}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Classes="list-item">
+                        <Grid ColumnDefinitions="Auto,*,150,120,120,100,80">
+                          
+                          <!-- Selection -->
+                          <CheckBox Grid.Column="0" 
+                                    IsChecked="{Binding IsSelected}"
+                                    Margin="16,0"/>
+
+                          <!-- Loan Info -->
+                          <StackPanel Grid.Column="1" Spacing="4" Margin="12,8">
+                            <TextBlock Text="{Binding Resource.Title}" Classes="item-title"/>
+                            <TextBlock Classes="item-subtitle">
+                              <Run Text="Автор:"/>
+                              <Run Text="{Binding Resource.Author}"/>
+                              <Run Text="•"/>
+                              <Run Text="Тип:"/>
+                              <Run Text="{Binding Resource.Type}"/>
+                            </TextBlock>
+                          </StackPanel>
+
+                          <!-- User -->
+                          <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="{Binding Person.FullName}" Classes="item-text"/>
+                            <TextBlock Text="{Binding Person.Email}" Classes="item-subtitle"/>
+                          </StackPanel>
+
+                          <!-- Loan Date -->
+                          <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="{Binding LoanDate, StringFormat='{}{0:dd.MM.yyyy}'}" 
+                                       Classes="item-text"/>
+                            <TextBlock Text="{Binding LoanDate, StringFormat='{}{0:dddd}'}" 
+                                       Classes="item-subtitle"/>
+                          </StackPanel>
+
+                          <!-- Due Date -->
+                          <StackPanel Grid.Column="4" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="{Binding DueDate, StringFormat='{}{0:dd.MM.yyyy}'}" 
+                                       Classes="item-text"/>
+                            <TextBlock Text="{Binding DaysOverdue, StringFormat='{}Просрочено: {0} дн.'}" 
+                                       Classes="item-subtitle"
+                                       Foreground="{DynamicResource ErrorBrush}"
+                                       IsVisible="{Binding IsOverdue}"/>
+                            <TextBlock Text="{Binding DaysRemaining, StringFormat='{}Осталось: {0} дн.'}" 
+                                       Classes="item-subtitle"
+                                       IsVisible="{Binding !IsOverdue}"/>
+                          </StackPanel>
+
+                          <!-- Status -->
+                          <Border Grid.Column="5" VerticalAlignment="Center">
+                            <Border Classes="status-badge">
+                              <StackPanel Orientation="Horizontal" Spacing="4">
+                                <Ellipse Width="8" Height="8" 
+                                         Fill="{Binding Status, Converter={x:Static local:LoanStatusToColorConverter.Instance}}"/>
+                                <TextBlock Text="{Binding Status}" Classes="badge-text"/>
+                              </StackPanel>
+                            </Border>
+                          </Border>
+
+                          <!-- Actions -->
+                          <StackPanel Grid.Column="6" Orientation="Horizontal" 
+                                      VerticalAlignment="Center" Spacing="4">
+                            <Button Classes="btn-icon"
+                                    Command="{Binding #LoansItemsControl.DataContext.ViewLoanCommand}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip.Tip="Просмотр">
+                              <material:MaterialIcon Kind="Eye" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="btn-icon btn-success"
+                                    Command="{Binding #LoansItemsControl.DataContext.ReturnResourceCommand}"
+                                    CommandParameter="{Binding}"
+                                    IsEnabled="{Binding CanReturn}"
+                                    ToolTip.Tip="Вернуть">
+                              <material:MaterialIcon Kind="KeyboardReturn" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="btn-icon btn-warning"
+                                    Command="{Binding #LoansItemsControl.DataContext.ExtendLoanCommand}"
+                                    CommandParameter="{Binding}"
+                                    IsEnabled="{Binding CanExtend}"
+                                    ToolTip.Tip="Продлить">
+                              <material:MaterialIcon Kind="CalendarPlus" Width="16" Height="16"/>
+                            </Button>
+                          </StackPanel>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+
+              <!-- Loans Pagination -->
+              <Border Grid.Row="2" Classes="pagination-container">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <TextBlock Grid.Column="0" Classes="pagination-info">
+                    <Run Text="Показано"/>
+                    <Run Text="{Binding FilteredLoans.Count}"/>
+                    <Run Text="из"/>
+                    <Run Text="{Binding TotalLoansCount}"/>
+                    <Run Text="займов"/>
+                  </TextBlock>
+
+                  <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Показывать по:" VerticalAlignment="Center" 
+                               Classes="pagination-label"/>
+                    <ComboBox ItemsSource="{Binding AvailablePageSizes}"
+                              SelectedItem="{Binding PageSize}"
+                              MinWidth="80"
+                              Classes="pagination-combo"/>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="4" Margin="16,0,0,0">
+                      <Button Classes="btn-icon" 
+                              Command="{Binding PreviousPageCommand}"
+                              IsEnabled="{Binding CanGoPreviousPage}">
+                        <material:MaterialIcon Kind="ChevronLeft" Width="16" Height="16"/>
+                      </Button>
+                      
+                      <Border Classes="page-indicator">
+                        <TextBlock>
+                          <Run Text="{Binding CurrentPage}"/>
+                          <Run Text="из"/>
+                          <Run Text="{Binding TotalPages}"/>
+                        </TextBlock>
+                      </Border>
+                      
+                      <Button Classes="btn-icon" 
+                              Command="{Binding NextPageCommand}"
+                              IsEnabled="{Binding CanGoNextPage}">
+                        <material:MaterialIcon Kind="ChevronRight" Width="16" Height="16"/>
+                      </Button>
+                    </StackPanel>
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </Grid>
+          </Border>
+        </Grid>
+      </Panel>
+    </Border>
+
+    <!-- Loading Overlay -->
+    <Border Grid.Row="0" Grid.RowSpan="3" 
+            Background="Black" Opacity="0.3"
+            IsVisible="{Binding IsLoading}"/>
+    
+    <Border Grid.Row="0" Grid.RowSpan="3"
+            IsVisible="{Binding IsLoading}">
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" 
+                  Spacing="16">
+        <Border Classes="loading-spinner" Width="48" Height="48"/>
+        <TextBlock Text="{Binding LoadingMessage}" 
+                   Classes="loading-text"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl> 

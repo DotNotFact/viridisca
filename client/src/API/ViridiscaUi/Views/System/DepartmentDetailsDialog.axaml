@@ -1,0 +1,330 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.System"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+        x:Class="ViridiscaUi.Views.System.DepartmentDetailsDialog"
+        x:DataType="vm:DepartmentDetailsDialogViewModel"
+        Title="{Binding Title}"
+        Width="900" Height="700"
+        MinWidth="800" MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Styles>
+        <!-- Modern Card Style (из GroupsView) -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 2 8 0 #10000000" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+        
+        <!-- Action Button Style (из GroupsView) -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="MinHeight" Value="36" />
+        </Style>
+        
+        <!-- Primary Action Button (из GroupsView) -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Secondary Action Button (из GroupsView) -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <!-- Danger Action Button (из GroupsView) -->
+        <Style Selector="Button.danger">
+            <Setter Property="Background" Value="#E74C3C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Statistics Badge Style (улучшенная версия) -->
+        <Style Selector="Border.stat-card">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="BoxShadow" Value="0 2 6 0 #15000000" />
+        </Style>
+        
+        <Style Selector="TextBlock.stat-number">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        
+        <Style Selector="TextBlock.stat-label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Opacity" Value="0.9" />
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+        
+        <Style Selector="TextBlock.value">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+        
+        <!-- Header Section with Modern Design -->
+        <Border Grid.Row="0" Classes="card">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                
+                <!-- Title and Icon -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <material:MaterialIcon Kind="Domain" 
+                                               Width="32" Height="32" 
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SystemAccentColor}"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Department.Name}" 
+                                   FontSize="24" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Department.Code, StringFormat='Код: {0}'}" 
+                                   FontSize="14" 
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    </StackPanel>
+                    
+                    <!-- Status Badge -->
+                    <Border Background="{Binding Department.IsActive, Converter={x:Static local:StatusColorConverter.Instance}}"
+                            CornerRadius="16" 
+                            Padding="12,6"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Department.IsActive, Converter={x:Static local:StatusDisplayConverter.Instance}}"
+                                   FontSize="12" FontWeight="SemiBold" 
+                                   Foreground="White"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- Action Buttons -->
+                <StackPanel Grid.Row="0" Grid.Column="1" 
+                            Orientation="Horizontal" Spacing="12"
+                            VerticalAlignment="Center">
+                    <Button Command="{Binding EditCommand}"
+                            Classes="action primary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Pencil" 
+                                                       Width="16" Height="16"/>
+                            <TextBlock Text="Редактировать"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeleteCommand}"
+                            Classes="action danger">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Delete" 
+                                                       Width="16" Height="16"/>
+                            <TextBlock Text="Удалить"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding RefreshCommand}"
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Refresh" 
+                                                       Width="16" Height="16"/>
+                            <TextBlock Text="Обновить"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Modern Statistics Row -->
+                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,20,0,0" ColumnDefinitions="*,*,*,*">
+                    <Border Grid.Column="0" Classes="stat-card" Background="{DynamicResource SystemAccentColor}">
+                        <StackPanel Spacing="8">
+                            <material:MaterialIcon Kind="Account" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="White"/>
+                            <TextBlock Text="{Binding Statistics.TeacherCount}" 
+                                       Classes="stat-number"/>
+                            <TextBlock Text="Преподавателей" 
+                                       Classes="stat-label"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="1" Classes="stat-card" Background="#27AE60">
+                        <StackPanel Spacing="8">
+                            <material:MaterialIcon Kind="School" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="White"/>
+                            <TextBlock Text="{Binding Statistics.StudentCount}" 
+                                       Classes="stat-number"/>
+                            <TextBlock Text="Студентов" 
+                                       Classes="stat-label"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="2" Classes="stat-card" Background="#E67E22">
+                        <StackPanel Spacing="8">
+                            <material:MaterialIcon Kind="BookOpen" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="White"/>
+                            <TextBlock Text="{Binding Statistics.CourseCount}" 
+                                       Classes="stat-number"/>
+                            <TextBlock Text="Курсов" 
+                                       Classes="stat-label"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="3" Classes="stat-card" Background="#9B59B6" Margin="8,0,0,0">
+                        <StackPanel Spacing="8">
+                            <material:MaterialIcon Kind="BookMultiple" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="White"/>
+                            <TextBlock Text="{Binding Statistics.SubjectCount}" 
+                                       Classes="stat-number"/>
+                            <TextBlock Text="Предметов" 
+                                       Classes="stat-label"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="16">
+                
+                <!-- Basic Information Card -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="Information" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Основная информация" 
+                                       FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,20,0">
+                                <TextBlock Text="Название" Classes="label"/>
+                                <TextBlock Text="{Binding Department.Name}" Classes="value"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Grid.Row="0" Margin="20,0,0,0">
+                                <TextBlock Text="Код" Classes="label"/>
+                                <TextBlock Text="{Binding Department.Code}" Classes="value"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,20,0">
+                                <TextBlock Text="Дата создания" Classes="label"/>
+                                <TextBlock Text="{Binding Department.CreatedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" 
+                                           Classes="value"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,0,0,0">
+                                <TextBlock Text="Последнее изменение" Classes="label"/>
+                                <TextBlock Text="{Binding Department.LastModifiedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" 
+                                           Classes="value"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Description Card -->
+                <Border Classes="card" IsVisible="{Binding Department.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="TextBox" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Описание" 
+                                       FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding Department.Description}" 
+                                   TextWrapping="Wrap"
+                                   FontSize="14" 
+                                   LineHeight="20"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Additional Actions Card -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <material:MaterialIcon Kind="Cog" 
+                                                       Width="20" Height="20" 
+                                                       Foreground="{DynamicResource SystemAccentColor}"/>
+                            <TextBlock Text="Дополнительные действия" 
+                                       FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <WrapPanel Orientation="Horizontal" ItemWidth="200">
+                            <Button Command="{Binding ViewTeachersCommand}"
+                                    Classes="action secondary"
+                                    Width="190" Margin="0,0,10,10">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <material:MaterialIcon Kind="Account" Width="16" Height="16"/>
+                                    <TextBlock Text="Преподаватели"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding ViewStudentsCommand}"
+                                    Classes="action secondary"
+                                    Width="190" Margin="0,0,10,10">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <material:MaterialIcon Kind="School" Width="16" Height="16"/>
+                                    <TextBlock Text="Студенты"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding ViewCoursesCommand}"
+                                    Classes="action secondary"
+                                    Width="190" Margin="0,0,10,10">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <material:MaterialIcon Kind="BookOpen" Width="16" Height="16"/>
+                                    <TextBlock Text="Курсы"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding ExportReportCommand}"
+                                    Classes="action secondary"
+                                    Width="190" Margin="0,0,10,10">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <material:MaterialIcon Kind="FileExport" Width="16" Height="16"/>
+                                    <TextBlock Text="Экспорт отчета"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="2" Classes="card" Margin="0,16,0,0">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Spacing="12">
+                <Button Command="{Binding CloseCommand}"
+                        Classes="action secondary"
+                        MinWidth="100">
+                    <TextBlock Text="Закрыть"/>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window> 

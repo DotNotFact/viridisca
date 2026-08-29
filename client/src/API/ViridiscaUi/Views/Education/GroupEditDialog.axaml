@@ -1,0 +1,396 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.Education"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:local="clr-namespace:ViridiscaUi.Converters"
+        xmlns:education="clr-namespace:ViridiscaUi.Domain.Entities.Education.Enums;assembly=ViridiscaUi.Domain"
+        mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="850"
+        x:Class="ViridiscaUi.Views.Education.GroupEditDialog"
+        x:DataType="vm:GroupEditorViewModel"
+        Title="{Binding Title}"
+        Width="750" Height="850"
+        MinWidth="650" MinHeight="750"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+
+    <Window.Styles>
+        <!-- Modern Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 2 8 0 #10000000" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+        
+        <!-- Action Button Style -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        
+        <!-- Primary Action Button -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Secondary Action Button -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        
+        <Style Selector="TextBlock.value">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+
+        <Style Selector="TextBox.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="ComboBox.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="DatePicker.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="NumericUpDown.field">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+        </Style>
+
+        <Style Selector="Border.info-card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Padding" Value="24" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+        
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinHeight" Value="44" />
+            <Setter Property="MinWidth" Value="120" />
+        </Style>
+        
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <Style Selector="TextBox.form-input">
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        
+        <Style Selector="TextBox.form-input:focus">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+        </Style>
+        
+        <Style Selector="ComboBox.form-input">
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        
+        <Style Selector="NumericUpDown.form-input">
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        
+        <Style Selector="DatePicker.form-input">
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+        
+        <Style Selector="TextBlock.error">
+            <Setter Property="Foreground" Value="#E74C3C" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Classes="card">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,0,8">
+                    <material:MaterialIcon Kind="AccountMultiple" 
+                                               Width="28" Height="28" 
+                                               Foreground="{DynamicResource SystemAccentColor}"/>
+                    <TextBlock Text="{Binding Title}" 
+                               FontSize="24" FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Text="Заполните информацию о группе" 
+                           FontSize="14" 
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Form Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="24" Margin="0,0,0,24">
+                
+                <!-- Basic Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Основная информация" 
+                                   FontSize="18" FontWeight="SemiBold"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+                            <!-- Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Название группы *" Classes="label"/>
+                                <TextBox Text="{Binding Name}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Code -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Код группы *" Classes="label"/>
+                                <TextBox Text="{Binding Code}" 
+                                         Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Year -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,16,8,0">
+                                <TextBlock Text="Учебный год *" Classes="label"/>
+                                <NumericUpDown Value="{Binding Year}" 
+                                               Minimum="2020" Maximum="2030"
+                                               Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Max Students -->
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,16,0,0">
+                                <TextBlock Text="Максимум студентов *" Classes="label"/>
+                                <NumericUpDown Value="{Binding MaxStudents}" 
+                                               Minimum="1" Maximum="100"
+                                               Classes="form-input"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Description -->
+                        <StackPanel>
+                            <TextBlock Text="Описание" Classes="label"/>
+                            <TextBox Text="{Binding Description}" 
+                                     Classes="form-input"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     Height="100"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Academic Schedule -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Академический календарь" 
+                                   FontSize="18" FontWeight="SemiBold"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                            <!-- Start Date -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Дата начала *" Classes="label"/>
+                                <DatePicker SelectedDate="{Binding StartDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                                            Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- End Date -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Дата окончания" Classes="label"/>
+                                <DatePicker SelectedDate="{Binding EndDate, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                                            Classes="form-input"/>
+                            </StackPanel>
+                            
+                            <!-- Status -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,16,0,0">
+                                <TextBlock Text="Статус группы" Classes="label"/>
+                                <ComboBox SelectedItem="{Binding Status}"
+                                          Classes="form-input">
+                                    <ComboBox.Items>
+                                        <education:GroupStatus>Forming</education:GroupStatus>
+                                        <education:GroupStatus>Active</education:GroupStatus>
+                                        <education:GroupStatus>Completed</education:GroupStatus>
+                                        <education:GroupStatus>Suspended</education:GroupStatus>
+                                        <education:GroupStatus>Archived</education:GroupStatus>
+                                    </ComboBox.Items>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={x:Static local:EnumToLocalizedStringConverter.Instance}}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Management -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Управление группой" 
+                                   FontSize="18" FontWeight="SemiBold"/>
+                        
+                        <!-- Curator -->
+                        <StackPanel>
+                            <TextBlock Text="Куратор группы" Classes="label"/>
+                            <ComboBox ItemsSource="{Binding Teachers}"
+                                      SelectedItem="{Binding SelectedCurator}"
+                                      Classes="form-input"
+                                      PlaceholderText="Выберите куратора">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="{Binding FullName}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Specialization}" 
+                                                       Opacity="0.7" FontSize="12"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <!-- Loading Indicator for Teachers -->
+                        <StackPanel Orientation="Horizontal" 
+                                    Spacing="12"
+                                    IsVisible="{Binding IsLoading}">
+                            <ProgressBar IsIndeterminate="True" Width="24" Height="24"/>
+                            <TextBlock Text="Загрузка преподавателей..." 
+                                       VerticalAlignment="Center"
+                                       FontSize="14"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer with Action Buttons -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                CornerRadius="12"
+                Padding="24,16">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                
+                <!-- Validation Status -->
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="8"
+                            VerticalAlignment="Center">
+                    <material:MaterialIcon Kind="CheckCircle" 
+                                               Width="16" Height="16" 
+                                               Foreground="Green"
+                                               IsVisible="{Binding IsValid}"/>
+                    <material:MaterialIcon Kind="AlertCircle" 
+                                               Width="16" Height="16" 
+                                               Foreground="Orange"
+                                               IsVisible="{Binding !IsValid}"/>
+                    <TextBlock Text="{Binding IsValid, Converter={x:Static local:BoolToCustomStringConverter.Instance}, ConverterParameter='Форма заполнена|Заполните обязательные поля'}" 
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="12">
+                    <Button Command="{Binding CancelCommand}"
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Close" Width="16" Height="16"/>
+                            <TextBlock Text="Отмена"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SaveCommand}"
+                            Classes="action primary"
+                            IsEnabled="{Binding IsValid}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="ContentSave" Width="16" Height="16"/>
+                            <TextBlock Text="Сохранить"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window> 

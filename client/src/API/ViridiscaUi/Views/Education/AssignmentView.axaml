@@ -1,0 +1,81 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Views.Education.AssignmentView"
+             x:DataType="vm:AssignmentViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+            <TextBlock Grid.Column="0" Text="Задания" FontSize="24" FontWeight="Bold"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding CreateCommand}" Content="Создать"/>
+                <Button Command="{Binding EditCommand}" Content="Редактировать"/>
+                <Button Command="{Binding DeleteCommand}" Content="Удалить"/>
+                <controls:SearchableDropdown Items="{Binding Items}"
+                                           SelectedItem="{Binding SelectedItem}"
+                                           PlaceholderText="Поиск задания..."/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1">
+            <Grid>
+                <!-- Table Header -->
+                <Grid ColumnDefinitions="Auto,*,*,*,*,Auto" Margin="0,0,0,8">
+                    <TextBlock Grid.Column="0" Text="Название" FontWeight="Bold" Width="200"/>
+                    <TextBlock Grid.Column="1" Text="Курс" FontWeight="Bold" Width="200"/>
+                    <TextBlock Grid.Column="2" Text="Тип" FontWeight="Bold" Width="150"/>
+                    <TextBlock Grid.Column="3" Text="Срок сдачи" FontWeight="Bold" Width="150"/>
+                    <TextBlock Grid.Column="4" Text="Статус" FontWeight="Bold" Width="150"/>
+                    <TextBlock Grid.Column="5" Text="Действия" FontWeight="Bold" Width="100"/>
+                </Grid>
+
+                <!-- Table Content -->
+                <ItemsControl ItemsSource="{Binding Items}" Margin="0,32,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto,*,*,*,*,Auto" Margin="0,4">
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" Width="200"/>
+                                <TextBlock Grid.Column="1" Text="{Binding CourseDetails}" Width="200"/>
+                                <TextBlock Grid.Column="2" Text="{Binding TypeText}" Width="150"/>
+                                <TextBlock Grid.Column="3" Text="{Binding DueDate, StringFormat='{}{0:d}'}" Width="150"/>
+                                <TextBlock Grid.Column="4" Text="{Binding StatusText}" 
+                                         Foreground="{Binding StatusColor}" Width="150"/>
+                                <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8">
+                                    <Button Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Content="✏️"/>
+                                    <Button Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Content="🗑️"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
+            <TextBlock Grid.Column="0" Text="{Binding Items.Count, StringFormat='Всего заданий: {0}'}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding PreviousPageCommand}" Content="◀"/>
+                <TextBlock Text="{Binding CurrentPage, StringFormat='Страница {0}'}" VerticalAlignment="Center"/>
+                <Button Command="{Binding NextPageCommand}" Content="▶"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" Background="#80000000" IsVisible="{Binding IsLoading}">
+            <ProgressBar IsIndeterminate="True" Width="100" Height="2"/>
+        </Grid>
+    </Grid>
+</UserControl> 
+
+
+

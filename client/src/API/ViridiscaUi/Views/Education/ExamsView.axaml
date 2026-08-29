@@ -1,0 +1,351 @@
+<UserControl x:Class="ViridiscaUi.Views.Education.ExamsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:rxui="http://reactiveui.net"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:DataType="vm:ExamsViewModel">
+
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    
+    <!-- Header Section -->
+    <Border Grid.Row="0" Classes="page-header" Padding="24,16">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
+          <material:MaterialIcon Kind="School" Width="32" Height="32" 
+                                 Foreground="{DynamicResource PrimaryBrush}"/>
+          <StackPanel>
+            <TextBlock Text="Управление экзаменами" Classes="page-title"/>
+            <TextBlock Text="Создание, планирование и проведение экзаменов" 
+                       Classes="page-subtitle"/>
+          </StackPanel>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <Button Classes="btn-secondary" Command="{Binding RefreshCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Refresh" Width="16" Height="16"/>
+              <TextBlock Text="Обновить"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-secondary" Command="{Binding ExportExamsCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+              <TextBlock Text="Экспорт"/>
+            </StackPanel>
+          </Button>
+          <Button Classes="btn-primary" Command="{Binding CreateExamCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+              <TextBlock Text="Новый экзамен"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Statistics Cards -->
+    <Border Grid.Row="1" Padding="24,0,24,16">
+      <Grid ColumnDefinitions="*,*,*,*">
+        
+        <!-- Total Exams -->
+        <Border Grid.Column="0" Classes="stat-card" Margin="0,0,8,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Всего экзаменов" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="ClipboardCheck" Width="20" Height="20"
+                                     Foreground="{DynamicResource PrimaryBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.TotalExams}" Classes="stat-value"/>
+            <TextBlock Text="в системе" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Published Exams -->
+        <Border Grid.Column="1" Classes="stat-card" Margin="8,0,8,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Опубликованы" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="CheckCircle" Width="20" Height="20"
+                                     Foreground="{DynamicResource SuccessBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.PublishedExams}" Classes="stat-value"/>
+            <TextBlock Text="доступны" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Upcoming Exams -->
+        <Border Grid.Column="2" Classes="stat-card" Margin="8,0,8,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Предстоящие" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="Calendar" Width="20" Height="20"
+                                     Foreground="{DynamicResource InfoBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.UpcomingExams}" Classes="stat-value"/>
+            <TextBlock Text="запланированы" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Average Score -->
+        <Border Grid.Column="3" Classes="stat-card" Margin="8,0,0,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Text="Средний балл" Classes="stat-label"/>
+              <material:MaterialIcon Grid.Column="1" Kind="TrendingUp" Width="20" Height="20"
+                                     Foreground="{DynamicResource SuccessBrush}"/>
+            </Grid>
+            <TextBlock Text="{Binding Statistics.AverageScore, StringFormat='{}{0:F1}'}" Classes="stat-value"/>
+            <TextBlock Text="из максимума" Classes="stat-description"/>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Filters and Search -->
+    <Border Grid.Row="2" Padding="24,0">
+      <Grid RowDefinitions="Auto,*">
+        
+        <!-- Filter Panel -->
+        <Border Grid.Row="0" Classes="filter-panel" Margin="0,0,0,16">
+          <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto">
+            
+            <!-- Search -->
+            <TextBox Grid.Column="0" 
+                     Text="{Binding SearchText}"
+                     Classes="search-input"
+                     Margin="0,0,6,0">
+              <TextBox.InnerLeftContent>
+                <material:MaterialIcon Kind="Magnify" Width="16" Height="16" 
+                                       Margin="12,0,8,0"
+                                       Foreground="{DynamicResource TextMutedBrush}"/>
+              </TextBox.InnerLeftContent>
+            </TextBox>
+
+            <!-- Course Filter -->
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding CourseInstances}"
+                      SelectedItem="{Binding SelectedCourseFilter}"
+                      PlaceholderText="Все курсы"
+                      MinWidth="180"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding CourseName}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Period Filter -->
+            <ComboBox Grid.Column="2"
+                      ItemsSource="{Binding AcademicPeriods}"
+                      SelectedItem="{Binding SelectedPeriodFilter}"
+                      PlaceholderText="Все периоды"
+                      MinWidth="140"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Type Filter -->
+            <ComboBox Grid.Column="3"
+                      ItemsSource="{Binding AvailableExamTypes}"
+                      SelectedItem="{Binding TypeFilter}"
+                      PlaceholderText="Все типы"
+                      MinWidth="120"
+                      Classes="filter-combo"
+                      Margin="6,0,6,0"/>
+
+            <!-- Date Range -->
+            <DatePicker Grid.Column="4"
+                        SelectedDate="{Binding DateFromFilter, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                        MinWidth="120"
+                        Classes="filter-date"
+                        Margin="6,0,6,0"/>
+
+            <DatePicker Grid.Column="5"
+                        SelectedDate="{Binding DateToFilter, Converter={x:Static local:DateTimeToDateTimeOffsetConverter.Instance}}"
+                        MinWidth="120"
+                        Classes="filter-date"
+                        Margin="6,0,0,0"/>
+          </Grid>
+        </Border>
+
+        <!-- Exams List -->
+        <Border Grid.Row="1" Classes="data-container">
+          <Grid RowDefinitions="Auto,*,Auto">
+            
+            <!-- List Header -->
+            <Border Grid.Row="0" Classes="list-header">
+              <Grid ColumnDefinitions="Auto,*,120,120,120,100,80">
+                <CheckBox Grid.Column="0" 
+                          IsChecked="{Binding AreAllExamsSelected}"
+                          Margin="16,0"/>
+                <TextBlock Grid.Column="1" Text="Экзамен" Classes="header-text"/>
+                <TextBlock Grid.Column="2" Text="Дата" Classes="header-text"/>
+                <TextBlock Grid.Column="3" Text="Время" Classes="header-text"/>
+                <TextBlock Grid.Column="4" Text="Тип" Classes="header-text"/>
+                <TextBlock Grid.Column="5" Text="Статус" Classes="header-text"/>
+                <TextBlock Grid.Column="6" Text="Действия" Classes="header-text"/>
+              </Grid>
+            </Border>
+
+            <!-- Exams Items -->
+            <ScrollViewer Grid.Row="1" Classes="data-scroll">
+              <ItemsControl x:Name="ExamsItemsControl" ItemsSource="{Binding Exams}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Classes="list-item">
+                      <Grid ColumnDefinitions="Auto,*,120,120,120,100,80">
+                        
+                        <!-- Selection -->
+                        <CheckBox Grid.Column="0" 
+                                  IsChecked="{Binding IsSelected}"
+                                  Margin="16,0"/>
+
+                        <!-- Exam Info -->
+                        <StackPanel Grid.Column="1" Spacing="4" Margin="12,8">
+                          <TextBlock Text="{Binding CourseName}"
+                                     Classes="item-title"/>
+                          <TextBlock Text="{Binding PeriodName}" Classes="item-subtitle"/>
+                          <TextBlock Text="{Binding Instructions}"
+                                     Classes="item-description"
+                                     TextTrimming="CharacterEllipsis"
+                                     MaxLines="2"/>
+                        </StackPanel>
+
+                        <!-- Date -->
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="2">
+                          <TextBlock Text="{Binding ExamDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                     Classes="item-text"/>
+                          <TextBlock Text="{Binding ExamDate, StringFormat='{}{0:dddd}'}"
+                                     Classes="item-subtitle"/>
+                        </StackPanel>
+
+                        <!-- Time -->
+                        <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="2">
+                          <TextBlock Text="{Binding ExamDate, StringFormat='{}{0:HH:mm}'}"
+                                     Classes="item-text"/>
+                          <TextBlock Text="{Binding DurationText}"
+                                     Classes="item-subtitle"/>
+                        </StackPanel>
+
+                        <!-- Type -->
+                        <Border Grid.Column="4" Classes="type-badge" VerticalAlignment="Center">
+                          <TextBlock Text="{Binding Type}" Classes="badge-text"/>
+                        </Border>
+
+                        <!-- Status -->
+                        <Border Grid.Column="5" VerticalAlignment="Center">
+                          <Border Classes="status-badge">
+                            <TextBlock Text="{Binding StatusText}" Classes="badge-text"/>
+                          </Border>
+                        </Border>
+
+                        <!-- Actions -->
+                        <StackPanel Grid.Column="6" Orientation="Horizontal" 
+                                    VerticalAlignment="Center" Spacing="4">
+                          <Button Classes="btn-icon"
+                                  Command="{Binding #ExamsItemsControl.DataContext.ViewExamCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Просмотр">
+                            <material:MaterialIcon Kind="Eye" Width="16" Height="16"/>
+                          </Button>
+                          <Button Classes="btn-icon"
+                                  Command="{Binding #ExamsItemsControl.DataContext.EditExamCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Редактировать">
+                            <material:MaterialIcon Kind="Pencil" Width="16" Height="16"/>
+                          </Button>
+                          <Button Classes="btn-icon btn-danger"
+                                  Command="{Binding #ExamsItemsControl.DataContext.DeleteExamCommand}"
+                                  CommandParameter="{Binding}"
+                                  ToolTip.Tip="Удалить">
+                            <material:MaterialIcon Kind="Delete" Width="16" Height="16"/>
+                          </Button>
+                        </StackPanel>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Pagination -->
+            <Border Grid.Row="2" Classes="pagination-container">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                
+                <!-- Items Info -->
+                <TextBlock Grid.Column="0" Classes="pagination-info">
+                  <Run Text="Показано"/>
+                  <Run Text="{Binding FilteredExams.Count}"/>
+                  <Run Text="из"/>
+                  <Run Text="{Binding TotalExamsCount}"/>
+                  <Run Text="экзаменов"/>
+                </TextBlock>
+
+                <!-- Page Size -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                  <TextBlock Text="Показывать по:" VerticalAlignment="Center" 
+                             Classes="pagination-label"/>
+                  <ComboBox ItemsSource="{Binding AvailablePageSizes}"
+                            SelectedItem="{Binding PageSize}"
+                            MinWidth="80"
+                            Classes="pagination-combo"/>
+                  
+                  <!-- Navigation -->
+                  <StackPanel Orientation="Horizontal" Spacing="4" Margin="16,0,0,0">
+                    <Button Classes="btn-icon" 
+                            Command="{Binding PreviousPageCommand}"
+                            IsEnabled="{Binding CanGoPreviousPage}">
+                      <material:MaterialIcon Kind="ChevronLeft" Width="16" Height="16"/>
+                    </Button>
+                    
+                    <Border Classes="page-indicator">
+                      <TextBlock>
+                        <Run Text="{Binding CurrentPage}"/>
+                        <Run Text="из"/>
+                        <Run Text="{Binding TotalPages}"/>
+                      </TextBlock>
+                    </Border>
+                    
+                    <Button Classes="btn-icon" 
+                            Command="{Binding NextPageCommand}"
+                            IsEnabled="{Binding CanGoNextPage}">
+                      <material:MaterialIcon Kind="ChevronRight" Width="16" Height="16"/>
+                    </Button>
+                  </StackPanel>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Loading Overlay -->
+    <Border Grid.Row="0" Grid.RowSpan="4" 
+            Background="Black" Opacity="0.3"
+            IsVisible="{Binding IsLoading}"/>
+    
+    <Border Grid.Row="0" Grid.RowSpan="4"
+            IsVisible="{Binding IsLoading}">
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" 
+                  Spacing="16">
+        <Border Classes="loading-spinner" Width="48" Height="48"/>
+        <TextBlock Text="{Binding LoadingMessage}" 
+                   Classes="loading-text"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl> 

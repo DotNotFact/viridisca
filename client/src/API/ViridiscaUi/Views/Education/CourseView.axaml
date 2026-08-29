@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ViridiscaUi.ViewModels.Education"
+             xmlns:controls="using:ViridiscaUi.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ViridiscaUi.Views.Education.CourseView"
+             x:DataType="vm:CourseViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="16">
+            <TextBlock Text="Курсы" FontSize="24" FontWeight="Bold"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding CreateCommand}" Content="Создать"/>
+                <Button Command="{Binding EditCommand}" Content="Редактировать"/>
+                <Button Command="{Binding DeleteCommand}" Content="Удалить"/>
+                <controls:SearchableDropdown Items="{Binding Items}"
+                                           SelectedItem="{Binding SelectedItem}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="16,0">
+            <Grid>
+                <Grid ColumnDefinitions="Auto,*,*,*,Auto,Auto,Auto,Auto">
+                    <!-- Table Header -->
+                    <TextBlock Grid.Column="0" Text="Название" FontWeight="Bold" Width="200"/>
+                    <TextBlock Grid.Column="1" Text="Код" FontWeight="Bold" Width="100"/>
+                    <TextBlock Grid.Column="2" Text="Тип" FontWeight="Bold" Width="100"/>
+                    <TextBlock Grid.Column="3" Text="Статус" FontWeight="Bold" Width="100"/>
+                    <TextBlock Grid.Column="4" Text="Кредиты" FontWeight="Bold" Width="80"/>
+                    <TextBlock Grid.Column="5" Text="Кафедра" FontWeight="Bold" Width="150"/>
+                    <TextBlock Grid.Column="6" Text="Создан" FontWeight="Bold" Width="150"/>
+                    <TextBlock Grid.Column="7" Text="Изменен" FontWeight="Bold" Width="150"/>
+                </Grid>
+
+                <ItemsControl ItemsSource="{Binding Items}" Margin="0,32,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto,*,*,*,Auto,Auto,Auto,Auto" Margin="0,4">
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" Width="200"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Code}" Width="100"/>
+                                <TextBlock Grid.Column="2" Text="{Binding TypeText}" Width="100"/>
+                                <TextBlock Grid.Column="3" Text="{Binding StatusText}" 
+                                         Foreground="{Binding StatusColor}" Width="100"/>
+                                <TextBlock Grid.Column="4" Text="{Binding Credits}" Width="80"/>
+                                <TextBlock Grid.Column="5" Text="{Binding Department.Name}" Width="150"/>
+                                <TextBlock Grid.Column="6" Text="{Binding CreatedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" Width="150"/>
+                                <TextBlock Grid.Column="7" Text="{Binding LastModifiedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" Width="150"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="16">
+            <TextBlock Text="{Binding Items.Count, StringFormat='Всего: {0}'}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding PreviousPageCommand}" Content="◀"/>
+                <TextBlock Text="{Binding CurrentPage, StringFormat='Страница {0}'}"/>
+                <Button Command="{Binding NextPageCommand}" Content="▶"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" Background="#80000000" 
+              IsVisible="{Binding IsLoading}">
+            <ProgressBar IsIndeterminate="True" Width="100" Height="2"/>
+        </Grid>
+    </Grid>
+</UserControl> 
+
+
+

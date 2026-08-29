@@ -1,0 +1,616 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels.System"
+             xmlns:local="clr-namespace:ViridiscaUi.Converters"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="1800" d:DesignHeight="1200"
+             x:Class="ViridiscaUi.Views.System.NotificationCenterView"
+             x:DataType="vm:NotificationCenterViewModel">
+
+    <UserControl.Resources>
+        <local:EnumEqualityConverter x:Key="EnumEqualityConverter" />
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <local:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter" />
+        <local:StatusColorConverter x:Key="StatusToColorConverter" />
+    </UserControl.Resources>
+        
+    <UserControl.Styles>
+        <!-- Modern Card Style -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BoxShadow" Value="0 4 12 0 #15000000" />
+            <Setter Property="Padding" Value="24" />
+        </Style>
+        
+        <!-- Action Button Styles -->
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinHeight" Value="40" />
+        </Style>
+        
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        
+        <Style Selector="Button.danger">
+            <Setter Property="Background" Value="#E74C3C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <Style Selector="Button.success">
+            <Setter Property="Background" Value="#27AE60" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        
+        <!-- Priority Badge Styles -->
+        <Style Selector="Border.priority-badge">
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        
+        <Style Selector="Border.priority-low">
+            <Setter Property="Background" Value="#E8F5E8" />
+        </Style>
+        
+        <Style Selector="Border.priority-normal">
+            <Setter Property="Background" Value="#E3F2FD" />
+        </Style>
+        
+        <Style Selector="Border.priority-high">
+            <Setter Property="Background" Value="#FFF3E0" />
+        </Style>
+        
+        <Style Selector="Border.priority-critical">
+            <Setter Property="Background" Value="#FFEBEE" />
+        </Style>
+        
+        <!-- Search Box Style -->
+        <Style Selector="TextBox.search">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        </Style>
+        
+        <Style Selector="TextBox.search:focus">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+        </Style>
+    </UserControl.Styles>
+
+    <Design.DataContext>
+        <vm:NotificationCenterViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+        
+        <!-- Header Section with Actions and Statistics -->
+        <Border Grid.Row="0" Classes="card" Margin="0,0,0,20">
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                
+                <!-- Title and Statistics -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="20">
+                    <material:MaterialIcon Kind="Bell" 
+                                               Width="32" Height="32" 
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SystemAccentColor}"/>
+                    <TextBlock Text="Центр уведомлений" 
+                               FontSize="32" FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
+                    
+                    <!-- Statistics Badges -->
+                    <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource SystemAccentColor}" 
+                                CornerRadius="20" Padding="16,8">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <material:MaterialIcon Kind="Bell" 
+                                                           Width="18" Height="18" 
+                                                           Foreground="White"/>
+                                <TextBlock Text="{Binding TotalNotifications, StringFormat='{}{0} всего'}" 
+                                           Foreground="White" FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#E74C3C" 
+                                CornerRadius="20" Padding="16,8">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <material:MaterialIcon Kind="BellAlert" 
+                                                           Width="18" Height="18" 
+                                                           Foreground="White"/>
+                                <TextBlock Text="{Binding UnreadNotifications, StringFormat='{}{0} непрочитанных'}" 
+                                           Foreground="White" 
+                                           FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#27AE60" 
+                                CornerRadius="20" Padding="16,8">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <material:MaterialIcon Kind="Calendar" 
+                                                           Width="18" Height="18" 
+                                                           Foreground="White"/>
+                                <TextBlock Text="{Binding TodayNotifications, StringFormat='{}{0} сегодня'}" 
+                                           Foreground="White" 
+                                           FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FF9800" 
+                                CornerRadius="20" Padding="16,8">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <material:MaterialIcon Kind="AlertCircle" 
+                                                           Width="18" Height="18" 
+                                                           Foreground="White"/>
+                                <TextBlock Text="{Binding HighPriorityNotifications, StringFormat='{}{0} важных'}" 
+                                           Foreground="White" 
+                                           FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Action Buttons -->
+                <StackPanel Grid.Row="0" Grid.Column="1" 
+                            Orientation="Horizontal" Spacing="12">
+                    <Button Command="{Binding CreateNotificationCommand}"
+                            Classes="action primary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Plus" 
+                                                       Width="20" Height="20"/>
+                            <TextBlock Text="Создать"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding MarkAllAsReadCommand}" 
+                            Classes="action success">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="CheckAll" 
+                                                       Width="20" Height="20"/>
+                            <TextBlock Text="Прочитать все"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ClearAllReadCommand}" 
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="DeleteSweep" 
+                                                       Width="20" Height="20"/>
+                            <TextBlock Text="Очистить"/>
+                        </StackPanel>
+                    </Button>
+                    <ToggleButton IsChecked="{Binding IsRealTimeEnabled}"
+                                  Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Sync" 
+                                                       Width="20" Height="20"/>
+                            <TextBlock Text="Авто-обновление"/>
+                        </StackPanel>
+                    </ToggleButton>
+                    <Button Command="{Binding RefreshCommand}" 
+                            Classes="action secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <material:MaterialIcon Kind="Refresh" 
+                                                       Width="20" Height="20"/>
+                            <TextBlock Text="Обновить"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Advanced Search -->
+                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,24,0,0">
+                    <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                            CornerRadius="12" Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox Grid.Column="0"
+                                     Classes="search"
+                                     Text="{Binding SearchText}"
+                                     FontSize="16">
+                                <TextBox.InnerLeftContent>
+                                    <material:MaterialIcon Kind="Magnify" 
+                                                               Width="24" Height="24" 
+                                                               Margin="16,0,12,0"
+                                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                </TextBox.InnerLeftContent>
+                                <TextBox.InnerRightContent>
+                                    <Button Command="{Binding ClearFiltersCommand}"
+                                            IsVisible="{Binding SearchText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="12"
+                                            Margin="0,0,12,0">
+                                        <material:MaterialIcon Kind="Close" 
+                                                                   Width="18" Height="18"/>
+                                    </Button>
+                                </TextBox.InnerRightContent>
+                            </TextBox>
+                            
+                            <!-- Loading Indicator -->
+                            <ProgressBar Grid.Column="1"
+                                         IsIndeterminate="True"
+                                         IsVisible="{Binding IsLoading}"
+                                         Width="32" Height="32"
+                                         Margin="16,0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Advanced Filters -->
+                <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" 
+                              Margin="0,20,0,0"
+                              HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Horizontal" Spacing="24">
+                        
+                        <!-- Type Filter -->
+                        <StackPanel MinWidth="140">
+                            <TextBlock Text="Тип:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                            <ComboBox SelectedItem="{Binding TypeFilter}" 
+                                      PlaceholderText="Все типы"
+                                      MinWidth="140">
+                                <ComboBoxItem Content="Все типы" Tag="{x:Null}"/>
+                                <ComboBoxItem Content="Информация" Tag="Info"/>
+                                <ComboBoxItem Content="Предупреждение" Tag="Warning"/>
+                                <ComboBoxItem Content="Ошибка" Tag="Error"/>
+                                <ComboBoxItem Content="Успех" Tag="Success"/>
+                                <ComboBoxItem Content="Система" Tag="System"/>
+                                <ComboBoxItem Content="Пользователь" Tag="User"/>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <!-- Priority Filter -->
+                        <StackPanel MinWidth="140">
+                            <TextBlock Text="Приоритет:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                            <ComboBox SelectedItem="{Binding PriorityFilter}" 
+                                      PlaceholderText="Все приоритеты"
+                                      MinWidth="140">
+                                <ComboBoxItem Content="Все приоритеты" Tag="{x:Null}"/>
+                                <ComboBoxItem Content="Низкий" Tag="Low"/>
+                                <ComboBoxItem Content="Обычный" Tag="Normal"/>
+                                <ComboBoxItem Content="Высокий" Tag="High"/>
+                                <ComboBoxItem Content="Критический" Tag="Critical"/>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <!-- Date Filters -->
+                        <StackPanel MinWidth="140">
+                            <TextBlock Text="Дата от:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                            <DatePicker SelectedDate="{Binding DateFromFilter}" />
+                        </StackPanel>
+                        
+                        <StackPanel MinWidth="140">
+                            <TextBlock Text="Дата до:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                            <DatePicker SelectedDate="{Binding DateToFilter}" />
+                        </StackPanel>
+                        
+                        <!-- Quick Filters -->
+                        <StackPanel MinWidth="140">
+                            <TextBlock Text="Быстрые фильтры:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                            <StackPanel Spacing="8">
+                                <CheckBox IsChecked="{Binding ShowUnreadOnly}" 
+                                          Content="Только непрочитанные"/>
+                                <CheckBox IsChecked="{Binding ShowTodayOnly}" 
+                                          Content="Только сегодня"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <!-- Bulk Actions -->
+                        <StackPanel MinWidth="140" 
+                                    IsVisible="{Binding HasSelection}">
+                            <TextBlock Text="Групповые действия:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Command="{Binding MarkSelectedAsReadCommand}"
+                                        Classes="action success"
+                                        Padding="12,6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <material:MaterialIcon Kind="Check" 
+                                                                   Width="16" Height="16"/>
+                                        <TextBlock Text="Прочитать" FontSize="12"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding MarkSelectedAsUnreadCommand}"
+                                        Classes="action secondary"
+                                        Padding="12,6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <material:MaterialIcon Kind="EmailOpen" 
+                                                                   Width="16" Height="16"/>
+                                        <TextBlock Text="Не прочитать" FontSize="12"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding DeleteSelectedCommand}"
+                                        Classes="action danger"
+                                        Padding="12,6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <material:MaterialIcon Kind="Delete" 
+                                                                   Width="16" Height="16"/>
+                                        <TextBlock Text="Удалить" FontSize="12"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Border Grid.Row="1" Classes="card">
+            <Grid RowDefinitions="Auto,*">
+                
+                <!-- Error Panel -->
+                <Border Grid.Row="0" 
+                        Background="#FFEBEE" 
+                        CornerRadius="8" 
+                        Padding="16" 
+                        Margin="0,0,0,16"
+                        IsVisible="{Binding HasErrors}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <material:MaterialIcon Kind="AlertCircle" 
+                                                   Width="24" Height="24" 
+                                                   Foreground="#D32F2F"/>
+                        <TextBlock Text="{Binding ErrorMessage}" 
+                                   Foreground="#D32F2F" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Data Grid -->
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding FilteredNotifications}"
+                          SelectedItem="{Binding SelectedNotification}"
+                          AutoGenerateColumns="False"
+                          CanUserSortColumns="True"
+                          CanUserReorderColumns="True"
+                          CanUserResizeColumns="True"
+                          GridLinesVisibility="Horizontal"
+                          HeadersVisibility="Column"
+                          SelectionMode="Extended"
+                          IsReadOnly="True"
+                          RowHeight="80"
+                          FontSize="14">
+                    
+                    <DataGrid.Columns>
+                        
+                        <!-- Selection Column -->
+                        <DataGridCheckBoxColumn Header="" 
+                                                Binding="{Binding IsSelected}" 
+                                                Width="50"
+                                                CanUserSort="False"
+                                                CanUserReorder="False"/>
+                        
+                        <!-- Read Status Column -->
+                        <DataGridTemplateColumn Header="" Width="40">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="vm:NotificationViewModel">
+                                    <Border Width="12" Height="12" 
+                                            CornerRadius="6"
+                                            Background="#E74C3C"
+                                            IsVisible="{Binding IsRead, Converter={StaticResource InverseBooleanConverter}}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- Title Column -->
+                        <DataGridTextColumn Header="Заголовок" 
+                                            Binding="{Binding Title}" 
+                                            Width="*"
+                                            MinWidth="200"/>
+                        
+                        <!-- Message Column -->
+                        <DataGridTextColumn Header="Сообщение" 
+                                            Binding="{Binding Message}" 
+                                            Width="300"/>
+                        
+                        <!-- Type Column -->
+                        <DataGridTemplateColumn Header="Тип" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="vm:NotificationViewModel">
+                                    <TextBlock Text="{Binding TypeDisplayName}" 
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- Priority Column -->
+                        <DataGridTemplateColumn Header="Приоритет" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="vm:NotificationViewModel">
+                                    <Border Classes="priority-badge"
+                                            Classes.priority-low="{Binding Priority, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Low}"
+                                            Classes.priority-normal="{Binding Priority, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Normal}"
+                                            Classes.priority-high="{Binding Priority, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=High}"
+                                            Classes.priority-critical="{Binding Priority, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Critical}">
+                                        <TextBlock Text="{Binding PriorityDisplayName}" 
+                                                   FontSize="12" FontWeight="SemiBold" 
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{Binding Priority, Converter={StaticResource StatusToColorConverter}}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- Sender Column -->
+                        <DataGridTextColumn Header="Отправитель" 
+                                            Binding="{Binding SenderName}" 
+                                            Width="150"/>
+                        
+                        <!-- Time Column -->
+                        <DataGridTextColumn Header="Время" 
+                                            Binding="{Binding TimeAgo}" 
+                                            Width="120"/>
+                        
+                        <!-- Actions Column -->
+                        <DataGridTemplateColumn Header="Действия" Width="200" CanUserSort="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="vm:NotificationViewModel">
+                                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                        <Button Command="{Binding $parent[DataGrid].DataContext.ViewNotificationDetailsCommand}"
+                                                CommandParameter="{Binding}"
+                                                Classes="action secondary"
+                                                Padding="10,6"
+                                                ToolTip.Tip="Просмотр деталей">
+                                            <material:MaterialIcon Kind="Eye" 
+                                                                       Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Command="{Binding $parent[DataGrid].DataContext.MarkAsReadCommand}"
+                                                CommandParameter="{Binding}"
+                                                Classes="action success"
+                                                Padding="10,6"
+                                                ToolTip.Tip="Отметить как прочитанное"
+                                                IsVisible="{Binding IsRead, Converter={StaticResource InverseBooleanConverter}}">
+                                            <material:MaterialIcon Kind="Check" 
+                                                                       Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Command="{Binding $parent[DataGrid].DataContext.MarkAsUnreadCommand}"
+                                                CommandParameter="{Binding}"
+                                                Classes="action secondary"
+                                                Padding="10,6"
+                                                ToolTip.Tip="Отметить как непрочитанное"
+                                                IsVisible="{Binding IsRead}">
+                                            <material:MaterialIcon Kind="EmailOpen" 
+                                                                       Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Command="{Binding $parent[DataGrid].DataContext.DeleteNotificationCommand}"
+                                                CommandParameter="{Binding}"
+                                                Classes="action danger"
+                                                Padding="10,6"
+                                                ToolTip.Tip="Удалить">
+                                            <material:MaterialIcon Kind="Delete" 
+                                                                       Width="16" Height="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                    </DataGrid.Columns>
+                    
+                    <!-- Loading Overlay -->
+                    <DataGrid.Styles>
+                        <Style Selector="DataGrid">
+                            <Setter Property="IsEnabled" Value="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"/>
+                        </Style>
+                    </DataGrid.Styles>
+                    
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Footer with Pagination -->
+        <Border Grid.Row="2" Classes="card" Margin="0,20,0,0" 
+                IsVisible="{Binding HasPages}">
+            <Grid ColumnDefinitions="*,Auto,*">
+                
+                <!-- Pagination Info -->
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding PaginationInfo}" 
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                
+                <!-- Pagination Controls -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="8"
+                            HorizontalAlignment="Center">
+                    
+                    <Button Command="{Binding FirstPageCommand}"
+                            IsEnabled="{Binding CanGoToFirstPage}"
+                            Classes="action secondary"
+                            Padding="12,8"
+                            ToolTip.Tip="Первая страница">
+                        <material:MaterialIcon Kind="ChevronDoubleLeft" 
+                                                   Width="18" Height="18"/>
+                    </Button>
+                    
+                    <Button Command="{Binding PreviousPageCommand}"
+                            IsEnabled="{Binding CanGoToPreviousPage}"
+                            Classes="action secondary"
+                            Padding="12,8"
+                            ToolTip.Tip="Предыдущая страница">
+                        <material:MaterialIcon Kind="ChevronLeft" 
+                                                   Width="18" Height="18"/>
+                    </Button>
+                    
+                    <!-- Page Number Input -->
+                    <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+                            CornerRadius="6"
+                            Padding="12,8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="Страница" VerticalAlignment="Center" FontSize="14"/>
+                            <NumericUpDown Value="{Binding CurrentPage}"
+                                           Minimum="1"
+                                           Maximum="{Binding TotalPages}"
+                                           Width="80"
+                                           ShowButtonSpinner="False"
+                                           FontSize="14"/>
+                            <TextBlock Text="{Binding TotalPages, StringFormat='из {0}'}" 
+                                       VerticalAlignment="Center" FontSize="14"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Button Command="{Binding NextPageCommand}"
+                            IsEnabled="{Binding CanGoToNextPage}"
+                            Classes="action secondary"
+                            Padding="12,8"
+                            ToolTip.Tip="Следующая страница">
+                        <material:MaterialIcon Kind="ChevronRight" 
+                                                   Width="18" Height="18"/>
+                    </Button>
+                    
+                    <Button Command="{Binding LastPageCommand}"
+                            IsEnabled="{Binding CanGoToLastPage}"
+                            Classes="action secondary"
+                            Padding="12,8"
+                            ToolTip.Tip="Последняя страница">
+                        <material:MaterialIcon Kind="ChevronDoubleRight" 
+                                                   Width="18" Height="18"/>
+                    </Button>
+                    
+                </StackPanel>
+                
+                <!-- Page Size Selector -->
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="8"
+                            HorizontalAlignment="Right">
+                    <TextBlock Text="Показать:" 
+                               VerticalAlignment="Center" 
+                               FontSize="14"/>
+                    <ComboBox SelectedItem="{Binding PageSize}"
+                              MinWidth="80">
+                        <ComboBoxItem Content="25" Tag="25"/>
+                        <ComboBoxItem Content="50" Tag="50"/>
+                        <ComboBoxItem Content="100" Tag="100"/>
+                        <ComboBoxItem Content="200" Tag="200"/>
+                    </ComboBox>
+                    <TextBlock Text="записей" 
+                               VerticalAlignment="Center" 
+                               FontSize="14"/>
+                </StackPanel>
+                
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl> 
+

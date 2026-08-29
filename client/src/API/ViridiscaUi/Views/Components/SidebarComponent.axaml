@@ -1,0 +1,401 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:ViridiscaUi.ViewModels"
+             xmlns:converters="clr-namespace:ViridiscaUi.Converters"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="800"
+             x:Class="ViridiscaUi.Views.Components.SidebarComponent"
+             x:DataType="vm:MainViewModel">
+
+  <UserControl.Resources>
+    <converters:IconKeyToMaterialKindConverter x:Key="IconKeyToMaterialKindConverter" />
+    <converters:BoolToDoubleConverter x:Key="BoolToDoubleConverter" />
+  </UserControl.Resources>
+
+  <UserControl.Styles>
+    <!-- Modern Sidebar Container -->
+    <Style Selector="Border.sidebar-container">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      <Setter Property="BorderThickness" Value="0,0,1,0"/>
+      <Setter Property="ClipToBounds" Value="True"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Width" Duration="0:0:0.3" Easing="CubicEaseInOut"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <!-- Header Section -->
+    <Style Selector="Border.sidebar-header">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+      <Setter Property="Padding" Value="20,16"/>
+      <Setter Property="Margin" Value="0,0,0,1"/>
+    </Style>
+
+    <!-- Logo Text -->
+    <Style Selector="TextBlock.logo-text">
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <Style Selector="TextBlock.logo-subtitle">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Opacity" Value="0.8"/>
+      <Setter Property="Margin" Value="0,-4,0,0"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <!-- Collapse Button -->
+    <Style Selector="Button.collapse-button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="Width" Value="36"/>
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.2"/>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.collapse-button:pointerover">
+      <Setter Property="Background" Value="rgba(255,255,255,0.1)"/>
+    </Style>
+
+    <Style Selector="Button.collapse-button:pressed">
+      <Setter Property="Background" Value="rgba(255,255,255,0.2)"/>
+      <Setter Property="RenderTransform" Value="scale(0.95)"/>
+    </Style>
+
+    <!-- Section Headers -->
+    <Style Selector="TextBlock.section-header">
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+      <Setter Property="Margin" Value="20,20,20,8"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <!-- Navigation Buttons -->
+    <Style Selector="Button.nav-item">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="Padding" Value="12,10"/>
+      <Setter Property="Margin" Value="12,2"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.2"/>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.nav-item:pointerover">
+      <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+      <Setter Property="RenderTransform" Value="translateX(4px)"/>
+    </Style>
+
+    <Style Selector="Button.nav-item:pressed">
+      <Setter Property="Background" Value="{DynamicResource PressedBrush}"/>
+      <Setter Property="RenderTransform" Value="translateX(2px) scale(0.98)"/>
+    </Style>
+
+    <Style Selector="Button.nav-item.active">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <!-- Icon Container -->
+    <Style Selector="Border.nav-icon">
+      <Setter Property="Width" Value="24"/>
+      <Setter Property="Height" Value="24"/>
+      <Setter Property="CornerRadius" Value="4"/>
+      <Setter Property="Margin" Value="0,0,12,0"/>
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- Badge -->
+    <Style Selector="Border.nav-badge">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+      <Setter Property="CornerRadius" Value="10"/>
+      <Setter Property="Padding" Value="6,2"/>
+      <Setter Property="MinWidth" Value="20"/>
+      <Setter Property="MinHeight" Value="20"/>
+      <Setter Property="Margin" Value="8,0,0,0"/>
+    </Style>
+
+    <!-- User Profile Card -->
+    <Style Selector="Border.user-profile">
+      <Setter Property="Background" Value="rgba(56, 178, 172, 0.1)"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Padding" Value="16"/>
+      <Setter Property="Margin" Value="12,8,12,16"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="rgba(56, 178, 172, 0.2)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+          <BrushTransition Property="Background" Duration="0:0:0.2"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <Style Selector="Border.user-profile:pointerover">
+      <Setter Property="RenderTransform" Value="translateY(-2px)"/>
+      <Setter Property="Background" Value="rgba(56, 178, 172, 0.15)"/>
+    </Style>
+
+    <!-- Stats Card -->
+    <Style Selector="Border.stats-card">
+      <Setter Property="Background" Value="rgba(56, 178, 172, 0.08)"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Padding" Value="16"/>
+      <Setter Property="Margin" Value="12,8,12,0"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="rgba(56, 178, 172, 0.15)"/>
+    </Style>
+
+    <!-- Welcome Card -->
+    <Style Selector="Border.welcome-card">
+      <Setter Property="Background" Value="rgba(255, 193, 7, 0.1)"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Padding" Value="16"/>
+      <Setter Property="Margin" Value="12,16,12,0"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="rgba(255, 193, 7, 0.2)"/>
+    </Style>
+
+    <!-- Scrollbar Styling -->
+    <Style Selector="ScrollViewer /template/ ScrollBar">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Width" Value="8"/>
+    </Style>
+
+    <Style Selector="ScrollViewer /template/ ScrollBar:vertical /template/ Track /template/ Thumb">
+      <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
+      <Setter Property="CornerRadius" Value="4"/>
+      <Setter Property="Margin" Value="2"/>
+    </Style>
+  </UserControl.Styles>
+
+  <!-- Main Sidebar Container -->
+  <Border Classes="sidebar-container"
+          Width="280">
+    
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+      
+      <!-- Header with Logo -->
+      <Border Grid.Row="0" Classes="sidebar-header">
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock Text="Viridisca" 
+                     Classes="logo-text"/>
+          <TextBlock Text="LMS" 
+                     Classes="logo-subtitle"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Quick Stats -->
+      <Border Grid.Row="1"
+              Classes="stats-card">
+       
+        <StackPanel Spacing="12">
+       
+          <Grid ColumnDefinitions="Auto,*">
+            <material:MaterialIcon Grid.Column="0" Kind="ChartLine" 
+                                   Width="16" Height="16"
+                                   Foreground="{DynamicResource AccentBrush}"
+                                   VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="Быстрая статистика"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       FontWeight="SemiBold"
+                       FontSize="13"
+                       Margin="8,0,0,0"/>
+          </Grid>
+          
+          <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+            <StackPanel Grid.Column="0" Grid.Row="0" Spacing="2" Margin="0,0,4,4">
+              <TextBlock Text="Студенты"
+                         Foreground="{DynamicResource TextMutedBrush}"
+                         FontSize="11"/>
+              <TextBlock Text="{Binding TotalStudents}"
+                         Foreground="{DynamicResource AccentBrush}"
+                         FontWeight="Bold"
+                         FontSize="16"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Grid.Row="0" Spacing="2" Margin="4,0,0,4">
+              <TextBlock Text="Курсы"
+                         Foreground="{DynamicResource TextMutedBrush}"
+                         FontSize="11"/>
+              <TextBlock Text="{Binding TotalCourses}"
+                         Foreground="{DynamicResource SecondaryBrush}"
+                         FontWeight="Bold"
+                         FontSize="16"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="0" Grid.Row="1" Spacing="2" Margin="0,4,4,0">
+              <TextBlock Text="Преподаватели"
+                         Foreground="{DynamicResource TextMutedBrush}"
+                         FontSize="11"/>
+              <TextBlock Text="{Binding TotalTeachers}"
+                         Foreground="{DynamicResource SuccessBrush}"
+                         FontWeight="Bold"
+                         FontSize="16"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Grid.Row="1" Spacing="2" Margin="4,4,0,0">
+              <TextBlock Text="Задания"
+                         Foreground="{DynamicResource TextMutedBrush}"
+                         FontSize="11"/>
+              <TextBlock Text="{Binding TotalAssignments}"
+                         Foreground="{DynamicResource WarningBrush}"
+                         FontWeight="Bold"
+                         FontSize="16"/>
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Navigation Menu -->
+      <ScrollViewer Grid.Row="2"
+                    VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Disabled"
+                    Margin="0,8,0,0">
+        <StackPanel>
+          
+          <!-- Dynamic Menu Groups -->
+          <ItemsControl ItemsSource="{Binding GroupedMenuItems}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  
+                  <!-- Group Header -->
+                  <TextBlock Text="{Binding GroupName}"
+                             Classes="section-header"/>
+
+                  <!-- Group Items -->
+                  <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Button Command="{Binding NavigateCommand}"
+                                Classes="nav-item"
+                                ToolTip.Tip="{Binding Description}">
+                          <Grid ColumnDefinitions="Auto,*,Auto">
+                            
+                            <!-- Icon -->
+                            <Border Grid.Column="0" Classes="nav-icon">
+                              <material:MaterialIcon Kind="{Binding IconKey, 
+                                                            Converter={StaticResource IconKeyToMaterialKindConverter}}"
+                                                     Width="20" Height="20"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"/>
+                            </Border>
+
+                            <!-- Label -->
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding DisplayName}"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Medium"/>
+
+                            <!-- Badge -->
+                            <Border Grid.Column="2"
+                                    Classes="nav-badge"
+                                    IsVisible="{Binding HasBadge}">
+                              <TextBlock Text="{Binding BadgeText}"
+                                         Foreground="White"
+                                         FontSize="10"
+                                         FontWeight="Bold"
+                                         HorizontalAlignment="Center"/>
+                            </Border>
+                            
+                          </Grid>
+                        </Button>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          
+        </StackPanel>
+      </ScrollViewer>
+
+      <!-- User Profile Card -->
+      <Border Grid.Row="3"
+              Classes="user-profile">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          
+          <!-- Avatar -->
+          <Border Grid.Column="0"
+                  Width="40" Height="40"
+                  CornerRadius="20"
+                  Background="{DynamicResource AccentBrush}"
+                  VerticalAlignment="Center">
+            <TextBlock Text="{Binding UserInitials}"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+          </Border>
+
+          <!-- User Info -->
+          <StackPanel Grid.Column="1"
+                      Margin="12,0,0,0"
+                      VerticalAlignment="Center">
+            <TextBlock Text="{Binding CurrentUserInfo.FullName}"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       FontWeight="SemiBold"
+                       FontSize="14"/>
+            <TextBlock Text="{Binding CurrentUserInfo.PrimaryRole}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       FontSize="12"/>
+          </StackPanel>
+
+          <!-- Settings Button -->
+          <Button Grid.Column="2"
+                  Classes="collapse-button"
+                  Width="32" Height="32"
+                  Command="{Binding OpenUserMenuCommand}"
+                  ToolTip.Tip="Настройки пользователя">
+            <material:MaterialIcon Kind="Settings" 
+                                   Width="16" Height="16"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+          </Button>
+          
+        </Grid>
+      </Border>
+
+    </Grid>
+    
+  </Border>
+
+</UserControl> 
